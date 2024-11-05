@@ -28,7 +28,7 @@ export const deleteToken = async () => {
   }
 };
 
-export const isFirstLaunch = async () => {
+export const checkFirstLaunch = async () => {
   try {
     const hasLaunched = await mmkv.getStringAsync("consultly-hasLaunched");
     if (hasLaunched === null) {
