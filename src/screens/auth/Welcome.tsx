@@ -4,13 +4,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Swiper from "react-native-swiper";
 import { onboarding } from "../../constants";
 import CustomBtn from "../../components/CustomBtn";
-import type { StackNavigationProp } from "@react-navigation/stack";
+import { useAppDispatch } from "../../../store";
+import { setIsFirstLaunch } from "../../../store/slices/userSlice";
 
-type WelcomeProps = {
-  navigation: StackNavigationProp<any>;
-};
-
-export default function Welcome({ navigation }: WelcomeProps) {
+export default function Welcome() {
+  const dispatch = useAppDispatch();
   const swiperRef = useRef<Swiper>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -22,11 +20,11 @@ export default function Welcome({ navigation }: WelcomeProps) {
   };
 
   const handleSkipBtnPress = () => {
-    navigation.push("/get-started");
+    dispatch(setIsFirstLaunch(false));
   };
 
   const getStartedBtnHandler = () => {
-    navigation.push("/get-started");
+    dispatch(setIsFirstLaunch(false));
   };
 
   return (

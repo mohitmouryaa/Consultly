@@ -1,8 +1,18 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { MMKVLoader } from "react-native-mmkv-storage";
 import { useDispatch, useSelector } from "react-redux";
-import { persistReducer, persistStore } from "redux-persist";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
 import { userSlice } from "./slices/userSlice";
+import { callApi, chatApi } from "./api";
 
 const storage = new MMKVLoader().initialize();
 
@@ -14,6 +24,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   ["user"]: userSlice.reducer,
+  [chatApi.reducerPath]: chatApi.reducer,
+  [callApi.reducerPath]: callApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -22,8 +34,10 @@ const store = configureStore({
   reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
-      serializableCheck: false,
-    }),
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(chatApi.middleware, callApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

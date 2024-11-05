@@ -1,24 +1,26 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import { checkFirstLaunch, deleteToken, getToken } from "../lib/secureStore";
-import { useAppSelector } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 import SplashScreen from "./shared/SplashScreen";
-import GetStartedStackScreen from "./getStarted/GetStartetStackScreen";
 import AuthStackScreen from "./auth/AuthStackScreen";
 import HomeStackScreen from "./home/HomeStackScreen";
+import Welcome from "./auth/Welcome";
+import { setIsFirstLaunch } from "../../store/slices/userSlice";
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 export default function StackScreens() {
+  const dispatch = useAppDispatch();
   const userId = useAppSelector(state => state.user._id);
+  const isFirstLaunch = useAppSelector(state => state.user.isFirstLaunch);
   const [isReady, setIsReady] = useState(true);
-  const [isFirstLaunch, setIsFirstLaunch] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const intializeApp = useCallback(async () => {
     try {
       if (await checkFirstLaunch()) {
-        setIsFirstLaunch(true);
+        dispatch(setIsFirstLaunch(true));
       } else if (await getToken()) {
         if (!userId) {
           deleteToken();
@@ -32,7 +34,7 @@ export default function StackScreens() {
       setIsReady(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     intializeApp();
@@ -45,7 +47,7 @@ export default function StackScreens() {
     <React.Fragment>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isFirstLaunch ? (
-          <Stack.Screen name="launch" component={GetStartedStackScreen} />
+          <Stack.Screen name="welcome" component={Welcome} />
         ) : !isLoggedIn ? (
           <Stack.Screen name="auth" component={AuthStackScreen} />
         ) : (

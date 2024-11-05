@@ -10,6 +10,7 @@ interface UserState {
   email?: string;
   token?: string;
   _id?: string;
+  isFirstLaunch?: boolean;
 }
 
 const initialState: UserState = {};
@@ -21,9 +22,12 @@ export const userSlice = createSlice({
     setUser: (state, action) => {
       state = { ...state, ...action.payload };
     },
+    setIsFirstLaunch: (state, action) => {
+      state.isFirstLaunch = action.payload;
+    },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, setIsFirstLaunch } = userSlice.actions;
 
 export default userSlice.reducer;

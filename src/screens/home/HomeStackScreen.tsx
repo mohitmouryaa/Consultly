@@ -1,8 +1,8 @@
 import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Feed from "./Feed";
+import { createStackNavigator } from "@react-navigation/stack";
 
-const HomeStack = createNativeStackNavigator();
+const HomeStack = createStackNavigator();
 
 export default function HomeStackScreen() {
   return (

@@ -11,11 +11,11 @@ type GetStartedProps = {
 
 export default function GetStarted({ navigation }: GetStartedProps) {
   const handleSignUpBtnPress = () => {
-    navigation.push("/sign-up");
+    navigation.push("register");
   };
 
   const handleSignInBtnPress = () => {
-    navigation.push("/login");
+    navigation.push("login");
   };
   return (
     <SafeAreaView className="flex items-center justify-between h-full bg-white">
