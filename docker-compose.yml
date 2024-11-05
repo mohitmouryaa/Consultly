@@ -1,55 +1,11 @@
 version: '3.8'
+
 services:
-  metro:
+  react-native-app:
     build: .
     ports:
-      - "8081:8081"
-      - "19000:19000"
-      - "19001:19001"
-      - "19002:19002"
+      - "8081:8081" # Expose Metro Bundler port
     volumes:
-      - .:/app
+      - .:/app # Mount current directory to /app in the container
       - /app/node_modules
-      - ~/.gradle:/root/.gradle
-      - ~/.m2:/root/.m2
-      - android-cache:/root/.android
-    environment:
-      - NODE_ENV=development
-      - REACT_NATIVE_PACKAGER_HOSTNAME=${REACT_NATIVE_PACKAGER_HOSTNAME:-"localhost"}
-      - ANDROID_HOME=/opt/android-sdk
-      - JAVA_HOME=/usr/lib/jvm/zulu17
-    command: npm start
-
-  android:
-    build: .
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - ~/.gradle:/root/.gradle
-      - ~/.m2:/root/.m2
-      - android-cache:/root/.android
-    environment:
-      - NODE_ENV=development
-      - REACT_NATIVE_PACKAGER_HOSTNAME=${REACT_NATIVE_PACKAGER_HOSTNAME:-"localhost"}
-      - ANDROID_HOME=/opt/android-sdk
-      - JAVA_HOME=/usr/lib/jvm/zulu17
-    command: npm run android
-    depends_on:
-      - metro
-
-  ios:
-    build: .
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - ~/Library/Developer/Xcode:/root/Library/Developer/Xcode
-      - ~/.gradle:/root/.gradle
-    environment:
-      - NODE_ENV=development
-      - REACT_NATIVE_PACKAGER_HOSTNAME=${REACT_NATIVE_PACKAGER_HOSTNAME:-"localhost"}
-    command: npm run ios
-    depends_on:
-      - metro
-
-volumes:
-  android-cache:
+    command: ["npx", "react-native", "start", "--host", "0.0.0.0"]

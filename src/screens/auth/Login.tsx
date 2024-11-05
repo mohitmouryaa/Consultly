@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -17,12 +18,16 @@ import httpClient from "../../lib/httpClient";
 import { setUser } from "../../../store/slices/userSlice";
 import { storeToken } from "../../lib/secureStore";
 import { icons } from "../../constants";
-import { StyleSheet } from "nativewind";
 import CustomBtn from "../../components/CustomBtn";
 import InputField from "../../components/InputField";
 import { Link } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
 
-export default function LoginScreen() {
+type LoginProps = {
+  navigation: StackNavigationProp<any>;
+};
+
+export default function LoginScreen({ navigation }: LoginProps) {
   const [form, setForm] = useState({
     username: "",
     password: "",
@@ -66,7 +71,7 @@ export default function LoginScreen() {
     <SafeAreaView className="flex-col justify-between w-full h-full p-5 bg-white">
       <View className="">
         <TouchableOpacity
-          // onPress={() => router.replace("/get-started")}
+          onPress={() => navigation.replace("get-started")}
           disabled={loading}>
           <Image source={icons.backArrowIcon} className="w-7 h-7" />
         </TouchableOpacity>
@@ -112,16 +117,13 @@ export default function LoginScreen() {
             readOnly={loading}
           />
           <View className="flex-row items-center justify-between mt-3">
-            <Link
-              to={"/sign-in"}
-              className="text-orange-400"
-              disabled={loading}>
+            <Link to={"/login"} className="text-orange-400" disabled={loading}>
               Forgot Password?
             </Link>
             <Text className="text-sm text-center">
               Don't have an account?{" "}
               <Link
-                to={"/sign-up"}
+                to={"/register"}
                 className="text-orange-400"
                 disabled={loading}>
                 Sign up
