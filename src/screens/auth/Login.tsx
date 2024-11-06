@@ -75,8 +75,8 @@ export default function LoginScreen({ navigation }: LoginProps) {
           disabled={loading}>
           <Image source={icons.backArrowIcon} className="w-7 h-7" />
         </TouchableOpacity>
-        <Text className="mt-5 text-3xl font-JakartaBold">Welcome Back 👋</Text>
-        <Text className="mt-2 text-sm font-JakartaLight">
+        <Text className="mt-5 text-3xl font-bold">Welcome Back 👋</Text>
+        <Text className="mt-2 text-sm font-light">
           Sign in to Connect with your AI Friends
         </Text>
       </View>

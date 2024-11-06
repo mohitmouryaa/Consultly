@@ -21,10 +21,10 @@ export default function GetStarted({ navigation }: GetStartedProps) {
     <SafeAreaView className="flex items-center justify-between h-full bg-white">
       <Image source={images.reactLogo} alt="react-logo" />
       <View className="flex items-center mt-8">
-        <Text className="text-2xl text-black font-JakartaBold">
+        <Text className="text-2xl font-bold text-black">
           Let's Get Started!
         </Text>
-        <Text className="mt-4 text-sm text-black font-JakartaLight">
+        <Text className="mt-4 text-sm font-light text-black">
           Let's dive into your account
         </Text>
       </View>
@@ -42,10 +42,10 @@ export default function GetStarted({ navigation }: GetStartedProps) {
 
       {/* FOOTER SECTION  */}
       <View className="flex flex-row items-center justify-around w-full px-16 mb-5">
-        <Text className="text-sm text-black font-JakartaLight">
+        <Text className="text-sm font-light text-black">
           Privacy Policy
         </Text>
-        <Text className="text-sm text-black font-JakartaLight">
+        <Text className="text-sm font-light text-black">
           Terms of Service
         </Text>
       </View>

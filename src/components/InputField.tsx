@@ -34,7 +34,7 @@ const InputField = ({
       behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className="w-full my-2">
-          <Text className={`text-base font-JakartaSemiBold mb-3 ${labelStyle}`}>
+          <Text className={`text-base font-semibold mb-3 ${labelStyle}`}>
             {label}
           </Text>
           <View
@@ -46,7 +46,7 @@ const InputField = ({
               />
             )}
             <TextInput
-              className={`rounded-full p-4 font-JakartaSemiBold text-[15px] flex-1 ${inputStyle} text-left`}
+              className={`rounded-full p-4 font-semibold text-[15px] flex-1 ${inputStyle} text-left`}
               secureTextEntry={secureTextEntry}
               placeholder={placeholder}
               textContentType={props.textContentType as any}

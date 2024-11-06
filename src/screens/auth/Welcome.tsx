@@ -45,7 +45,7 @@ export default function Welcome() {
               key={item.id}
               className="flex items-center justify-center p-3">
               <View className="flex items-center justify-center w-full mt-10 flex-column">
-                <Text className="mx-3 text-3xl font-bold text-center text-black font-JakartaSemiBold">
+                <Text className="mx-3 text-3xl font-bold text-center text-black">
                   {item.title}
                 </Text>
                 <Text className="text-lg font-Jakarta text-center text-[#858585] mt-7 mx-1">
@@ -56,23 +56,27 @@ export default function Welcome() {
           );
         })}
       </Swiper>
-      <View className="border-t-gray-100 border-t-[1px] flex flex-row justify-around items-center max-h-fit w-full mb-2 p-3">
+      <View className="border-t-gray-100 border-t-[1px] flex flex-row justify-around items-center w-full p-3">
         {!isLastSlide ? (
           <Fragment>
             <CustomBtn
               title="Skip"
-              className="w-[47%] bg-[#faf2ea]"
+              className="bg-[#faf2ea]"
               textClassName="text-orange-400"
               onPress={handleSkipBtnPress}
             />
             <CustomBtn
               title="Continue"
-              className="w-[47%] bg-orange-400"
+              className="bg-orange-400"
               onPress={handleContinueBtnPress}
             />
           </Fragment>
         ) : (
-          <CustomBtn title="Let's Get Started" onPress={getStartedBtnHandler} />
+          <CustomBtn
+            title="Let's Get Started"
+            onPress={getStartedBtnHandler}
+            className="bg-orange-400"
+          />
         )}
       </View>
     </SafeAreaView>
