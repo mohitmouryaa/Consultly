@@ -10,10 +10,14 @@ interface UserState {
   email?: string;
   token?: string;
   _id?: string;
-  isFirstLaunch?: boolean;
+  isFirstLaunch: boolean;
+  isLoggedIn: boolean;
 }
 
-const initialState: UserState = {};
+const initialState: UserState = {
+  isFirstLaunch: false,
+  isLoggedIn: false,
+};
 
 export const userSlice = createSlice({
   name: "user",
@@ -25,9 +29,12 @@ export const userSlice = createSlice({
     setIsFirstLaunch: (state, action) => {
       state.isFirstLaunch = action.payload;
     },
+    setIsLoggedIn: (state, action) => {
+      state.isLoggedIn = action.payload;
+    },
   },
 });
 
-export const { setUser, setIsFirstLaunch } = userSlice.actions;
+export const { setUser, setIsFirstLaunch, setIsLoggedIn } = userSlice.actions;
 
 export default userSlice.reducer;

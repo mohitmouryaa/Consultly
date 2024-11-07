@@ -6,7 +6,7 @@ import SplashScreen from "./shared/SplashScreen";
 import AuthStackScreen from "./auth/AuthStackScreen";
 import HomeStackScreen from "./home/HomeStackScreen";
 import Welcome from "./auth/Welcome";
-import { setIsFirstLaunch } from "../../store/slices/userSlice";
+import { setIsFirstLaunch, setIsLoggedIn } from "../../store/slices/userSlice";
 
 const Stack = createStackNavigator();
 
@@ -14,8 +14,8 @@ export default function StackScreens() {
   const dispatch = useAppDispatch();
   const userId = useAppSelector(state => state.user._id);
   const isFirstLaunch = useAppSelector(state => state.user.isFirstLaunch);
+  const isLoggedIn = useAppSelector(state => state.user.isLoggedIn);
   const [isReady, setIsReady] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const intializeApp = useCallback(async () => {
     try {
@@ -25,7 +25,7 @@ export default function StackScreens() {
         if (!userId) {
           deleteToken();
         } else {
-          setIsLoggedIn(true);
+          dispatch(setIsLoggedIn(true));
         }
       }
     } catch (error) {

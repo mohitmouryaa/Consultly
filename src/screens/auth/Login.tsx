@@ -15,7 +15,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppDispatch } from "../../../store";
 import httpClient from "../../lib/httpClient";
-import { setUser } from "../../../store/slices/userSlice";
+import { setIsLoggedIn, setUser } from "../../../store/slices/userSlice";
 import { storeToken } from "../../lib/secureStore";
 import { icons } from "../../constants";
 import CustomBtn from "../../components/CustomBtn";
@@ -52,7 +52,7 @@ export default function LoginScreen({ navigation }: LoginProps) {
         const { token, user } = response.data;
         dispatch(setUser({ ...user, token }));
         await storeToken(token);
-        // router.replace("/home");
+        dispatch(setIsLoggedIn(true));
       }
     } catch (error) {
       console.log(error);
