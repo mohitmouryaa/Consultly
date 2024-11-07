@@ -56,18 +56,19 @@ export default function Welcome() {
           );
         })}
       </Swiper>
-      <View className="border-t-gray-100 border-t-[1px] flex flex-row justify-around items-center w-full p-3">
+      {/* <View className="border-t-gray-100 border-t-[1px] flex flex-row justify-around items-center w-full p-3"> */}
+      <View style={{ flexDirection: "row", alignItems: "center", padding: 12 }}>
         {!isLastSlide ? (
           <Fragment>
             <CustomBtn
               title="Skip"
-              className="bg-[#faf2ea]"
+              className="bg-[#faf2ea] flex-1 ml-2 mr-2"
               textClassName="text-orange-400"
               onPress={handleSkipBtnPress}
             />
             <CustomBtn
               title="Continue"
-              className="bg-orange-400"
+              className="flex-1 ml-2 mr-2 bg-orange-400"
               onPress={handleContinueBtnPress}
             />
           </Fragment>

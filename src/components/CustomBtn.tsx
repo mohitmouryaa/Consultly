@@ -13,7 +13,8 @@ export default function CustomBtn({
     <TouchableOpacity
       onPress={onPress}
       {...props}
-      className={`w-full rounded-2xl p-3 flex flex-1 mx-2 justify-center items-center ${className}`}
+      className={` p-2 h-14 w-full justify-center items-center rounded-2xl ${className}`}
+      // className={`w-full h-14 mb-3 rounded-2xl p-3 flex flex-1 mx-2 justify-center items-center ${className}`}
       disabled={loading}>
       {loading ? (
         <ActivityIndicator color="#fff" />

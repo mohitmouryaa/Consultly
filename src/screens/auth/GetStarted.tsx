@@ -30,8 +30,10 @@ export default function GetStarted({ navigation }: GetStartedProps) {
       </View>
 
       {/* AUTH BUTTONS */}
-      <View className="flex-col items-center justify-around w-full px-6 mt-12 h-1/5">
+      {/* <View className="flex-col items-center justify-around w-full px-6 mt-12"> */}
+      <View className="flex-col items-center w-full px-6">
         <CustomBtn title="Sign up" onPress={handleSignUpBtnPress} />
+        <View className={"h-3"} />
         <CustomBtn
           title="Sign in"
           className="bg-[#faf2ea]"
@@ -42,12 +44,8 @@ export default function GetStarted({ navigation }: GetStartedProps) {
 
       {/* FOOTER SECTION  */}
       <View className="flex flex-row items-center justify-around w-full px-16 mb-5">
-        <Text className="text-sm font-light text-black">
-          Privacy Policy
-        </Text>
-        <Text className="text-sm font-light text-black">
-          Terms of Service
-        </Text>
+        <Text className="text-sm font-light text-black">Privacy Policy</Text>
+        <Text className="text-sm font-light text-black">Terms of Service</Text>
       </View>
     </SafeAreaView>
   );

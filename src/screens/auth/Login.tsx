@@ -132,7 +132,7 @@ export default function LoginScreen({ navigation }: LoginProps) {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      <View className="border-t-gray-100 border-t-[1px] w-full pt-5 items-center">
+      <View className="border-t-gray-100 border-t-[1px] w-full items-center">
         <CustomBtn
           title="Sign in"
           onPress={handleSignInBtn}
