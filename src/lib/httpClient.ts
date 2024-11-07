@@ -1,10 +1,11 @@
 import axios from "axios";
 import { deleteToken, getToken } from "./secureStore";
+import Config from "react-native-config";
 
 const controllers = new Map<string, AbortController>();
 
 const httpClient = axios.create({
-  baseURL: `${process.env.EXPO_PUBLIC_SERVER_URL}/api/v1`,
+  baseURL: `${Config.SERVER_URL}/api/v1`,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -14,6 +15,7 @@ const httpClient = axios.create({
 
 httpClient.interceptors.request.use(
   async config => {
+    console.log("config", config.baseURL);
     const token = await getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -43,7 +45,7 @@ httpClient.interceptors.response.use(
   async error => {
     if (error?.response?.status === 401) {
       await deleteToken();
-    //   router.replace("/sign-in");
+      //   router.replace("/sign-in");
     }
     return Promise.reject(error);
   },
