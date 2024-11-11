@@ -117,13 +117,16 @@ export default function LoginScreen({ navigation }: LoginProps) {
             readOnly={loading}
           />
           <View className="flex-row items-center justify-between mt-3">
-            <Link to={"/login"} className="text-orange-400" disabled={loading}>
+            <Link
+              screen={"login"}
+              className="text-orange-400"
+              disabled={loading}>
               Forgot Password?
             </Link>
             <Text className="text-sm text-center">
               Don't have an account?{" "}
               <Link
-                to={"/register"}
+                screen={"register"}
                 className="text-orange-400"
                 disabled={loading}>
                 Sign up

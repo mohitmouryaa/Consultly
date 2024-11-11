@@ -161,7 +161,6 @@ export default function RegisterScreen({ navigation }: SignUpProps) {
             onChangeText={value => setForm({ ...form, username: value })}
             readOnly={loading}
             keyboardType="default"
-            autoCapitalize="none"
           />
           <InputField
             label="Email"
@@ -172,7 +171,6 @@ export default function RegisterScreen({ navigation }: SignUpProps) {
             onChangeText={value => setForm({ ...form, email: value })}
             readOnly={loading}
             keyboardType="email-address"
-            autoCapitalize="none"
           />
           <InputField
             label="Password"
@@ -185,15 +183,14 @@ export default function RegisterScreen({ navigation }: SignUpProps) {
             value={form.password}
             onChangeText={value => setForm({ ...form, password: value })}
             readOnly={loading}
-            autoCapitalize="none"
           />
         </ScrollView>
       </KeyboardAvoidingView>
       <View className="border-t-gray-100 border-t-[1px] w-full">
         <Text className="my-3 text-base text-center">
           Already have an account?{" "}
-          <Link to={"/login"} className="text-orange-400" disabled={loading}>
-            Sign in
+          <Link screen={"login"} className="text-orange-400" disabled={loading}>
+            Login
           </Link>
         </Text>
         <CustomBtn
