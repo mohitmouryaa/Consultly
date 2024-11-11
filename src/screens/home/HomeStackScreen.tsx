@@ -9,6 +9,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ScreenHeader from "../../components/ScreenHeader";
 import Chat from "./Chat";
 import Chats from "./Chats";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Feed from "./Feed";
+import CallHistory from "./CallHistory";
+import Profile from "./Profile";
+import Plans from "./Plans";
 
 const Tab = createBottomTabNavigator();
 const ChatsStack = createStackNavigator();
@@ -43,12 +48,55 @@ export default function HomeTabNavigator() {
             return {
               title: "Chats",
               tabBarIcon: ({ color, focused }) => (
-                <TabIcon color={color} name="Chats" focused={focused} />
+                // <TabIcon color={color} name="Chats" focused={focused} />
+                <AntDesign name={"wechat"} size={25} color={color} />
               ),
               headerShown: false,
             };
           }}
           component={ChatsStackScreen}
+          initialParams={{ tabBarHeight }}></Tab.Screen>
+        <Tab.Screen
+          name="Call History"
+          options={() => {
+            return {
+              title: "Call History",
+              tabBarIcon: ({ color, focused }) => (
+                // <TabIcon color={color} name="Chats" focused={focused} />
+                <AntDesign name={"phone"} size={25} color={color} />
+              ),
+              headerShown: false,
+            };
+          }}
+          component={CallHistory}
+          initialParams={{ tabBarHeight }}></Tab.Screen>
+        <Tab.Screen
+          name="Plans"
+          options={() => {
+            return {
+              title: "Plans",
+              tabBarIcon: ({ color, focused }) => (
+                // <TabIcon color={color} name="Chats" focused={focused} />
+                <AntDesign name={"solution1"} size={25} color={color} />
+              ),
+              headerShown: false,
+            };
+          }}
+          component={Plans}
+          initialParams={{ tabBarHeight }}></Tab.Screen>
+        <Tab.Screen
+          name="Profile"
+          options={() => {
+            return {
+              title: "Profile",
+              tabBarIcon: ({ color, focused }) => (
+                // <TabIcon color={color} name="Chats" focused={focused} />
+                <AntDesign name={"user"} size={25} color={color} />
+              ),
+              headerShown: false,
+            };
+          }}
+          component={Profile}
           initialParams={{ tabBarHeight }}></Tab.Screen>
       </Tab.Navigator>
     </Fragment>
