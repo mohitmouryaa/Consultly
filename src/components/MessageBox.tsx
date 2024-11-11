@@ -4,9 +4,10 @@ import { Text, View, TouchableOpacity, Image } from "react-native";
 import { images } from "../constants";
 import { convertChatDate } from "../lib/utils";
 import { useSocket } from "../providers/socketProvider";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 export default function MessageBox({ item }: MessageBoxProps) {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<StackNavigationProp<any>>();
   const { onlineUsers } = useSocket();
 
   const imageSource = useMemo(() => {

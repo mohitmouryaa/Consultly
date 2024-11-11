@@ -6,9 +6,10 @@ import { useSocket } from "../../providers/socketProvider";
 import { icons, tabBarStyle } from "../../constants";
 import Feather from "react-native-vector-icons/Feather";
 import Entypo from "react-native-vector-icons/Entypo";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 export default function Chat() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<StackNavigationProp<any>>();
   const route = useRoute<any>();
   const user = useMemo(() => route.params.user || {}, [route.params.user]);
   const { onlineUsers } = useSocket();
@@ -19,17 +20,17 @@ export default function Chat() {
 
   useLayoutEffect(() => {
     // HIDE THE TAB BAR FOR THIS SCREN
-    navigation.getParent().setOptions({ tabBarStyle: { display: "none" } });
+    navigation?.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
     return () => {
       // RESTORE THE TAB BAR
       navigation
-        .getParent()
-        .setOptions({ ...tabBarStyle(route.params?.tabBarHeight) });
+        ?.getParent()
+        ?.setOptions({ ...tabBarStyle(route.params?.tabBarHeight) });
     };
   }, [navigation, route.params?.tabBarHeight]);
 
   const handlePress = () => {
-    navigation.navigate("chats");
+    navigation.goBack();
   };
   return (
     <SafeAreaView className="flex h-full bg-white">
