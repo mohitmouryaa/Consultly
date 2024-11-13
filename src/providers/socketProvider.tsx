@@ -9,6 +9,7 @@ import io, { Socket } from "socket.io-client";
 import { useAppSelector } from "../../store";
 import { getToken } from "../lib/secureStore";
 import { CHAT_JOINED, CHAT_LEAVED, ONLINE_USERS } from "../constants";
+import Config from "react-native-config";
 
 interface SocketContextProps {
   socket: Socket | null;
@@ -31,7 +32,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     const initializeSocket = async () => {
       const token = await getToken();
 
-      const newSocket = io(`${process.env.EXPO_PUBLIC_SERVER_URL}`, {
+      const newSocket = io(`${Config.SERVER_URL}`, {
         withCredentials: true,
         transports: ["websocket"],
         auth: {

@@ -9,6 +9,7 @@
     "start": "react-native start",
     "clean:android": "cd android && ./gradlew clean && cd ../",
     "clean:ios": "cd ios && xcodebuild clean && cd ../",
+    "clean:start": "watchman watch-del-all && sudo rm -rf package-lock.json node_modules ios/Pods ios/Podfile.lock android/app/build && npm install && cd ios && pod update && cd .. && npm start - - reset-cache",
     "test": "jest"
   },
   "dependencies": {
