@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { Fragment, useLayoutEffect, useMemo, useState } from "react";
-import { Dimensions, Text, View } from "react-native";
+import { Dimensions, Text, View, TouchableOpacity } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
@@ -46,7 +46,28 @@ export default function HomeTabNavigator() {
           name="chatsStackScreen"
           options={() => {
             return {
-              title: "Chats",
+              // title: "Chats",
+              // // Adding the search icon to the right side of the app bar
+              // headerRight: () => (
+              //   <View style={{ flexDirection: "row", marginRight: 10 }}>
+              //     {/* Search Icon */}
+              //     <TouchableOpacity
+              //       style={{ marginRight: 15 }} // Add space between icons
+              //       onPress={() => {
+              //         console.log("Search icon pressed");
+              //       }}>
+              //       <AntDesign name="search1" size={25} color="#000000" />
+              //     </TouchableOpacity>
+
+              //     {/* Bell Icon (or any other icon) */}
+              //     <TouchableOpacity
+              //       onPress={() => {
+              //         console.log("Dots icon pressed");
+              //       }}>
+              //       <AntDesign name="ellipsis1" size={25} color="#00000" />
+              //     </TouchableOpacity>
+              //   </View>
+              // ),
               tabBarIcon: ({ color, focused }) => (
                 // <TabIcon color={color} name="Chats" focused={focused} />
                 <AntDesign name={"wechat"} size={25} color={color} />
@@ -61,11 +82,14 @@ export default function HomeTabNavigator() {
           options={() => {
             return {
               title: "Call History",
+              headerStyle: {
+                //backgroundColor: "#6200EE", // Background color of the app bar
+              },
               tabBarIcon: ({ color, focused }) => (
                 // <TabIcon color={color} name="Chats" focused={focused} />
                 <AntDesign name={"phone"} size={25} color={color} />
               ),
-              headerShown: false,
+              //headerShown: false,
             };
           }}
           component={CallHistory}
@@ -79,7 +103,7 @@ export default function HomeTabNavigator() {
                 // <TabIcon color={color} name="Chats" focused={focused} />
                 <AntDesign name={"solution1"} size={25} color={color} />
               ),
-              headerShown: false,
+              //headerShown: false,
             };
           }}
           component={Plans}
@@ -93,7 +117,7 @@ export default function HomeTabNavigator() {
                 // <TabIcon color={color} name="Chats" focused={focused} />
                 <AntDesign name={"user"} size={25} color={color} />
               ),
-              headerShown: false,
+              //headerShown: false,
             };
           }}
           component={Profile}
@@ -109,15 +133,48 @@ function ChatsStackScreen({ navigation, route }: any) {
       <ChatsStack.Screen
         name="chats"
         component={Chats}
-        options={{
-          header: () => <ScreenHeader title="Chats" navigation={navigation} />,
+        // options={{
+        //   headerShown: false,
+        //   //header: () => <ScreenHeader title="Chats" navigation={navigation} />,
+        // }}
+        options={() => {
+          return {
+            title: "Chats",
+            // Adding the search icon to the right side of the app bar
+            headerRight: () => (
+              <View style={{ flexDirection: "row", marginRight: 10 }}>
+                {/* Search Icon */}
+                <TouchableOpacity
+                  style={{ marginRight: 15 }} // Add space between icons
+                  onPress={() => {
+                    console.log("Search icon pressed");
+                  }}>
+                  <AntDesign name="search1" size={25} color="#000000" />
+                </TouchableOpacity>
+
+                {/* Bell Icon (or any other icon) */}
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log("Dots icon pressed");
+                  }}>
+                  <AntDesign name="ellipsis1" size={25} color="#00000" />
+                </TouchableOpacity>
+              </View>
+            ),
+            tabBarIcon: ({ color, focused }) => (
+              // <TabIcon color={color} name="Chats" focused={focused} />
+              <AntDesign name={"wechat"} size={25} color={color} />
+            ),
+            //headerShown: false,
+          };
         }}
       />
       <ChatsStack.Screen
         name="chat"
         component={Chat}
-        options={{ headerShown: false }}
+        //options={{ headerShown: false }}
         initialParams={{ tabBarHeight: route.params.tabBarHeight }}
+        options={{ tabBarStyle: { display: "none" }, headerShown: false }} // Hides the tab bar on ScreenA1
       />
     </ChatsStack.Navigator>
   );

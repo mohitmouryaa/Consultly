@@ -1,6 +1,14 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { useLayoutEffect, useMemo } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import React, { useLayoutEffect, useMemo, useState, useRef } from "react";
+import {
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+  FlatList,
+  TextInput,
+  StyleSheet,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSocket } from "../../providers/socketProvider";
 import { icons, tabBarStyle } from "../../constants";
@@ -30,8 +38,42 @@ export default function Chat() {
   }, [navigation, route.params?.tabBarHeight]);
 
   const handlePress = () => {
-    navigation.goBack();
+    //navigation.goBack();
   };
+
+  const [messages, setMessages] = useState([
+    { id: "1", text: "Hello!", user: "other" },
+    { id: "2", text: "Hi, how are you?", user: "me" },
+    { id: "3", text: "I am fine, thank you!", user: "other" },
+  ]);
+  const [messageText, setMessageText] = useState("");
+  const flatListRef = useRef(null); // Reference to FlatList for scrolling
+
+  const sendMessage = () => {
+    if (messageText.trim().length > 0) {
+      const newMessage = {
+        id: (messages.length + 1).toString(),
+        text: messageText,
+        user: "me", // Assuming 'me' is the current user
+      };
+      setMessages([...messages, newMessage]);
+      setMessageText(""); // Clear input field after sending
+    }
+  };
+
+  const renderMessage = ({ item }) => {
+    const isMyMessage = item.user === "me";
+    return (
+      <View
+        style={[
+          styles.messageContainer,
+          isMyMessage ? styles.myMessage : styles.otherMessage,
+        ]}>
+        <Text style={styles.messageText}>{item.text}</Text>
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView className="flex h-full bg-white">
       {/* HEADER */}
@@ -69,6 +111,87 @@ export default function Chat() {
           </TouchableOpacity>
         </View>
       </View>
+      <View style={styles.container}>
+        {/* Chat Messages */}
+        <FlatList
+          data={messages}
+          keyExtractor={item => item.id}
+          renderItem={renderMessage}
+          // onContentSizeChange={() =>
+          //   flatListRef.current?.scrollToEnd({ animated: true })
+          // }
+          // onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
+          // Disable the inverted prop, which could flip the order
+          inverted={false}
+          //inverted
+          // Scroll to the bottom when the list changes (new message is added)
+        />
+
+        {/* Input field to send new messages */}
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Type a message..."
+            value={messageText}
+            onChangeText={setMessageText}
+          />
+          <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
+            <Text style={styles.sendButtonText}>Send</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+  },
+  messageContainer: {
+    maxWidth: "70%",
+    padding: 10,
+    borderRadius: 10,
+    marginVertical: 5,
+  },
+  myMessage: {
+    alignSelf: "flex-end",
+    backgroundColor: "#DCF8C6",
+  },
+  otherMessage: {
+    alignSelf: "flex-start",
+    backgroundColor: "#ECECEC",
+  },
+  messageText: {
+    fontSize: 16,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    borderTopWidth: 1,
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    backgroundColor: "#f0f0f0",
+  },
+  sendButton: {
+    marginLeft: 10,
+    backgroundColor: "#007AFF",
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+  },
+  sendButtonText: {
+    color: "#fff",
+    fontSize: 16,
+  },
+});
