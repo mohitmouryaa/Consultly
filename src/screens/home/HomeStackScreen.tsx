@@ -22,6 +22,7 @@ import CallHistory from "./CallHistory";
 import Profile from "./Profile";
 import Plans from "./Plans";
 
+const isOnline = true;
 const Tab = createBottomTabNavigator();
 const ChatsStack = createStackNavigator();
 
@@ -196,7 +197,19 @@ function ChatsStackScreen({ navigation, route }: any) {
                 }} // Replace with actual profile image URL
                 style={styles.profileImage}
               />
-              <Text style={styles.userName}>John Doe</Text>
+              <View>
+                <Text style={styles.userName}>John Doe</Text>
+
+                <View style={styles.statusContainer}>
+                  <View
+                    style={[
+                      styles.statusDot,
+                      { backgroundColor: isOnline ? "green" : "gray" },
+                    ]}
+                  />
+                  <Text>{isOnline ? "Online" : "Offline"}</Text>
+                </View>
+              </View>
             </View>
           ),
           headerRight: () => (
@@ -260,8 +273,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   userName: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 16,
+    //fontWeight: "bold",
+    fontWeight: "500",
   },
   callOptions: {
     flexDirection: "row",
@@ -270,5 +284,15 @@ const styles = StyleSheet.create({
   callButton: {
     marginLeft: 15,
     marginHorizontal: 5,
+  },
+  statusContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  statusDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 5,
   },
 });

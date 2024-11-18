@@ -157,7 +157,7 @@ export default function Chat() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "bg-white",
   },
   messageContainer: {
     maxWidth: "70%",
@@ -172,7 +172,8 @@ const styles = StyleSheet.create({
   },
   otherMessage: {
     alignSelf: "flex-start",
-    backgroundColor: "#4ed197",
+    //backgroundColor: "#4ed197",
+    backgroundColor: "#e3be81",
   },
   messageText: {
     fontSize: 16,
@@ -216,7 +217,8 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     marginLeft: 10,
-    backgroundColor: "#007AFF",
+    //backgroundColor: "#007AFF",
+    backgroundColor: "#FFA001",
     paddingVertical: 8,
     paddingHorizontal: 15,
     borderRadius: 20,
