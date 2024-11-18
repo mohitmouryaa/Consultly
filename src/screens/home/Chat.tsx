@@ -1,7 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { useLayoutEffect, useMemo, useState, useRef } from "react";
+import React, { useCallback, useLayoutEffect, useMemo, useState } from "react";
 import {
-  Image,
   Text,
   TouchableOpacity,
   View,
@@ -11,51 +10,44 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSocket } from "../../providers/socketProvider";
-import { icons, tabBarStyle } from "../../constants";
-import Feather from "react-native-vector-icons/Feather";
-import Entypo from "react-native-vector-icons/Entypo";
+import { CHAT_JOINED, CHAT_LEAVED, tabBarStyle } from "../../constants";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useAppSelector } from "../../../store";
+import { getCurrentTime } from "../../lib/utils";
 
 export default function Chat() {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const route = useRoute<any>();
-  const user = useMemo(() => route.params.user || {}, [route.params.user]);
-  const { onlineUsers } = useSocket();
-
-  const isUserOnline = useMemo(() => {
-    return user.members.some((member: any) => onlineUsers.has(member));
-  }, [onlineUsers, user.members]);
-
-  useLayoutEffect(() => {
-    // HIDE THE TAB BAR FOR THIS SCREN
-    navigation?.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
-    return () => {
-      // RESTORE THE TAB BAR
-      navigation
-        ?.getParent()
-        ?.setOptions({ ...tabBarStyle(route.params?.tabBarHeight) });
-    };
-  }, [navigation, route.params?.tabBarHeight]);
-
-  const handlePress = () => {
-    //navigation.goBack();
-  };
-
+  const chat = useMemo(() => route.params.chat || {}, [route.params.chat]);
+  const userId = useAppSelector(state => state.user._id);
+  const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState([
     { id: "1", text: "Hello!", user: "other", time: "09:00" },
     { id: "2", text: "Hi, how are you?", user: "me", time: "09:02" },
     { id: "3", text: "I am fine, thank you!", user: "other", time: "09:03" },
   ]);
-  const [messageText, setMessageText] = useState("");
-  const flatListRef = useRef(null); // Reference to FlatList for scrolling
+  const { onlineUsers, socket } = useSocket();
 
-  // Function to get current time in HH:MM format
-  const getCurrentTime = () => {
-    const now = new Date();
-    return now.toTimeString().slice(0, 5); // returns "HH:MM"
-  };
+  const isUserOnline = useMemo(() => {
+    return chat.members.some((member: any) => onlineUsers.has(member));
+  }, [onlineUsers, chat.members]);
 
-  const sendMessage = () => {
+  useLayoutEffect(() => {
+    // HIDE THE TAB BAR FOR THIS SCREN
+    navigation?.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
+    socket?.emit(CHAT_JOINED, { chatId: chat.id, userId });
+
+    return () => {
+      // RESTORE THE TAB BAR
+      navigation
+        ?.getParent()
+        ?.setOptions({ ...tabBarStyle(route.params?.tabBarHeight) });
+      // LEAVE THE CHAT ROOM
+      socket?.emit(CHAT_LEAVED, { chatId: chat.id });
+    };
+  }, [navigation, route.params?.tabBarHeight, userId, chat.id, socket]);
+
+  const sendMessage = useCallback(() => {
     if (messageText.trim().length > 0) {
       const newMessage = {
         id: (messages.length + 1).toString(),
@@ -63,10 +55,10 @@ export default function Chat() {
         user: "me", // Assuming 'me' is the current user
         time: getCurrentTime(),
       };
-      setMessages([...messages, newMessage]);
+      setMessages(prev => [...prev, newMessage]);
       setMessageText(""); // Clear input field after sending
     }
-  };
+  }, [messageText, messages]);
 
   const renderMessage = ({ item }) => {
     const isMyMessage = item.user === "me";

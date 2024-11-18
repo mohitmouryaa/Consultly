@@ -8,7 +8,7 @@ import React, {
 import io, { Socket } from "socket.io-client";
 import { useAppSelector } from "../../store";
 import { getToken } from "../lib/secureStore";
-import { CHAT_JOINED, CHAT_LEAVED, ONLINE_USERS } from "../constants";
+import { CHAT_LEAVED, ONLINE_USERS } from "../constants";
 import Config from "react-native-config";
 
 interface SocketContextProps {
@@ -32,7 +32,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     const initializeSocket = async () => {
       const token = await getToken();
 
-      const newSocket = io("http://192.168.1.9:3100", {
+      const newSocket = io(`${Config.SERVER_URL}`, {
         withCredentials: true,
         transports: ["websocket"],
         auth: {
@@ -51,8 +51,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       newSocket.on(ONLINE_USERS, (data: string[]) => {
         setOnlineUsers(new Set(data));
       });
-
-      newSocket.emit(CHAT_JOINED, { userId: userId });
 
       socketRef.current = newSocket;
     };

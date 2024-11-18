@@ -15,7 +15,7 @@ export default function MessageBox({ item }: MessageBoxProps) {
   }, [item.avatar]);
 
   const handlePress = () => {
-    navigation.navigate("chat", { user: item });
+    navigation.navigate("chat", { chat: item });
   };
 
   const isUserOnline = useMemo(() => {

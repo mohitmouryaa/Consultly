@@ -9,7 +9,7 @@ export const callApi = createApi({
   endpoints: builder => ({
     getCallHistory: builder.query({
       query: id => ({
-        url: `${Config.SQL_SERVER_URL}/getHistory/${id}`,
+        url: `${Config.SQL_SERVER_URL}/api/getHistory/${id}`,
         method: "GET",
       }),
       providesTags: ["Calls"],

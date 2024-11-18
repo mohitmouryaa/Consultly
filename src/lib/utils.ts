@@ -37,3 +37,8 @@ export function convertChatDate(date: Date) {
     day: "numeric",
   });
 }
+// Function to get current time in HH:MM format
+export const getCurrentTime = () => {
+  const now = new Date();
+  return now.toTimeString().slice(0, 5); // returns "HH:MM"
+};
