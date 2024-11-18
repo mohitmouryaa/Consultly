@@ -1,6 +1,13 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { Fragment, useLayoutEffect, useMemo, useState } from "react";
-import { Dimensions, Text, View, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+} from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
@@ -174,7 +181,39 @@ function ChatsStackScreen({ navigation, route }: any) {
         component={Chat}
         //options={{ headerShown: false }}
         initialParams={{ tabBarHeight: route.params.tabBarHeight }}
-        options={{ tabBarStyle: { display: "none" }, headerShown: false }} // Hides the tab bar on ScreenA1
+        //options={{ tabBarStyle: { display: "none" }, headerShown: false }} // Hides the tab bar on ScreenA1
+        options={({ navigation }) => ({
+          // headerLeft: () => (
+          //   <TouchableOpacity onPress={() => navigation.goBack()}>
+          //     <AntDesign name="arrowleft" size={24} color="black" />
+          //   </TouchableOpacity>
+          // ),
+          headerTitle: () => (
+            <View style={styles.profileContainer}>
+              <Image
+                source={{
+                  uri: "https://plus.unsplash.com/premium_photo-1664476788423-7899ac87bd7f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bWFsZXxlbnwwfHwwfHx8MA%3D%3D",
+                }} // Replace with actual profile image URL
+                style={styles.profileImage}
+              />
+              <Text style={styles.userName}>John Doe</Text>
+            </View>
+          ),
+          headerRight: () => (
+            <View style={styles.callOptions}>
+              <TouchableOpacity style={styles.callButton}>
+                <AntDesign name="phone" size={20} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.callButton}>
+                <AntDesign name="videocamera" size={20} color="black" />
+              </TouchableOpacity>
+            </View>
+          ),
+          // headerStyle: {
+          //   backgroundColor: "#fff",
+          //   shadowOpacity: 0, // Remove shadow for a cleaner look
+          // },
+        })}
       />
     </ChatsStack.Navigator>
   );
@@ -208,3 +247,28 @@ const HomeScreenIcons = ({ name, color }: { name: string; color: string }) => {
       return <FontAwesome6 name="wallet" size={size - 2} color={color} />;
   }
 };
+
+const styles = StyleSheet.create({
+  profileContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  callOptions: {
+    flexDirection: "row",
+    marginHorizontal: 10,
+  },
+  callButton: {
+    marginLeft: 15,
+    marginHorizontal: 5,
+  },
+});

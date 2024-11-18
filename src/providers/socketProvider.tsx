@@ -32,7 +32,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     const initializeSocket = async () => {
       const token = await getToken();
 
-      const newSocket = io(`${Config.SERVER_URL}`, {
+      const newSocket = io("http://192.168.1.9:3100", {
         withCredentials: true,
         transports: ["websocket"],
         auth: {
