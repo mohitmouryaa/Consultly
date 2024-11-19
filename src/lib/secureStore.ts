@@ -1,11 +1,10 @@
-import * as Keychain from "react-native-keychain";
 import { MMKVLoader } from "react-native-mmkv-storage";
 
 const mmkv = new MMKVLoader().initialize();
 
 export const storeToken = async (token: string) => {
   try {
-    await Keychain.setGenericPassword("consultlyKey", token);
+    await mmkv.setStringAsync("consultlyKey", token);
   } catch (error) {
     console.error("Error storing token:", error);
   }
@@ -13,8 +12,8 @@ export const storeToken = async (token: string) => {
 
 export const getToken = async () => {
   try {
-    const credentials = await Keychain.getGenericPassword();
-    return credentials ? credentials.password : null;
+    const token = await mmkv.getStringAsync("consultlyKey");
+    return token;
   } catch (error) {
     console.error("Error retrieving token:", error);
   }
@@ -22,7 +21,7 @@ export const getToken = async () => {
 
 export const deleteToken = async () => {
   try {
-    await Keychain.resetGenericPassword();
+    mmkv.removeItem("consultlyKey");
   } catch (error) {
     console.error("Error deleting token:", error);
   }

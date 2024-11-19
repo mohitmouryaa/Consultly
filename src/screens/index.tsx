@@ -18,29 +18,29 @@ export default function StackScreens() {
   const [isReady, setIsReady] = useState(true);
 
   const intializeApp = useCallback(async () => {
+    const token = await getToken();
+    let loginStatus = false;
     try {
-      if (await checkFirstLaunch()) {
+      if (!token && (await checkFirstLaunch())) {
         dispatch(setIsFirstLaunch(true));
-      } else if (await getToken()) {
-        if (!userId) {
-          deleteToken();
-        } else {
-          dispatch(setIsLoggedIn(true));
-        }
+      } else if (token && !userId) {
+        await deleteToken();
+      } else if (token && userId) {
+        loginStatus = true;
       }
     } catch (error) {
       console.error("Error initializing app:", error);
     } finally {
-      setIsReady(false);
+      setIsReady(true);
+      dispatch(setIsLoggedIn(loginStatus));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
   useEffect(() => {
     intializeApp();
   }, [intializeApp]);
 
-  if (isReady) {
+  if (!isReady) {
     return <SplashScreen />;
   }
   return (

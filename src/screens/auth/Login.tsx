@@ -50,7 +50,7 @@ export default function LoginScreen({ navigation }: LoginProps) {
       const response = await httpClient.post("/user/login", { ...form });
       if (response.status === 200) {
         const { token, user } = response.data;
-        dispatch(setUser({ ...user, token }));
+        dispatch(setUser({ ...user }));
         await storeToken(token);
         dispatch(setIsLoggedIn(true));
       }

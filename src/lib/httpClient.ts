@@ -1,6 +1,8 @@
 import axios from "axios";
 import { deleteToken, getToken } from "./secureStore";
 import Config from "react-native-config";
+import { store } from "../../store";
+import { clearUser } from "../../store/slices/userSlice";
 
 const controllers = new Map<string, AbortController>();
 
@@ -45,7 +47,7 @@ httpClient.interceptors.response.use(
   async error => {
     if (error?.response?.status === 401) {
       await deleteToken();
-      //   router.replace("/sign-in");
+      store.dispatch(clearUser());
     }
     return Promise.reject(error);
   },

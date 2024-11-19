@@ -75,7 +75,7 @@ export default function RegisterScreen({ navigation }: SignUpProps) {
       if (response.status === 201) {
         Alert.alert("", "Account created successfully");
         const { token, user } = response.data;
-        dispatch(setUser({ ...user, token }));
+        dispatch(setUser({ ...user }));
         await storeToken(token);
         dispatch(setIsLoggedIn(true));
       }
@@ -96,7 +96,6 @@ export default function RegisterScreen({ navigation }: SignUpProps) {
       mediaType: "photo",
       quality: 1,
     };
-    console.log("pickImage");
     launchImageLibrary(options, response => {
       if (response.didCancel) {
         console.log("User cancelled image picker");

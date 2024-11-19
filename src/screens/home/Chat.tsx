@@ -35,7 +35,8 @@ export default function Chat() {
   useLayoutEffect(() => {
     // HIDE THE TAB BAR FOR THIS SCREN
     navigation?.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
-    socket?.emit(CHAT_JOINED, { chatId: chat.id, userId });
+    console.log("Chat screen mounted", userId);
+    socket?.emit(CHAT_JOINED, { chatId: chat._id, userId });
 
     return () => {
       // RESTORE THE TAB BAR
@@ -43,9 +44,9 @@ export default function Chat() {
         ?.getParent()
         ?.setOptions({ ...tabBarStyle(route.params?.tabBarHeight) });
       // LEAVE THE CHAT ROOM
-      socket?.emit(CHAT_LEAVED, { chatId: chat.id });
+      socket?.emit(CHAT_LEAVED, { chatId: chat._id });
     };
-  }, [navigation, route.params?.tabBarHeight, userId, chat.id, socket]);
+  }, [navigation, route.params?.tabBarHeight, userId, chat._id, socket]);
 
   const sendMessage = useCallback(() => {
     if (messageText.trim().length > 0) {

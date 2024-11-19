@@ -24,7 +24,11 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state = { ...state, ...action.payload };
+      state.avatar = action.payload.avatar;
+      state.username = action.payload.username;
+      state.name = action.payload.name;
+      state.email = action.payload.email;
+      state._id = action.payload._id;
     },
     setIsFirstLaunch: (state, action) => {
       state.isFirstLaunch = action.payload;
@@ -32,9 +36,18 @@ export const userSlice = createSlice({
     setIsLoggedIn: (state, action) => {
       state.isLoggedIn = action.payload;
     },
+    clearUser: state => {
+      state.avatar = undefined;
+      state.username = undefined;
+      state.name = undefined;
+      state.email = undefined;
+      state._id = undefined;
+      state.isLoggedIn = false;
+    },
   },
 });
 
-export const { setUser, setIsFirstLaunch, setIsLoggedIn } = userSlice.actions;
+export const { setUser, setIsFirstLaunch, setIsLoggedIn, clearUser } =
+  userSlice.actions;
 
 export default userSlice.reducer;
