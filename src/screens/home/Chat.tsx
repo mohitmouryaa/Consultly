@@ -6,7 +6,6 @@ import {
   View,
   FlatList,
   TextInput,
-  StyleSheet,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSocket } from "../../providers/socketProvider";
@@ -14,6 +13,7 @@ import { CHAT_JOINED, CHAT_LEAVED, tabBarStyle } from "../../constants";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useAppSelector } from "../../../store";
 import { getCurrentTime } from "../../lib/utils";
+import RenderMessage from "../../components/Chats/RenderMessage";
 
 export default function Chat() {
   const navigation = useNavigation<StackNavigationProp<any>>();
@@ -26,16 +26,11 @@ export default function Chat() {
     { id: "2", text: "Hi, how are you?", user: "me", time: "09:02" },
     { id: "3", text: "I am fine, thank you!", user: "other", time: "09:03" },
   ]);
-  const { onlineUsers, socket } = useSocket();
-
-  const isUserOnline = useMemo(() => {
-    return chat.members.some((member: any) => onlineUsers.has(member));
-  }, [onlineUsers, chat.members]);
+  const { socket } = useSocket();
 
   useLayoutEffect(() => {
     // HIDE THE TAB BAR FOR THIS SCREN
     navigation?.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
-    console.log("Chat screen mounted", userId);
     socket?.emit(CHAT_JOINED, { chatId: chat._id, userId });
 
     return () => {
@@ -61,171 +56,33 @@ export default function Chat() {
     }
   }, [messageText, messages]);
 
-  const renderMessage = ({ item }) => {
-    const isMyMessage = item.user === "me";
-    return (
-      <View style={styles.messageRow}>
-        {/* Time on the opposite side */}
-        {isMyMessage ? <Text style={styles.timeLeft}>{item.time}</Text> : null}
-
-        {/* Message bubble */}
-        <View
-          style={[
-            styles.messageContainer,
-            isMyMessage ? styles.myMessage : styles.otherMessage,
-          ]}>
-          <Text style={styles.messageText}>{item.text}</Text>
-        </View>
-
-        {/* Time on the opposite side */}
-        {!isMyMessage ? (
-          <Text style={styles.timeRight}>{item.time}</Text>
-        ) : null}
-      </View>
-    );
-  };
-
   return (
     <SafeAreaView className="flex h-full bg-white">
       {/* HEADER */}
-      {/* <View className="flex flex-row justify-between p-2 mt-3">
-        <View className="flex flex-row">
-          <TouchableOpacity className="my-auto" onPress={handlePress}>
-            <Image source={icons.backArrowIcon} className="w-7 h-7" />
-          </TouchableOpacity>
-          <View className="w-3/6 ml-4">
-            <Text
-              className="overflow-hidden text-lg font-JakartaBold text-ellipsis text-nowrap"
-              numberOfLines={1}
-              ellipsizeMode="tail">
-              {user.name}
-            </Text>
-            <Text
-              className="overflow-hidden text-xs font-JakartaLight text-ellipsis text-nowrap"
-              numberOfLines={1}
-              ellipsizeMode="tail">
-              {isUserOnline ? "Available now" : "Offline"}
-            </Text>
-          </View>
-        </View>
-        <View className="flex flex-row items-center justify-between gap-4">
-          <TouchableOpacity>
-            <Feather name="video" size={27} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Entypo
-              name="dots-three-vertical"
-              size={25}
-              color="black"
-              className=""
-            />
-          </TouchableOpacity>
-        </View>
-      </View> */}
-      <View style={styles.container}>
+      <View className="flex flex-1 bg-white">
         {/* Chat Messages */}
         <FlatList
           data={messages}
           keyExtractor={item => item.id}
-          renderItem={renderMessage}
-          // onContentSizeChange={() =>
-          //   flatListRef.current?.scrollToEnd({ animated: true })
-          // }
-          // onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
-          // Disable the inverted prop, which could flip the order
+          renderItem={RenderMessage}
           inverted={false}
-          //inverted
-          // Scroll to the bottom when the list changes (new message is added)
         />
 
         {/* Input field to send new messages */}
-        <View style={styles.inputContainer}>
+        <View className="flex flex-row items-center p-2.5 border-t-[1px] bg-[#fff] border-[##ddd]">
           <TextInput
-            style={styles.input}
+            className="flex flex-1 h-10 border-[#ccc] border-[1px] rounded-3xl px-2.5 bg-[#f0f0f0]"
             placeholder="Type a message..."
             value={messageText}
             onChangeText={setMessageText}
           />
-          <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
-            <Text style={styles.sendButtonText}>Send</Text>
+          <TouchableOpacity
+            onPress={sendMessage}
+            className="ml-2.5 bg-[#FFA001] px-2 py-3.5 rounded-2xl">
+            <Text className="text-base text-[#fff]">Send</Text>
           </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "bg-white",
-  },
-  messageContainer: {
-    maxWidth: "70%",
-    padding: 10,
-    marginHorizontal: 10,
-    borderRadius: 10,
-    marginVertical: 5,
-  },
-  myMessage: {
-    alignSelf: "flex-end",
-    backgroundColor: "#f0f0f0",
-  },
-  otherMessage: {
-    alignSelf: "flex-start",
-    //backgroundColor: "#4ed197",
-    backgroundColor: "#e3be81",
-  },
-  messageText: {
-    fontSize: 16,
-  },
-  messageRow: {
-    flexDirection: "row", // Align message and time in a row
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginVertical: 5,
-  },
-  timeLeft: {
-    fontSize: 12,
-    color: "#888",
-    marginLeft: 5,
-    //alignSelf: "flex-start", // Time for the other user (left)
-    alignSelf: "center",
-  },
-  timeRight: {
-    fontSize: 12,
-    color: "#888",
-    marginRight: 5,
-    //alignSelf: "flex-end", // Time for "me" (right)
-    alignSelf: "center",
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-    borderTopWidth: 1,
-    borderColor: "#ddd",
-    backgroundColor: "#fff",
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    backgroundColor: "#f0f0f0",
-  },
-  sendButton: {
-    marginLeft: 10,
-    //backgroundColor: "#007AFF",
-    backgroundColor: "#FFA001",
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderRadius: 20,
-  },
-  sendButtonText: {
-    color: "#fff",
-    fontSize: 16,
-  },
-});

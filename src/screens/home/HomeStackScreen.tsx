@@ -1,28 +1,23 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { Fragment, useLayoutEffect, useMemo, useState } from "react";
-import {
-  Dimensions,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-} from "react-native";
-import Entypo from "react-native-vector-icons/Entypo";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
+import { Dimensions } from "react-native";
 import { tabBarStyle } from "../../constants";
 import { createStackNavigator } from "@react-navigation/stack";
-import ScreenHeader from "../../components/ScreenHeader";
 import Chat from "./Chat";
 import Chats from "./Chats";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Feed from "./Feed";
 import CallHistory from "./CallHistory";
 import Profile from "./Profile";
 import Plans from "./Plans";
+import {
+  CallHistoryTabBarIcon,
+  ChatsTabBarIcon,
+  PlansTabBarIcon,
+  ProfileTabBarIcon,
+} from "../../components/HomeStackScreenIcons";
+import ChatsRightHeader from "./ChatsRightHeader";
+import ChatHeaderTitle from "../../components/Chats/ChatHeaderTitle";
+import ChatHeaderRight from "../../components/Chats/ChatHeaderRight";
 
-const isOnline = true;
 const Tab = createBottomTabNavigator();
 const ChatsStack = createStackNavigator();
 
@@ -52,247 +47,68 @@ export default function HomeTabNavigator() {
       <Tab.Navigator screenOptions={tabBarOptions}>
         <Tab.Screen
           name="chatsStackScreen"
-          options={() => {
-            return {
-              // title: "Chats",
-              // // Adding the search icon to the right side of the app bar
-              // headerRight: () => (
-              //   <View style={{ flexDirection: "row", marginRight: 10 }}>
-              //     {/* Search Icon */}
-              //     <TouchableOpacity
-              //       style={{ marginRight: 15 }} // Add space between icons
-              //       onPress={() => {
-              //         console.log("Search icon pressed");
-              //       }}>
-              //       <AntDesign name="search1" size={25} color="#000000" />
-              //     </TouchableOpacity>
-
-              //     {/* Bell Icon (or any other icon) */}
-              //     <TouchableOpacity
-              //       onPress={() => {
-              //         console.log("Dots icon pressed");
-              //       }}>
-              //       <AntDesign name="ellipsis1" size={25} color="#00000" />
-              //     </TouchableOpacity>
-              //   </View>
-              // ),
-              tabBarIcon: ({ color, focused }) => (
-                // <TabIcon color={color} name="Chats" focused={focused} />
-                <AntDesign name={"wechat"} size={25} color={color} />
-              ),
-              headerShown: false,
-            };
+          options={{
+            tabBarIcon: ChatsTabBarIcon,
+            headerShown: false,
           }}
           component={ChatsStackScreen}
-          initialParams={{ tabBarHeight }}></Tab.Screen>
+          initialParams={{ tabBarHeight }}
+        />
         <Tab.Screen
           name="Call History"
-          options={() => {
-            return {
-              title: "Call History",
-              headerStyle: {
-                //backgroundColor: "#6200EE", // Background color of the app bar
-              },
-              tabBarIcon: ({ color, focused }) => (
-                // <TabIcon color={color} name="Chats" focused={focused} />
-                <AntDesign name={"phone"} size={25} color={color} />
-              ),
-              //headerShown: false,
-            };
+          options={{
+            title: "Call History",
+            tabBarIcon: CallHistoryTabBarIcon,
           }}
           component={CallHistory}
-          initialParams={{ tabBarHeight }}></Tab.Screen>
+          initialParams={{ tabBarHeight }}
+        />
         <Tab.Screen
           name="Plans"
-          options={() => {
-            return {
-              title: "Plans",
-              tabBarIcon: ({ color, focused }) => (
-                // <TabIcon color={color} name="Chats" focused={focused} />
-                <AntDesign name={"solution1"} size={25} color={color} />
-              ),
-              //headerShown: false,
-            };
+          options={{
+            title: "Plans",
+            tabBarIcon: PlansTabBarIcon,
           }}
           component={Plans}
-          initialParams={{ tabBarHeight }}></Tab.Screen>
+          initialParams={{ tabBarHeight }}
+        />
         <Tab.Screen
           name="Profile"
-          options={() => {
-            return {
-              title: "Profile",
-              tabBarIcon: ({ color, focused }) => (
-                // <TabIcon color={color} name="Chats" focused={focused} />
-                <AntDesign name={"user"} size={25} color={color} />
-              ),
-              //headerShown: false,
-            };
+          options={{
+            title: "Profile",
+            tabBarIcon: ProfileTabBarIcon,
           }}
           component={Profile}
-          initialParams={{ tabBarHeight }}></Tab.Screen>
+          initialParams={{ tabBarHeight }}
+        />
       </Tab.Navigator>
     </Fragment>
   );
 }
 
-function ChatsStackScreen({ navigation, route }: any) {
+function ChatsStackScreen({ route }: any) {
   return (
     <ChatsStack.Navigator initialRouteName="chats">
       <ChatsStack.Screen
         name="chats"
         component={Chats}
-        // options={{
-        //   headerShown: false,
-        //   //header: () => <ScreenHeader title="Chats" navigation={navigation} />,
-        // }}
         options={() => {
           return {
             title: "Chats",
-            // Adding the search icon to the right side of the app bar
-            headerRight: () => (
-              <View style={{ flexDirection: "row", marginRight: 10 }}>
-                {/* Search Icon */}
-                <TouchableOpacity
-                  style={{ marginRight: 15 }} // Add space between icons
-                  onPress={() => {
-                    console.log("Search icon pressed");
-                  }}>
-                  <AntDesign name="search1" size={25} color="#000000" />
-                </TouchableOpacity>
-
-                {/* Bell Icon (or any other icon) */}
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log("Dots icon pressed");
-                  }}>
-                  <AntDesign name="ellipsis1" size={25} color="#00000" />
-                </TouchableOpacity>
-              </View>
-            ),
-            tabBarIcon: ({ color, focused }) => (
-              // <TabIcon color={color} name="Chats" focused={focused} />
-              <AntDesign name={"wechat"} size={25} color={color} />
-            ),
-            //headerShown: false,
+            headerRight: ChatsRightHeader,
+            tabBarIcon: ChatsTabBarIcon,
           };
         }}
       />
       <ChatsStack.Screen
         name="chat"
         component={Chat}
-        //options={{ headerShown: false }}
         initialParams={{ tabBarHeight: route.params.tabBarHeight }}
-        //options={{ tabBarStyle: { display: "none" }, headerShown: false }} // Hides the tab bar on ScreenA1
-        options={({ navigation }) => ({
-          // headerLeft: () => (
-          //   <TouchableOpacity onPress={() => navigation.goBack()}>
-          //     <AntDesign name="arrowleft" size={24} color="black" />
-          //   </TouchableOpacity>
-          // ),
-          headerTitle: () => (
-            <View style={styles.profileContainer}>
-              <Image
-                source={{
-                  uri: "https://plus.unsplash.com/premium_photo-1664476788423-7899ac87bd7f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bWFsZXxlbnwwfHwwfHx8MA%3D%3D",
-                }} // Replace with actual profile image URL
-                style={styles.profileImage}
-              />
-              <View>
-                <Text style={styles.userName}>John Doe</Text>
-
-                <View style={styles.statusContainer}>
-                  <View
-                    style={[
-                      styles.statusDot,
-                      { backgroundColor: isOnline ? "green" : "gray" },
-                    ]}
-                  />
-                  <Text>{isOnline ? "Online" : "Offline"}</Text>
-                </View>
-              </View>
-            </View>
-          ),
-          headerRight: () => (
-            <View style={styles.callOptions}>
-              <TouchableOpacity style={styles.callButton}>
-                <AntDesign name="phone" size={20} color="black" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.callButton}>
-                <AntDesign name="videocamera" size={20} color="black" />
-              </TouchableOpacity>
-            </View>
-          ),
-          // headerStyle: {
-          //   backgroundColor: "#fff",
-          //   shadowOpacity: 0, // Remove shadow for a cleaner look
-          // },
+        options={() => ({
+          headerTitle: ChatHeaderTitle,
+          headerRight: ChatHeaderRight,
         })}
       />
     </ChatsStack.Navigator>
   );
 }
-
-const TabIcon = ({ color, name, focused }: TabIconProps) => {
-  return (
-    <View className="flex flex-col items-center justify-between gap-2">
-      <HomeScreenIcons color={!focused ? "grey" : color} name={name} />
-      <Text
-        className={`${
-          focused ? "font-JakartaSemiBold" : "font-Jakarta"
-        } text-xs mr-2 w-full`}
-        style={{ color: !focused ? "grey" : color }}>
-        {name}
-      </Text>
-    </View>
-  );
-};
-
-const HomeScreenIcons = ({ name, color }: { name: string; color: string }) => {
-  const size = 30;
-  switch (name) {
-    case "Home":
-      return <Entypo name="home" size={size} color={color} />;
-    case "Chats":
-      return <Entypo name="message" size={size + 3} color={color} />;
-    case "Calls":
-      return <FontAwesome name="phone-square" size={size} color={color} />;
-    case "Wallet":
-      return <FontAwesome6 name="wallet" size={size - 2} color={color} />;
-  }
-};
-
-const styles = StyleSheet.create({
-  profileContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  userName: {
-    fontSize: 16,
-    //fontWeight: "bold",
-    fontWeight: "500",
-  },
-  callOptions: {
-    flexDirection: "row",
-    marginHorizontal: 10,
-  },
-  callButton: {
-    marginLeft: 15,
-    marginHorizontal: 5,
-  },
-  statusContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  statusDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginRight: 5,
-  },
-});

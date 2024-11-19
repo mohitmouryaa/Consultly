@@ -8,7 +8,7 @@ import React, {
 import io, { Socket } from "socket.io-client";
 import { useAppSelector } from "../../store";
 import { getToken } from "../lib/secureStore";
-import { ONLINE_USERS } from "../constants";
+import { CHAT_JOINED, CHAT_LEAVED, ONLINE_USERS } from "../constants";
 import Config from "react-native-config";
 
 interface SocketContextProps {
@@ -29,6 +29,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
 
   useEffect(() => {
+    if (socketRef.current && socketRef.current.connected) {
+      return;
+    }
     const initializeSocket = async () => {
       const token = await getToken();
 
@@ -47,9 +50,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       newSocket.on("disconnect", () => {
         console.log("SOCKET DISCONNECTED...");
       });
+      newSocket.emit(CHAT_JOINED, { userId });
 
       newSocket.on(ONLINE_USERS, (data: string[]) => {
-        console.log("ONLINE USERS: ", data);
         setOnlineUsers(new Set(data));
       });
 
@@ -60,6 +63,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
     return () => {
       if (socketRef.current) {
+        socketRef.current.emit(CHAT_LEAVED, { userId });
         socketRef.current.close();
       }
     };
