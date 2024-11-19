@@ -5,9 +5,12 @@ import { images } from "../constants";
 import { convertChatDate } from "../lib/utils";
 import { useSocket } from "../providers/socketProvider";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useAppDispatch } from "../../store";
+import { setCurrentChatDetails } from "../../store/slices/userSlice";
 
 export default function MessageBox({ item }: MessageBoxProps) {
   const navigation = useNavigation<StackNavigationProp<any>>();
+  const dispatch = useAppDispatch();
   const { onlineUsers } = useSocket();
 
   const imageSource = useMemo(() => {
@@ -15,7 +18,8 @@ export default function MessageBox({ item }: MessageBoxProps) {
   }, [item.avatar]);
 
   const handlePress = () => {
-    navigation.navigate("chat", { chat: item });
+    dispatch(setCurrentChatDetails(item));
+    navigation.navigate("chat");
   };
 
   const isUserOnline = useMemo(() => {

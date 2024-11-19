@@ -5,7 +5,7 @@ export const chatApi = createApi({
   reducerPath: "chatApi",
   baseQuery: axiosBaseQuery(),
   tagTypes: ["Chat"],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getMyChats: builder.query({
       query: () => ({
         url: "chat/my",
@@ -13,7 +13,14 @@ export const chatApi = createApi({
       }),
       providesTags: ["Chat"],
     }),
+    getChatById: builder.query({
+      query: ({ chatId, page }) => ({
+        url: `chat/message/${chatId}?page=${page}`,
+        method: "GET",
+      }),
+      providesTags: ["Chat"],
+    }),
   }),
 });
 
-export const { useGetMyChatsQuery } = chatApi;
+export const { useGetMyChatsQuery, useGetChatByIdQuery } = chatApi;

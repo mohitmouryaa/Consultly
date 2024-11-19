@@ -1,8 +1,9 @@
 import React from "react";
 import { Image, Text, View } from "react-native";
+import useCurrentChatMember from "../../hooks/useCurrentChatMember";
 
 export default function ChatHeaderTitle() {
-  const isOnline = true; // TODO:Replace with actual online status
+  const { isUserOnline, name } = useCurrentChatMember();
   return (
     <View className="flex flex-row items-center">
       <Image
@@ -12,11 +13,15 @@ export default function ChatHeaderTitle() {
         className="w-10 h-10 rounded-full mr-2.5"
       />
       <View>
-        <Text className="text-base font-medium">John Doe</Text>
+        <Text className="text-base font-medium">{name}</Text>
 
         <View className="flex flex-row items-center">
-          <View className="w-2 h-2 bg-green-500 rounded-full" />
-          <Text>{isOnline ? "Online" : "Offline"}</Text>
+          <View
+            className={`w-2 h-2 mr-1 ${
+              isUserOnline ? "bg-green-500" : "bg-red-500"
+            } rounded-full`}
+          />
+          <Text>{isUserOnline ? "Online" : "Offline"}</Text>
         </View>
       </View>
     </View>

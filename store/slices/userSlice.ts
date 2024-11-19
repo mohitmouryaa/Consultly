@@ -12,11 +12,21 @@ interface UserState {
   _id?: string;
   isFirstLaunch: boolean;
   isLoggedIn: boolean;
+  currentChatDetails: {
+    members: string[];
+    name: string;
+    _id: string;
+  };
 }
 
 const initialState: UserState = {
   isFirstLaunch: false,
   isLoggedIn: false,
+  currentChatDetails: {
+    members: [],
+    name: "",
+    _id: "",
+  },
 };
 
 export const userSlice = createSlice({
@@ -44,10 +54,24 @@ export const userSlice = createSlice({
       state._id = undefined;
       state.isLoggedIn = false;
     },
+    setCurrentChatDetails: (state, action) => {
+      state.currentChatDetails = { ...action.payload };
+    },
+    clearCurrentChatDetails: state => {
+      state.currentChatDetails._id = "";
+      state.currentChatDetails.name = "";
+      state.currentChatDetails.members = [];
+    },
   },
 });
 
-export const { setUser, setIsFirstLaunch, setIsLoggedIn, clearUser } =
-  userSlice.actions;
+export const {
+  setUser,
+  setIsFirstLaunch,
+  setIsLoggedIn,
+  clearUser,
+  setCurrentChatDetails,
+  clearCurrentChatDetails,
+} = userSlice.actions;
 
 export default userSlice.reducer;

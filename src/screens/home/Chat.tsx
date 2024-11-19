@@ -14,24 +14,28 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useAppSelector } from "../../../store";
 import { getCurrentTime } from "../../lib/utils";
 import RenderMessage from "../../components/Chats/RenderMessage";
+import useCurrentChatMember from "../../hooks/useCurrentChatMember";
+import { useGetChatByIdQuery } from "../../../store/api";
+import { RefreshControl } from "react-native-gesture-handler";
 
 export default function Chat() {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const route = useRoute<any>();
-  const chat = useMemo(() => route.params.chat || {}, [route.params.chat]);
   const userId = useAppSelector(state => state.user._id);
-  const [messageText, setMessageText] = useState("");
-  const [messages, setMessages] = useState([
-    { id: "1", text: "Hello!", user: "other", time: "09:00" },
-    { id: "2", text: "Hi, how are you?", user: "me", time: "09:02" },
-    { id: "3", text: "I am fine, thank you!", user: "other", time: "09:03" },
-  ]);
+  const { _id: chatId } = useCurrentChatMember();
   const { socket } = useSocket();
+  const {
+    data,
+    refetch,
+    isLoading: refreshing,
+  } = useGetChatByIdQuery({ chatId });
+  const messages = useMemo(() => data?.messages || [], [data]);
+  const [messageText, setMessageText] = useState("");
 
   useLayoutEffect(() => {
     // HIDE THE TAB BAR FOR THIS SCREN
     navigation?.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
-    socket?.emit(CHAT_JOINED, { chatId: chat._id, userId });
+    socket?.emit(CHAT_JOINED, { chatId: chatId, userId });
 
     return () => {
       // RESTORE THE TAB BAR
@@ -39,9 +43,9 @@ export default function Chat() {
         ?.getParent()
         ?.setOptions({ ...tabBarStyle(route.params?.tabBarHeight) });
       // LEAVE THE CHAT ROOM
-      socket?.emit(CHAT_LEAVED, { chatId: chat._id });
+      socket?.emit(CHAT_LEAVED, { chatId: chatId });
     };
-  }, [navigation, route.params?.tabBarHeight, userId, chat._id, socket]);
+  }, [navigation, route.params?.tabBarHeight, userId, chatId, socket]);
 
   const sendMessage = useCallback(() => {
     if (messageText.trim().length > 0) {
@@ -51,7 +55,8 @@ export default function Chat() {
         user: "me", // Assuming 'me' is the current user
         time: getCurrentTime(),
       };
-      setMessages(prev => [...prev, newMessage]);
+      // setMessages(prev => [...prev, newMessage]);
+      // TODO:Send the message to the server
       setMessageText(""); // Clear input field after sending
     }
   }, [messageText, messages]);
@@ -63,8 +68,13 @@ export default function Chat() {
         {/* Chat Messages */}
         <FlatList
           data={messages}
-          keyExtractor={item => item.id}
-          renderItem={RenderMessage}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({ item }) => <RenderMessage item={item} />}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={refetch} />
+          }
           inverted={false}
         />
 

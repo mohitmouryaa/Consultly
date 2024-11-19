@@ -1,17 +1,31 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Text, View } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { useAppSelector } from "../../../store";
+
+const formatTime = (time: string) => {
+  return new Date(time).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+  });
+};
 
 export default function RenderMessage({ item }: { item: any }) {
-  const isMyMessage = item.user === "me";
+  const userId = useAppSelector(state => state.user._id);
+  const isMyMessage = item?.sender?._id === userId;
+
+  const messageTime = useMemo(() => {
+    return formatTime(item.createdAt);
+  }, [item.createdAt]);
+
   return (
     <View
       className={`max-w-[70%] p-2.5 mx-2.5 rounded-xl my-1.5 ${
         isMyMessage ? "self-end bg-[#f0f0f0]" : "self-start bg-[#e3be81]"
       }`}>
-      <Text className="text-base">{item.text}</Text>
+      <Text className="text-base">{item.content}</Text>
       <View className="flex flex-row items-center justify-between mt-2">
-        <Text className="text-xs text-[#888] mr-1.5">{item.time}</Text>
+        <Text className="text-xs text-[#888] mr-1.5">{messageTime}</Text>
         {isMyMessage ? renderStatusIcon(item.status) : null}
       </View>
     </View>
