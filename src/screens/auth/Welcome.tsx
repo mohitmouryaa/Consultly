@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from "react";
+import React, { Fragment, memo, useRef, useState } from "react";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Swiper from "react-native-swiper";
@@ -7,7 +7,7 @@ import CustomBtn from "../../components/CustomBtn";
 import { useAppDispatch } from "../../../store";
 import { setIsFirstLaunch } from "../../../store/slices/userSlice";
 
-export default function Welcome() {
+export default memo(function Welcome() {
   const dispatch = useAppDispatch();
   const swiperRef = useRef<Swiper>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -82,4 +82,4 @@ export default function Welcome() {
       </View>
     </SafeAreaView>
   );
-}
+});

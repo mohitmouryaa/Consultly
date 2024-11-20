@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { checkFirstLaunch, deleteToken, getToken } from "../lib/secureStore";
 import { useAppDispatch, useAppSelector } from "../../store";
@@ -10,7 +10,7 @@ import { setIsFirstLaunch, setIsLoggedIn } from "../../store/slices/userSlice";
 
 const Stack = createStackNavigator();
 
-export default function StackScreens() {
+export default memo(function StackScreens() {
   const dispatch = useAppDispatch();
   const userId = useAppSelector(state => state.user._id);
   const isFirstLaunch = useAppSelector(state => state.user.isFirstLaunch);
@@ -58,4 +58,4 @@ export default function StackScreens() {
       </Stack.Navigator>
     </React.Fragment>
   );
-}
+});

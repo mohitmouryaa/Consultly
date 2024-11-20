@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import {
   TextInput,
   View,
@@ -68,4 +68,4 @@ const InputField = ({
   );
 };
 
-export default InputField;
+export default memo(InputField);

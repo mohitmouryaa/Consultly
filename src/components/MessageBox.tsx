@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import { Text, View, TouchableOpacity, Image } from "react-native";
 import { images } from "../constants";
 import { convertChatDate } from "../lib/utils";
@@ -8,7 +8,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useAppDispatch } from "../../store";
 import { setCurrentChatDetails } from "../../store/slices/userSlice";
 
-export default function MessageBox({ item }: MessageBoxProps) {
+export default memo(function MessageBox({ item }: MessageBoxProps) {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const dispatch = useAppDispatch();
   const { onlineUsers } = useSocket();
@@ -59,4 +59,4 @@ export default function MessageBox({ item }: MessageBoxProps) {
       </View>
     </TouchableOpacity>
   );
-}
+});

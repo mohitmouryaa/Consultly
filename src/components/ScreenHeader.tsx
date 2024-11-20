@@ -1,10 +1,13 @@
-import React from "react";
+import React, { memo } from "react";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function ScreenHeader({ title, navigation }: ScreenHeaderProps) {
+export default memo(function ScreenHeader({
+  title,
+  navigation,
+}: ScreenHeaderProps) {
   return (
     <SafeAreaView className="px-2 pt-2 bg-white">
       <View className="flex flex-row items-center justify-between w-full pl-3 mb-2">
@@ -29,4 +32,4 @@ export default function ScreenHeader({ title, navigation }: ScreenHeaderProps) {
       </View>
     </SafeAreaView>
   );
-}
+});

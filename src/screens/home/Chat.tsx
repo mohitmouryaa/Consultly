@@ -1,5 +1,11 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { useCallback, useLayoutEffect, useMemo, useState } from "react";
+import React, {
+  memo,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   Text,
   TouchableOpacity,
@@ -9,26 +15,26 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSocket } from "../../providers/socketProvider";
-import { CHAT_JOINED, CHAT_LEAVED, tabBarStyle } from "../../constants";
+import {
+  CHAT_JOINED,
+  CHAT_LEAVED,
+  START_TYPING,
+  tabBarStyle,
+} from "../../constants";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useAppSelector } from "../../../store";
 import { getCurrentTime } from "../../lib/utils";
 import RenderMessage from "../../components/Chats/RenderMessage";
 import useCurrentChatMember from "../../hooks/useCurrentChatMember";
 import { useGetChatByIdQuery } from "../../../store/api";
-import { RefreshControl } from "react-native-gesture-handler";
 
 export default function Chat() {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const route = useRoute<any>();
   const userId = useAppSelector(state => state.user._id);
-  const { _id: chatId } = useCurrentChatMember();
+  const { _id: chatId, members, isOtherUserTyping } = useCurrentChatMember();
   const { socket } = useSocket();
-  const {
-    data,
-    refetch,
-    isLoading: refreshing,
-  } = useGetChatByIdQuery({ chatId });
+  const { data } = useGetChatByIdQuery({ chatId });
   const messages = useMemo(() => data?.messages || [], [data]);
   const [messageText, setMessageText] = useState("");
 
@@ -61,6 +67,14 @@ export default function Chat() {
     }
   }, [messageText, messages]);
 
+  const handleValueChange = useCallback(
+    (text: string) => {
+      socket?.emit(START_TYPING, { chatId, members });
+      setMessageText(text);
+    },
+    [chatId, members, socket],
+  );
+
   return (
     <SafeAreaView className="flex h-full bg-white">
       {/* HEADER */}
@@ -72,11 +86,11 @@ export default function Chat() {
           renderItem={({ item }) => <RenderMessage item={item} />}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={refetch} />
-          }
           inverted={false}
         />
+        {isOtherUserTyping && (
+          <Text className="my-2 text-xl font-bold">Typing....</Text>
+        )}
 
         {/* Input field to send new messages */}
         <View className="flex flex-row items-center p-2.5 border-t-[1px] bg-[#fff] border-[##ddd]">
@@ -84,7 +98,7 @@ export default function Chat() {
             className="flex flex-1 h-10 border-[#ccc] border-[1px] rounded-3xl px-2.5 bg-[#f0f0f0]"
             placeholder="Type a message..."
             value={messageText}
-            onChangeText={setMessageText}
+            onChangeText={handleValueChange}
           />
           <TouchableOpacity
             onPress={sendMessage}

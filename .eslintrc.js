@@ -4,5 +4,6 @@ module.exports = {
   // write the rules to allow double quotes
   rules: {
     quotes: ["error", "double"],
+    curly: ["allow", "all"],
   },
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Alert,
@@ -30,7 +30,7 @@ interface SignUpProps {
   navigation: StackNavigationProp<any>;
 }
 
-export default function RegisterScreen({ navigation }: SignUpProps) {
+export default memo(function RegisterScreen({ navigation }: SignUpProps) {
   const [form, setForm] = useState({
     name: "",
     username: "",
@@ -200,4 +200,4 @@ export default function RegisterScreen({ navigation }: SignUpProps) {
       </View>
     </SafeAreaView>
   );
-}
+});

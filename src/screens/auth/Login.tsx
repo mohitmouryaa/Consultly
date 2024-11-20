@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import {
   Alert,
   Image,
@@ -27,7 +27,7 @@ type LoginProps = {
   navigation: StackNavigationProp<any>;
 };
 
-export default function LoginScreen({ navigation }: LoginProps) {
+export default memo(function LoginScreen({ navigation }: LoginProps) {
   const [form, setForm] = useState({
     username: "",
     password: "",
@@ -144,7 +144,7 @@ export default function LoginScreen({ navigation }: LoginProps) {
       </View>
     </SafeAreaView>
   );
-}
+});
 
 const styles = StyleSheet.create({
   keyboardAvoidingView: {

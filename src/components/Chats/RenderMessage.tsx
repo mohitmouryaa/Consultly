@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import { Text, View } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useAppSelector } from "../../../store";
@@ -10,7 +10,7 @@ const formatTime = (time: string) => {
   });
 };
 
-export default function RenderMessage({ item }: { item: any }) {
+const RenderMessage = ({ item }: { item: any }) => {
   const userId = useAppSelector(state => state.user._id);
   const isMyMessage = item?.sender?._id === userId;
 
@@ -30,7 +30,7 @@ export default function RenderMessage({ item }: { item: any }) {
       </View>
     </View>
   );
-}
+};
 
 const renderStatusIcon = (status: string) => {
   switch (status) {
@@ -66,3 +66,5 @@ const renderStatusIcon = (status: string) => {
       return null;
   }
 };
+
+export default memo(RenderMessage);

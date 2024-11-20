@@ -1,7 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 import { Text, TouchableOpacity, ActivityIndicator } from "react-native";
 
-export default function CustomBtn({
+export default memo(function CustomBtn({
   onPress,
   title,
   className = "bg-orange-400",
@@ -23,4 +23,4 @@ export default function CustomBtn({
       )}
     </TouchableOpacity>
   );
-}
+});
