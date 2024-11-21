@@ -7,7 +7,7 @@ export default function ChatsRightHeader() {
     <View className="flex flex-row mr-3">
       {/* Search Icon */}
       <TouchableOpacity
-        className="ml-4"
+        className="ml-4 mr-2.5"
         onPress={() => {
           console.log("Search icon pressed");
         }}>
@@ -16,6 +16,7 @@ export default function ChatsRightHeader() {
 
       {/* Bell Icon (or any other icon) */}
       <TouchableOpacity
+        className="ml-2.5 mr-2.5"
         onPress={() => {
           console.log("Dots icon pressed");
         }}>

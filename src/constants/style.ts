@@ -6,6 +6,6 @@ export const tabBarStyle = (tabBarHeight: number = 72) => ({
     borderTopWidth: 0.5,
     elevation: 0,
     shadowOpacity: 0,
-    height: tabBarHeight,
+    //height: tabBarHeight,
   },
 });

@@ -28,10 +28,13 @@ export default function HomeTabNavigator() {
     const { height } = Dimensions.get("screen");
     if (height < 600) {
       setTabBarHeight(56);
+      console.log("height - 56");
     } else if (height < 840) {
       setTabBarHeight(68);
+      console.log("height - 68");
     } else {
       setTabBarHeight(84);
+      console.log("height - 84");
     }
   }, []);
 
@@ -52,7 +55,6 @@ export default function HomeTabNavigator() {
             headerShown: false,
           }}
           component={ChatsStackScreen}
-          initialParams={{ tabBarHeight }}
         />
         <Tab.Screen
           name="Call History"
@@ -61,7 +63,6 @@ export default function HomeTabNavigator() {
             tabBarIcon: CallHistoryTabBarIcon,
           }}
           component={CallHistory}
-          initialParams={{ tabBarHeight }}
         />
         <Tab.Screen
           name="Plans"
@@ -70,7 +71,6 @@ export default function HomeTabNavigator() {
             tabBarIcon: PlansTabBarIcon,
           }}
           component={Plans}
-          initialParams={{ tabBarHeight }}
         />
         <Tab.Screen
           name="Profile"
@@ -79,7 +79,6 @@ export default function HomeTabNavigator() {
             tabBarIcon: ProfileTabBarIcon,
           }}
           component={Profile}
-          initialParams={{ tabBarHeight }}
         />
       </Tab.Navigator>
     </Fragment>
@@ -103,7 +102,6 @@ function ChatsStackScreen({ route }: any) {
       <ChatsStack.Screen
         name="chat"
         component={Chat}
-        initialParams={{ tabBarHeight: route.params.tabBarHeight }}
         options={() => ({
           headerTitle: ChatHeaderTitle,
           headerRight: ChatHeaderRight,
