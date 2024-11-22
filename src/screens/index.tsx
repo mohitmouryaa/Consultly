@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Alert, Platform } from "react-native";
 import { checkFirstLaunch, deleteToken, getToken } from "../lib/secureStore";
 import { useAppDispatch, useAppSelector } from "../../store";
 import SplashScreen from "./shared/SplashScreen";
@@ -8,7 +7,6 @@ import AuthStackScreen from "./auth/AuthStackScreen";
 import HomeStackScreen from "./home/HomeStackScreen";
 import Welcome from "./auth/Welcome";
 import { setIsFirstLaunch, setIsLoggedIn } from "../../store/slices/userSlice";
-import messaging from "@react-native-firebase/messaging";
 
 const Stack = createStackNavigator();
 
@@ -40,46 +38,6 @@ export default memo(function StackScreens() {
 
   useEffect(() => {
     intializeApp();
-
-    // Request permission for notifications on iOS
-    const requestPermission = async () => {
-      if (Platform.OS === "ios") {
-        const authStatus = await messaging().requestPermission();
-        const enabled =
-          authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-          authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-        if (enabled) {
-          console.log("FCM permission granted.");
-        } else {
-          console.log("FCM permission denied.");
-        }
-      }
-    };
-
-    requestPermission();
-
-    // Get the device token for push notifications
-    // const getToken = async () => {
-    //   const fcmToken = await messaging().getToken();
-    //   console.log("FCM Token:", fcmToken);
-    // };
-
-    // getToken();
-
-    // Handle messages received in the foreground
-    const unsubscribeOnMessage = messaging().onMessage(async remoteMessage => {
-      Alert.alert("New FCM message!", JSON.stringify(remoteMessage));
-    });
-
-    // Handle background messages
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log("Message handled in the background!", remoteMessage);
-    });
-
-    return () => {
-      unsubscribeOnMessage(); // Cleanup foreground listener
-    };
   }, [intializeApp]);
 
   if (!isReady) {
@@ -95,7 +53,6 @@ export default memo(function StackScreens() {
         ) : (
           <>
             <Stack.Screen name="home" component={HomeStackScreen} />
-            {/* <Stack.Screen name="home" component={Home} /> */}
           </>
         )}
       </Stack.Navigator>
