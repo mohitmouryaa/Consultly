@@ -2,20 +2,14 @@ import React, { memo, useMemo } from "react";
 import { Text, View } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useAppSelector } from "../../../store";
-
-const formatTime = (time: string) => {
-  return new Date(time).toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-  });
-};
+import { convertChatDate } from "../../lib/utils";
 
 const RenderMessage = ({ item }: { item: any }) => {
   const userId = useAppSelector(state => state.user._id);
   const isMyMessage = item?.sender?._id === userId;
 
   const messageTime = useMemo(() => {
-    return formatTime(item.createdAt);
+    return convertChatDate(item.createdAt);
   }, [item.createdAt]);
 
   return (

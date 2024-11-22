@@ -6,7 +6,7 @@ import { convertChatDate } from "../lib/utils";
 import { useSocket } from "../providers/socketProvider";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useAppDispatch } from "../../store";
-import { setCurrentChatDetails } from "../../store/slices/userSlice";
+import { setCurrentChatInfo } from "../../store/slices/chatSlice";
 
 export default memo(function MessageBox({ item }: MessageBoxProps) {
   const navigation = useNavigation<StackNavigationProp<any>>();
@@ -18,13 +18,17 @@ export default memo(function MessageBox({ item }: MessageBoxProps) {
   }, [item.avatar]);
 
   const handlePress = () => {
-    dispatch(setCurrentChatDetails(item));
+    dispatch(setCurrentChatInfo(item));
     navigation.navigate("chat");
   };
 
   const isUserOnline = useMemo(() => {
     return item.members.some(member => onlineUsers.has(member));
   }, [onlineUsers, item.members]);
+
+  const lastMessageDate = useMemo(() => {
+    return convertChatDate(item?.latestMessage?.timestamp);
+  }, [item?.latestMessage?.timestamp]);
 
   return (
     <TouchableOpacity onPress={handlePress}>
@@ -53,9 +57,7 @@ export default memo(function MessageBox({ item }: MessageBoxProps) {
             </Text>
           </View>
         </View>
-        <Text className="text-xs font-JakartaLight">
-          {convertChatDate(item?.latestMessage?.timestamp)}
-        </Text>
+        <Text className="text-xs font-JakartaLight">{lastMessageDate}</Text>
       </View>
     </TouchableOpacity>
   );

@@ -25,10 +25,14 @@ export function convertChatDate(date: Date) {
     });
   }
   // CHECK IF DATE IS YESTERDAY
-  const yesterday = new Date(today);
+  const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
   if (new Date(date).getDate() === yesterday.getDate()) {
-    return "Yesterday";
+    return `Yesterday - ${new Date(date)?.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    })}`;
   }
   // ELSE RETURN DATE
   return new Date(date)?.toLocaleString("en-US", {

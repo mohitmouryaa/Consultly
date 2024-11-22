@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React, { Fragment, useLayoutEffect, useMemo, useState } from "react";
-import { Dimensions } from "react-native";
+import React, { Fragment, useMemo } from "react";
 import { tabBarStyle } from "../../constants";
 import { createStackNavigator } from "@react-navigation/stack";
 import Chat from "./Chat";
@@ -22,27 +21,11 @@ const Tab = createBottomTabNavigator();
 const ChatsStack = createStackNavigator();
 
 export default function HomeTabNavigator() {
-  const [tabBarHeight, setTabBarHeight] = useState(84); // Default height
-
-  useLayoutEffect(() => {
-    const { height } = Dimensions.get("screen");
-    if (height < 600) {
-      setTabBarHeight(56);
-      console.log("height - 56");
-    } else if (height < 840) {
-      setTabBarHeight(68);
-      console.log("height - 68");
-    } else {
-      setTabBarHeight(84);
-      console.log("height - 84");
-    }
-  }, []);
-
   const tabBarOptions = useMemo(
     () => ({
-      ...tabBarStyle(tabBarHeight),
+      ...tabBarStyle(),
     }),
-    [tabBarHeight],
+    [],
   );
 
   return (

@@ -13,19 +13,21 @@ import {
 } from "redux-persist";
 import { userSlice } from "./slices/userSlice";
 import { callApi, chatApi } from "./api";
+import { chatSlice } from "./slices/chatSlice";
 
-const storage = new MMKVLoader().initialize();
+export const mmkv = new MMKVLoader().initialize();
 
 const persistConfig = {
   key: "root",
-  storage,
-  whitelist: ["user"],
+  storage: mmkv,
+  whitelist: [userSlice.name, chatSlice.name],
 };
 
 const rootReducer = combineReducers({
-  ["user"]: userSlice.reducer,
+  [userSlice.name]: userSlice.reducer,
   [chatApi.reducerPath]: chatApi.reducer,
   [callApi.reducerPath]: callApi.reducer,
+  [chatSlice.name]: chatSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
