@@ -26,18 +26,22 @@ declare interface InputFieldProps extends TextInputProps {
   keyboardType?: KeyboardTypeOptions;
 }
 
-declare interface MessageBoxProps {
-  item: {
-    _id: number;
-    name?: string;
-    latestMessage: {
-      content: string;
-      sender: string;
-      timestamp: Date;
-    };
-    avatar?: string;
-    members: string[];
+declare interface ChatItem {
+  _id: string;
+  name?: string;
+  latestMessage: {
+    content: string;
+    sender: string;
+    createdAt: Date;
+    status: "delivered" | "seen" | "sent";
   };
+  avatar?: string;
+  members: string[];
+  messageCount: number;
+}
+
+declare interface MessageBoxProps {
+  item: ChatItem;
 }
 
 declare interface CallBoxProps {
@@ -94,4 +98,10 @@ interface SocketProviderProps {
 
 interface SocketContextProps {
   socket: Socket | null;
+}
+
+interface UseCurrentChatMemberByIdProps {
+  members: string[];
+  _id: string;
+  name: string;
 }

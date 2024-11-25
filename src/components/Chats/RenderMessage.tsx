@@ -9,8 +9,8 @@ const RenderMessage = ({ item }: { item: any }) => {
   const isMyMessage = item?.sender?._id === userId;
 
   const messageTime = useMemo(() => {
-    return convertChatDate(item.createdAt);
-  }, [item.createdAt]);
+    return convertChatDate(item?.createdAt || item?.timestamp);
+  }, [item]);
 
   return (
     <View

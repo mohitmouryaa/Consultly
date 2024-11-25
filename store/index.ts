@@ -14,6 +14,7 @@ import {
 import { userSlice } from "./slices/userSlice";
 import { callApi, chatApi } from "./api";
 import { chatSlice } from "./slices/chatSlice";
+import { miscSlice } from "./slices/miscSlice";
 
 export const mmkv = new MMKVLoader().initialize();
 
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   [chatApi.reducerPath]: chatApi.reducer,
   [callApi.reducerPath]: callApi.reducer,
   [chatSlice.name]: chatSlice.reducer,
+  [miscSlice.name]: miscSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

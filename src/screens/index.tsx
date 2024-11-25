@@ -1,12 +1,14 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { checkFirstLaunch, deleteToken, getToken } from "../lib/secureStore";
+import { setIsFirstLaunch, setIsLoggedIn } from "../../store/slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { setIsInternetConnected } from "../../store/slices/miscSlice";
+import NetInfo from "@react-native-community/netinfo";
 import SplashScreen from "./shared/SplashScreen";
 import AuthStackScreen from "./auth/AuthStackScreen";
 import HomeStackScreen from "./home/HomeStackScreen";
 import Welcome from "./auth/Welcome";
-import { setIsFirstLaunch, setIsLoggedIn } from "../../store/slices/userSlice";
 
 const Stack = createStackNavigator();
 
@@ -39,6 +41,16 @@ export default memo(function StackScreens() {
   useEffect(() => {
     intializeApp();
   }, [intializeApp]);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      dispatch(setIsInternetConnected(state.isConnected));
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   if (!isReady) {
     return <SplashScreen />;

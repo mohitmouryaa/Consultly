@@ -1,47 +1,57 @@
-import { Fragment, memo, useCallback, useEffect, useRef } from "react";
-import { FlatList, Text } from "react-native";
+import {
+  Fragment,
+  memo,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from "react";
+import { FlatList, View, Text } from "react-native";
+import { useGetChatByIdQuery } from "../../../store/api";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { setChatMessage } from "../../../store/slices/chatSlice";
 import RenderMessage from "./RenderMessage";
 import useCurrentChatMember from "../../hooks/useCurrentChatMember";
 
 export default memo(function MessageList() {
-  const initialRender = useRef(true);
-  const userIsAtBottom = useRef(true);
-  const messageListRef = useRef<FlatList>(null);
-  const { messages } = useCurrentChatMember();
+  const { _id } = useCurrentChatMember();
+  const dispatch = useAppDispatch();
+  const messsageListRef = useRef<FlatList>(null);
+  const isInternetConnected = useAppSelector(
+    ({ misc }) => misc.isInternetConnected,
+  );
+  const chatMessages = useAppSelector(({ chat }) => chat.chatMessages);
+  const { data } = useGetChatByIdQuery(
+    { chatId: _id, page: 1 },
+    { skip: !_id },
+  );
 
-  const scrollToEnd = useCallback((animated = true) => {
-    messageListRef.current?.scrollToEnd({ animated });
-    userIsAtBottom.current = true;
-  }, []);
+  const messages = useMemo(() => chatMessages[_id] || [], [_id, chatMessages]);
 
-  const handleContentSizeChange = useCallback(() => {
-    if (initialRender.current) {
-      messageListRef.current?.scrollToEnd({ animated: false });
-      initialRender.current = false;
-      return;
-    }
-    if (userIsAtBottom.current) {
-      scrollToEnd();
-    }
-  }, [scrollToEnd]);
+  useLayoutEffect(() => {
+    if (!_id || !isInternetConnected) return;
+    dispatch(setChatMessage({ chatId: _id, messages: data?.messages || [] }));
+  }, [data?.messages, _id, dispatch, isInternetConnected]);
 
   useEffect(() => {
-    if (messageListRef.current && userIsAtBottom.current) {
-      scrollToEnd(true);
-    }
-  }, [messages, scrollToEnd]);
+    messsageListRef.current?.scrollToEnd({ animated: true });
+  }, [messages]);
 
   return (
     <Fragment>
       {/* MESSAGES LIST */}
       <FlatList
-        ref={messageListRef}
+        ref={messsageListRef}
         data={messages}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => <RenderMessage item={item} />}
         showsVerticalScrollIndicator={false}
         inverted={false}
-        onContentSizeChange={handleContentSizeChange}
+        ListEmptyComponent={
+          <View className="flex items-center justify-center h-full">
+            <Text className="text-gray-500">No messages available</Text>
+          </View>
+        }
       />
     </Fragment>
   );

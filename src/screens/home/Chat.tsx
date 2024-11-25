@@ -5,14 +5,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useSocket } from "../../providers/socketProvider";
 import { CHAT_JOINED, CHAT_LEAVED, tabBarStyle } from "../../constants";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useAppDispatch, useAppSelector } from "../../../store";
+import { useAppSelector } from "../../../store";
 import useCurrentChatMember from "../../hooks/useCurrentChatMember";
 import MessageList from "../../components/Chats/MessageList";
 import SendMsgInput from "../../components/Chats/SendMsgInput";
-import { clearCurrentChatInfo } from "../../../store/slices/chatSlice";
 
 export default function Chat() {
-  const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp<any>>();
   const userId = useAppSelector(state => state.user._id);
   const { _id: chatId } = useCurrentChatMember();
@@ -25,8 +23,6 @@ export default function Chat() {
     socket?.emit(CHAT_JOINED, { chatId: chatId, userId });
 
     return () => {
-      // CLEAR THE CURRENT CHAT INFO
-      dispatch(clearCurrentChatInfo());
       // RESTORE THE TAB BAR
       navigation?.getParent()?.setOptions({ ...tabBarStyle() });
       // LEAVE THE CHAT ROOM

@@ -7,6 +7,7 @@ interface ChatState {
     _id: string;
   };
   chatMessages: { [key: string]: any };
+  chatList: ChatItem[];
 }
 
 const initialState: ChatState = {
@@ -16,6 +17,7 @@ const initialState: ChatState = {
     _id: "",
   },
   chatMessages: {},
+  chatList: [],
 };
 
 export const chatSlice = createSlice({
@@ -38,7 +40,19 @@ export const chatSlice = createSlice({
     addNewMessage: (state, action) => {
       const { chatId, message } = action.payload;
       if (!chatId || !message) return;
-      state.chatMessages[chatId] = [...state.chatMessages[chatId], message];
+      const index = state.chatList.findIndex(chat => chat._id === chatId);
+      const chat = state.chatList[index];
+      chat.latestMessage = message;
+      chat.messageCount += 1;
+      state.chatList[index] = chat;
+      if (!state.chatMessages[chatId]) {
+        state.chatMessages[chatId] = [];
+      }
+      const messages = [...state.chatMessages[chatId], message];
+      state.chatMessages[chatId] = messages;
+    },
+    setChatList: (state, action) => {
+      state.chatList = action.payload;
     },
   },
 });
@@ -48,6 +62,7 @@ export const {
   clearCurrentChatInfo,
   setChatMessage,
   addNewMessage,
+  setChatList,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

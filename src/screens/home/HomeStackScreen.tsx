@@ -1,9 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { Fragment, useMemo } from "react";
 import { tabBarStyle } from "../../constants";
-import { createStackNavigator } from "@react-navigation/stack";
-import Chat from "./Chat";
-import Chats from "./Chats";
 import CallHistory from "./CallHistory";
 import Profile from "./Profile";
 import Plans from "./Plans";
@@ -13,12 +10,9 @@ import {
   PlansTabBarIcon,
   ProfileTabBarIcon,
 } from "../../components/HomeStackScreenIcons";
-import ChatsRightHeader from "./ChatsRightHeader";
-import ChatHeaderTitle from "../../components/Chats/ChatHeaderTitle";
-import ChatHeaderRight from "../../components/Chats/ChatHeaderRight";
+import ChatsStackScreen from "./ChatsStackScreen";
 
 const Tab = createBottomTabNavigator();
-const ChatsStack = createStackNavigator();
 
 export default function HomeTabNavigator() {
   const tabBarOptions = useMemo(
@@ -65,31 +59,5 @@ export default function HomeTabNavigator() {
         />
       </Tab.Navigator>
     </Fragment>
-  );
-}
-
-function ChatsStackScreen({ route }: any) {
-  return (
-    <ChatsStack.Navigator initialRouteName="chats">
-      <ChatsStack.Screen
-        name="chats"
-        component={Chats}
-        options={() => {
-          return {
-            title: "Chats",
-            headerRight: ChatsRightHeader,
-            tabBarIcon: ChatsTabBarIcon,
-          };
-        }}
-      />
-      <ChatsStack.Screen
-        name="chat"
-        component={Chat}
-        options={() => ({
-          headerTitle: ChatHeaderTitle,
-          headerRight: ChatHeaderRight,
-        })}
-      />
-    </ChatsStack.Navigator>
   );
 }
