@@ -17,7 +17,7 @@ const httpClient = axios.create({
 
 httpClient.interceptors.request.use(
   async config => {
-    console.log("config", config.baseURL);
+    console.log("config", `${config.baseURL}/${config.url}`);
     const token = await getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

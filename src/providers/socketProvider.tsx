@@ -1,3 +1,6 @@
+import Config from "react-native-config";
+import io, { Socket } from "socket.io-client";
+import { useAppDispatch, useAppSelector } from "../../store";
 import React, {
   createContext,
   useContext,
@@ -5,11 +8,14 @@ import React, {
   useRef,
   useState,
 } from "react";
-import io, { Socket } from "socket.io-client";
-import { useAppSelector } from "../../store";
 import { getToken } from "../lib/secureStore";
-import { CHAT_JOINED, CHAT_LEAVED, ONLINE_USERS } from "../constants";
-import Config from "react-native-config";
+import {
+  CHAT_JOINED,
+  CHAT_LEAVED,
+  NEW_MESSAGE_ALERT,
+  ONLINE_USERS,
+} from "../constants";
+import { chatApi } from "../../store/api";
 
 interface SocketContextProps {
   socket: Socket | null;
@@ -24,6 +30,7 @@ const SocketContext = createContext<SocketContextProps>({
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
+  const dispatch = useAppDispatch();
   const userId = useAppSelector(state => state.user._id);
   const socketRef = useRef<Socket | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
@@ -56,6 +63,19 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         setOnlineUsers(new Set(data));
       });
 
+      newSocket?.on(NEW_MESSAGE_ALERT, ({ chatId, latestMessage }) => {
+        if (!chatId) return;
+        dispatch(
+          chatApi.util.updateQueryData(
+            "getChatById",
+            { chatId, page: 1 }, // Query parameters
+            (draft: any) => {
+              draft.messages.push(latestMessage);
+            },
+          ) as any,
+        );
+      });
+
       socketRef.current = newSocket;
     };
 
@@ -67,7 +87,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         socketRef.current.close();
       }
     };
-  }, [userId]);
+  }, [userId, dispatch]);
 
   return (
     <SocketContext.Provider value={{ socket: socketRef.current, onlineUsers }}>

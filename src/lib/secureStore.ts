@@ -1,6 +1,4 @@
-import { MMKVLoader } from "react-native-mmkv-storage";
-
-const mmkv = new MMKVLoader().initialize();
+import { mmkv } from "../../store";
 
 export const storeToken = async (token: string) => {
   try {

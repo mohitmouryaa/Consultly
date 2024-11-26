@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useAppSelector } from "../../../store";
+import { convertChatDate } from "../../lib/utils";
 import ImageModal from "../ImageModal";
 
 const formatTime = (time: string) => {
@@ -58,8 +59,8 @@ const RenderMessage = ({ item }: { item: any }) => {
   }, [item]);
 
   const messageTime = useMemo(() => {
-    return formatTime(item.createdAt);
-  }, [item.createdAt]);
+    return convertChatDate(item?.createdAt || item?.timestamp);
+  }, [item]);
 
   const openModal = () => {
     setModalVisible(true); // Show modal when the image is clicked

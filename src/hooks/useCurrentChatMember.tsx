@@ -5,11 +5,15 @@ import { START_TYPING, STOP_TYPING } from "../constants";
 
 export default function useCurrentChatMember() {
   const [isOtherUserTyping, setOtherUserTyping] = useState(false);
-
   const { members, _id, name } = useAppSelector(
-    state => state.user.currentChatDetails,
+    ({ chat }) => chat.currentChatInfo,
   );
+
   const { onlineUsers, socket } = useSocket();
+
+  const isUserOnline = useMemo(() => {
+    return members?.some((member: string) => onlineUsers.has(member)) || false;
+  }, [onlineUsers, members]);
 
   useEffect(() => {
     socket?.on(START_TYPING, ({ chatId }) => {
@@ -27,10 +31,6 @@ export default function useCurrentChatMember() {
       socket?.off(STOP_TYPING);
     };
   }, []);
-
-  const isUserOnline = useMemo(() => {
-    return members?.some((member: string) => onlineUsers.has(member)) || false;
-  }, [onlineUsers, members]);
 
   return {
     isUserOnline,

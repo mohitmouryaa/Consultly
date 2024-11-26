@@ -1,15 +1,15 @@
-import React from "react";
+import React, { memo } from "react";
 import { Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CustomBtn from "../../components/CustomBtn";
 import { images } from "../../constants";
 import { StackNavigationProp } from "@react-navigation/stack";
+import CustomBtn from "../../components/CustomBtn";
 
 type GetStartedProps = {
   navigation: StackNavigationProp<any>;
 };
 
-export default function GetStarted({ navigation }: GetStartedProps) {
+export default memo(function GetStarted({ navigation }: GetStartedProps) {
   const handleSignUpBtnPress = () => {
     navigation.push("register");
   };
@@ -49,4 +49,4 @@ export default function GetStarted({ navigation }: GetStartedProps) {
       </View>
     </SafeAreaView>
   );
-}
+});
