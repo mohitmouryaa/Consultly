@@ -1,48 +1,31 @@
-import {
-  Fragment,
-  memo,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-} from "react";
+import { Fragment, memo, useEffect, useRef } from "react";
 import { FlatList, View, Text } from "react-native";
 import { useGetChatByIdQuery } from "../../../store/api";
-import { useAppDispatch, useAppSelector } from "../../../store";
-import { setChatMessage } from "../../../store/slices/chatSlice";
+import { useAppSelector } from "../../../store";
 import RenderMessage from "./RenderMessage";
 import useCurrentChatMember from "../../hooks/useCurrentChatMember";
 
 export default memo(function MessageList() {
   const { _id } = useCurrentChatMember();
-  const dispatch = useAppDispatch();
-  const messsageListRef = useRef<FlatList>(null);
+  const messageListRef = useRef<FlatList>(null);
   const isInternetConnected = useAppSelector(
     ({ misc }) => misc.isInternetConnected,
   );
-  const chatMessages = useAppSelector(({ chat }) => chat.chatMessages);
   const { data } = useGetChatByIdQuery(
     { chatId: _id, page: 1 },
-    { skip: !_id },
+    { skip: !_id || !isInternetConnected },
   );
 
-  const messages = useMemo(() => chatMessages[_id] || [], [_id, chatMessages]);
-
-  useLayoutEffect(() => {
-    if (!_id || !isInternetConnected) return;
-    dispatch(setChatMessage({ chatId: _id, messages: data?.messages || [] }));
-  }, [data?.messages, _id, dispatch, isInternetConnected]);
-
   useEffect(() => {
-    messsageListRef.current?.scrollToEnd({ animated: true });
-  }, [messages]);
+    messageListRef.current?.scrollToEnd({ animated: true });
+  }, [data?.messages]);
 
   return (
     <Fragment>
       {/* MESSAGES LIST */}
       <FlatList
-        ref={messsageListRef}
-        data={messages}
+        ref={messageListRef}
+        data={data?.messages || []}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => <RenderMessage item={item} />}
         showsVerticalScrollIndicator={false}

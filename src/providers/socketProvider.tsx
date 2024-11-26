@@ -15,7 +15,7 @@ import {
   NEW_MESSAGE_ALERT,
   ONLINE_USERS,
 } from "../constants";
-import { addNewMessage } from "../../store/slices/chatSlice";
+import { chatApi } from "../../store/api";
 
 interface SocketContextProps {
   socket: Socket | null;
@@ -65,7 +65,15 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
       newSocket?.on(NEW_MESSAGE_ALERT, ({ chatId, latestMessage }) => {
         if (!chatId) return;
-        dispatch(addNewMessage({ chatId, message: latestMessage }));
+        dispatch(
+          chatApi.util.updateQueryData(
+            "getChatById",
+            { chatId, page: 1 }, // Query parameters
+            (draft: any) => {
+              draft.messages.push(latestMessage);
+            },
+          ) as any,
+        );
       });
 
       socketRef.current = newSocket;

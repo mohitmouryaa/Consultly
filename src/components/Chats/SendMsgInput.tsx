@@ -3,9 +3,9 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { NEW_MESSAGE, START_TYPING, STOP_TYPING } from "../../constants";
 import { useSocket } from "../../providers/socketProvider";
 import { useDispatch } from "react-redux";
-import { addNewMessage } from "../../../store/slices/chatSlice";
 import useCurrentChatMember from "../../hooks/useCurrentChatMember";
 import { useAppSelector } from "../../../store";
+import { chatApi } from "../../../store/api";
 
 export default memo(function SendMsgInput() {
   const dispatch = useDispatch();
@@ -41,7 +41,16 @@ export default memo(function SendMsgInput() {
       sender: { _id: userId },
       createAt: new Date().toISOString(),
     };
-    dispatch(addNewMessage({ chatId, message: newMessage }));
+    // UPDATE THE CACHED MESSAGES RETURN FROM THE API
+    dispatch(
+      chatApi.util.updateQueryData(
+        "getChatById",
+        { chatId, page: 1 }, // Query parameters
+        (draft: any) => {
+          draft.messages.push(newMessage);
+        },
+      ) as any,
+    );
     setRefresh(prev => prev + 1);
   }, [chatId, members, socket]);
 

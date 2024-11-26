@@ -1,20 +1,24 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { MMKVLoader } from "react-native-mmkv-storage";
-import { useDispatch, useSelector } from "react-redux";
 import {
+  TypedUseSelectorHook,
+  useDispatch as useReduxDispatch,
+  useSelector as useReduxSelector,
+} from "react-redux";
+import {
+  persistReducer,
+  persistStore,
   FLUSH,
   PAUSE,
   PERSIST,
-  persistReducer,
-  persistStore,
   PURGE,
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
 import { userSlice } from "./slices/userSlice";
-import { callApi, chatApi } from "./api";
 import { chatSlice } from "./slices/chatSlice";
 import { miscSlice } from "./slices/miscSlice";
+import { chatApi, callApi } from "./api";
 
 export const mmkv = new MMKVLoader().initialize();
 
@@ -26,10 +30,10 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   [userSlice.name]: userSlice.reducer,
-  [chatApi.reducerPath]: chatApi.reducer,
-  [callApi.reducerPath]: callApi.reducer,
   [chatSlice.name]: chatSlice.reducer,
   [miscSlice.name]: miscSlice.reducer,
+  [chatApi.reducerPath]: chatApi.reducer,
+  [callApi.reducerPath]: callApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -44,10 +48,12 @@ const store = configureStore({
     }).concat(chatApi.middleware, callApi.middleware),
 });
 
+// Typed hooks for Redux
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
-export const useAppSelector = useSelector.withTypes<RootState>();
+
+export const useAppDispatch: () => AppDispatch = useReduxDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 
 const persistor = persistStore(store);
 

@@ -37,22 +37,16 @@ export const chatSlice = createSlice({
       if (!chatId || !messages || !Array.isArray(messages)) return;
       state.chatMessages[chatId] = messages;
     },
-    addNewMessage: (state, action) => {
-      const { chatId, message } = action.payload;
-      if (!chatId || !message) return;
-      const index = state.chatList.findIndex(chat => chat._id === chatId);
-      const chat = state.chatList[index];
-      chat.latestMessage = message;
-      chat.messageCount += 1;
-      state.chatList[index] = chat;
-      if (!state.chatMessages[chatId]) {
-        state.chatMessages[chatId] = [];
-      }
-      const messages = [...state.chatMessages[chatId], message];
-      state.chatMessages[chatId] = messages;
-    },
     setChatList: (state, action) => {
       state.chatList = action.payload;
+    },
+    clearUnreadMsgCount: (state, action) => {
+      const chatId = action.payload;
+      const index = state.chatList.findIndex(chat => chat._id === chatId);
+      if (index === -1) return;
+      const chat = state.chatList[index];
+      chat.messageCount = 0;
+      state.chatList[index] = chat;
     },
   },
 });
@@ -61,8 +55,8 @@ export const {
   setCurrentChatInfo,
   clearCurrentChatInfo,
   setChatMessage,
-  addNewMessage,
   setChatList,
+  clearUnreadMsgCount,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
