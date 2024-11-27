@@ -3,9 +3,9 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { NEW_MESSAGE, START_TYPING, STOP_TYPING } from "../../constants";
 import { useSocket } from "../../providers/socketProvider";
 import { useDispatch } from "react-redux";
-import useCurrentChatMember from "../../hooks/useCurrentChatMember";
 import { useAppSelector } from "../../../store";
 import { chatApi } from "../../../store/api";
+import useCurrentChatMember from "../../hooks/useCurrentChatMember";
 
 export default memo(function SendMsgInput() {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ export default memo(function SendMsgInput() {
   const { _id: chatId, members } = useCurrentChatMember();
   const { socket } = useSocket();
   const textMsgRef = useRef<string>("");
-  const [refresh, setRefresh] = useState(1); // Used to refresh the input field
+  const [refresh, setRefresh] = useState(1); // USED TO REFRESH THE INPUT FIELD
 
   const handleTyping = useCallback(
     (text: string) => {
@@ -28,7 +28,7 @@ export default memo(function SendMsgInput() {
       typingTimeoutRef.current = setTimeout(() => {
         socket?.emit(STOP_TYPING, { chatId, members });
         typingTimeoutRef.current = null;
-      }, 500); // Adjust the delay as needed
+      }, 500); // AFTER 500ms OF NO TYPING, STOP TYPING
     },
     [chatId, members, socket],
   );
@@ -39,13 +39,13 @@ export default memo(function SendMsgInput() {
     const newMessage = {
       content: textMsgRef.current,
       sender: { _id: userId },
-      createAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
     };
     // UPDATE THE CACHED MESSAGES RETURN FROM THE API
     dispatch(
       chatApi.util.updateQueryData(
         "getChatById",
-        { chatId, page: 1 }, // Query parameters
+        { chatId, page: 1 },
         (draft: any) => {
           draft.messages.push(newMessage);
         },

@@ -12,13 +12,6 @@ import { useAppSelector } from "../../../store";
 import { convertChatDate } from "../../lib/utils";
 import ImageModal from "../ImageModal";
 
-const formatTime = (time: string) => {
-  return new Date(time).toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-  });
-};
-
 const RenderMessage = ({ item }: { item: any }) => {
   const userId = useAppSelector(state => state.user._id);
   const isMyMessage = item?.sender?._id === userId;
@@ -30,10 +23,13 @@ const RenderMessage = ({ item }: { item: any }) => {
 
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
-  const imageUri =
-    item.attachments && item.attachments.length > 0
-      ? item.attachments[0].url
-      : null;
+  const imageUri = useMemo(
+    () =>
+      item.attachments && item.attachments.length > 0
+        ? item.attachments[0].url
+        : null,
+    [item.attachments],
+  );
 
   useEffect(() => {
     if (item?.attachments && item.attachments[0]?.url) {
@@ -75,10 +71,6 @@ const RenderMessage = ({ item }: { item: any }) => {
       className={`max-w-[70%] p-2.5 mx-2.5 rounded-xl my-1.5 ${
         isMyMessage ? "self-end bg-[#f0f0f0]" : "self-start bg-[#e3be81]"
       }`}>
-      {/* <Text className="text-base">{item.content}</Text> */}
-      {/* {item.attachment ? ( */}
-      {/* {Array.isArray(item.attachment) && item.attachment.length === 0 ? ( */}
-      {/* {item.attachments && item.attachments.length > 0 ? ( */}
       {imageUri ? (
         <View>
           <TouchableOpacity onPress={openModal}>
@@ -91,7 +83,6 @@ const RenderMessage = ({ item }: { item: any }) => {
                 },
               ]}
               resizeMode="contain"
-              //resizeMode="cover"
             />
           </TouchableOpacity>
 
