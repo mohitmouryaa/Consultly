@@ -36,7 +36,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    if (socketRef.current && socketRef.current.connected) {
+    if ((socketRef.current && socketRef.current.connected) || !userId) {
       return;
     }
     const initializeSocket = async () => {

@@ -17,7 +17,7 @@ const httpClient = axios.create({
 
 httpClient.interceptors.request.use(
   async config => {
-    console.log("config", `${config.baseURL}/${config.url}`);
+    console.log("config", `${config.baseURL}${config.url}`);
     const token = await getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -42,10 +42,12 @@ httpClient.interceptors.request.use(
 
 httpClient.interceptors.response.use(
   response => {
+    console.log("Fetch", { response });
     return response;
   },
   async error => {
     if (error?.response?.status === 401) {
+      console.log("Fetch", { response: error.response });
       await deleteToken();
       store.dispatch(clearUser());
     }
