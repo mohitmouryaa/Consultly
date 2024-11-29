@@ -11,6 +11,7 @@ import {
   ProfileTabBarIcon,
 } from "../../components/HomeStackScreenIcons";
 import ChatsStackScreen from "./ChatsStackScreen";
+import { StreamClientProvider } from "../../providers/streamClientProvider";
 
 const Tab = createBottomTabNavigator();
 
@@ -24,40 +25,42 @@ export default function HomeTabNavigator() {
 
   return (
     <Fragment>
-      <Tab.Navigator screenOptions={tabBarOptions}>
-        <Tab.Screen
-          name="chatsStackScreen"
-          options={{
-            tabBarIcon: ChatsTabBarIcon,
-            headerShown: false,
-          }}
-          component={ChatsStackScreen}
-        />
-        <Tab.Screen
-          name="Call History"
-          options={{
-            title: "Call History",
-            tabBarIcon: CallHistoryTabBarIcon,
-          }}
-          component={CallHistory}
-        />
-        <Tab.Screen
-          name="Plans"
-          options={{
-            title: "Plans",
-            tabBarIcon: PlansTabBarIcon,
-          }}
-          component={Plans}
-        />
-        <Tab.Screen
-          name="Profile"
-          options={{
-            title: "Profile",
-            tabBarIcon: ProfileTabBarIcon,
-          }}
-          component={Profile}
-        />
-      </Tab.Navigator>
+      <StreamClientProvider>
+        <Tab.Navigator screenOptions={tabBarOptions}>
+          <Tab.Screen
+            name="chatsStackScreen"
+            options={{
+              tabBarIcon: ChatsTabBarIcon,
+              headerShown: false,
+            }}
+            component={ChatsStackScreen}
+          />
+          <Tab.Screen
+            name="Call History"
+            options={{
+              title: "Call History",
+              tabBarIcon: CallHistoryTabBarIcon,
+            }}
+            component={CallHistory}
+          />
+          <Tab.Screen
+            name="Plans"
+            options={{
+              title: "Plans",
+              tabBarIcon: PlansTabBarIcon,
+            }}
+            component={Plans}
+          />
+          <Tab.Screen
+            name="Profile"
+            options={{
+              title: "Profile",
+              tabBarIcon: ProfileTabBarIcon,
+            }}
+            component={Profile}
+          />
+        </Tab.Navigator>
+      </StreamClientProvider>
     </Fragment>
   );
 }
