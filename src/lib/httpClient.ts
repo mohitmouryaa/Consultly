@@ -7,7 +7,7 @@ import { clearUser } from "../../store/slices/userSlice";
 const controllers = new Map<string, AbortController>();
 
 const httpClient = axios.create({
-  baseURL: `${Config.SERVER_URL}/api/v1`,
+  baseURL: `http://89.40.9.101:3100/api/v1`,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -36,6 +36,7 @@ httpClient.interceptors.request.use(
     return config;
   },
   error => {
+    console.log("Fetch", { response: error.response });
     return Promise.reject(error);
   },
 );

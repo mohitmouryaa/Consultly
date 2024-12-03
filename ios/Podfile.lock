@@ -1250,7 +1250,7 @@ PODS:
     - react-native-config/App (= 1.5.3)
   - react-native-config/App (1.5.3):
     - React-Core
-  - react-native-image-picker (7.1.2):
+  - react-native-image-picker (7.2.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1856,7 +1856,7 @@ PODS:
   - stream-react-native-webrtc (118.1.2):
     - JitsiWebRTC (~> 118.0.0)
     - React-Core
-  - stream-video-react-native (1.4.4):
+  - stream-video-react-native (1.4.7):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2165,7 +2165,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 3146a13424f9fec2ea1f1462d49d566e4d69b732
   React-microtasksnativemodule: 02d218c79c72d373a92a8552183f4ead0d1c6e05
   react-native-config: 8f7283449bbb048902f4e764affbbf24504454af
-  react-native-image-picker: ba5067f7d833b9081102c0a33dd0188eb21d92dc
+  react-native-image-picker: bfb56e2b39dc63abfcc6de44ee239c6633f47d66
   react-native-mmkv-storage: 20a7fec4cad9ca2f98aae639660f26ebe30c6670
   react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
   react-native-safe-area-context: 2500e4fe998caad50ad3bc51ec23ef951308569e
@@ -2205,7 +2205,7 @@ SPEC CHECKSUMS:
   RNVectorIcons: 07792a9538e8577c1263fcad187712e90d65d8fb
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   stream-react-native-webrtc: 08954c9aba0e244f4e211df59460e426bf4255f3
-  stream-video-react-native: e947108f82668af88a63187600c8dc22d0b2a839
+  stream-video-react-native: 450c34c1b6fc3f0db899055f9c0f299300047cef
   Yoga: db69236006b8b1c6d55ab453390c882306cbf219
 
 PODFILE CHECKSUM: 43656cc29ef9dc07d5acc1b92efde7ba5e1a2d3b

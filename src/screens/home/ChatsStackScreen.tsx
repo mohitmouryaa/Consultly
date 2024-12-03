@@ -5,6 +5,7 @@ import Chat from "./Chat";
 import ChatsRightHeader from "./ChatsRightHeader";
 import ChatHeaderTitle from "../../components/Chats/ChatHeaderTitle";
 import ChatHeaderRight from "../../components/Chats/ChatHeaderRight";
+import { CallScreen } from "./CallScreen";
 
 const ChatsStack = createStackNavigator();
 
@@ -29,6 +30,13 @@ export default function ChatsStackScreen() {
           headerTitle: ChatHeaderTitle,
           headerRight: ChatHeaderRight,
         })}
+      />
+      <ChatsStack.Screen
+        name="call"
+        component={CallScreen}
+        options={{
+          headerShown: false,
+        }}
       />
     </ChatsStack.Navigator>
   );

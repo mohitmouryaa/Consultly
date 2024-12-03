@@ -105,3 +105,8 @@ interface UseCurrentChatMemberByIdProps {
   _id: string;
   name: string;
 }
+
+interface SocketContextProps {
+  socket: Socket | null;
+  onlineUsers: Set<string>;
+}

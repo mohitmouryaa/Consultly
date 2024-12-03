@@ -3,7 +3,7 @@ import { Image, Text, View } from "react-native";
 import useCurrentChatMember from "../../hooks/useCurrentChatMember";
 
 export default function ChatHeaderTitle() {
-  const { isUserOnline, name, isOtherUserTyping } = useCurrentChatMember();
+  const { isUserOnline, name, isOtherUserTyping, } = useCurrentChatMember();
   return (
     <View className="flex flex-row items-center">
       <Image

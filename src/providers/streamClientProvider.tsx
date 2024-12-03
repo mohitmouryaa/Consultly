@@ -1,68 +1,59 @@
-import { useEffect, useState } from "react";
 import {
   StreamVideo,
   StreamVideoClient,
 } from "@stream-io/video-react-native-sdk";
-import httpClient from "../lib/httpClient";
-import Config from "react-native-config";
+import { useLayoutEffect, useState } from "react";
 import { useAppSelector } from "../../store";
+import httpClient from "../lib/httpClient";
 
-export const StreamClientProvider = ({
-  children,
-}: {
+type ProviderProps = {
   children: React.ReactNode;
-}) => {
-  const [token, setToken] = useState<string | null>(null);
-  const [videoClient, setVideoClient] = useState<StreamVideoClient | null>(
-    null,
-  );
+};
+
+export default function StreamClientProvider({ children }: ProviderProps) {
+  const [streamClient, setStreamClient] = useState<StreamVideoClient | null>();
   const _user = useAppSelector(({ user }) => user);
-  const apiKey = Config.STREAM_API_KEY!;
 
-  const streamTokenProvider = async () => {
-    const { data } = await httpClient.get("/user/generateStreamToken");
-    setToken(data.token);
-    return data.token;
-  };
+  async function streamTokenProvider() {
+    try {
+      const { data } = await httpClient.get(`/user/generateStreamToken`);
+      return data.token;
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
-  useEffect(() => {
-    const initializeVideoClient = async () => {
-      if (!_user?._id || !_user?.name || !_user?.avatar?.url) return;
+  useLayoutEffect(() => {
+    const initializeStreamClient = async () => {
+      const token = await streamTokenProvider();
+      console.log("stream token", token);
+      if (!_user._id || !token) return;
+      const user = {
+        id: _user._id!,
+        name: _user.name!,
+        image: _user.avatar?.url!,
+      };
 
-      if (!videoClient) {
-        try {
-          const clientToken = token || (await streamTokenProvider());
-
-          const client = new StreamVideoClient({
-            apiKey,
-            user: {
-              id: _user._id,
-              name: _user.name,
-              image: _user.avatar.url,
-            },
-            token: clientToken,
-          });
-
-          setVideoClient(client);
-        } catch (error) {
-          console.error("Error initializing video client", error);
-        }
-      }
+      const client = new StreamVideoClient({
+        apiKey: "72hm7n8h6km2",
+        user,
+        token,
+      });
+      setStreamClient(client);
     };
-
-    initializeVideoClient();
+    if (streamClient) return;
+    initializeStreamClient();
 
     return () => {
-      if (videoClient) {
-        videoClient
-          .disconnectUser()
-          .catch(error => console.error("Couldn't disconnect user", error));
-        setVideoClient(null);
+      if (streamClient) {
+        streamClient
+          ?.disconnectUser()
+          ?.catch(error => console.error(`Couldn't disconnect user`, error));
+        setStreamClient(undefined);
       }
     };
-  }, [_user, token, videoClient]);
+  }, [_user]);
 
-  if (!videoClient) return null;
-
-  return <StreamVideo client={videoClient}>{children}</StreamVideo>;
-};
+  if (!streamClient) return null;
+  return <StreamVideo client={streamClient}>{children}</StreamVideo>;
+}

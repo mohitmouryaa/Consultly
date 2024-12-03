@@ -17,11 +17,6 @@ import {
 } from "../constants";
 import { chatApi } from "../../store/api";
 
-interface SocketContextProps {
-  socket: Socket | null;
-  onlineUsers: Set<string>;
-}
-
 const SocketContext = createContext<SocketContextProps>({
   socket: null,
   onlineUsers: new Set(),
@@ -42,7 +37,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     const initializeSocket = async () => {
       const token = await getToken();
 
-      const newSocket = io(`${Config.SERVER_URL}`, {
+      const newSocket = io(`http://89.40.9.101:3100`, {
         withCredentials: true,
         transports: ["websocket"],
         auth: {

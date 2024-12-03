@@ -11,7 +11,7 @@ import {
   ProfileTabBarIcon,
 } from "../../components/HomeStackScreenIcons";
 import ChatsStackScreen from "./ChatsStackScreen";
-import { StreamClientProvider } from "../../providers/streamClientProvider";
+import StreamClientProvider from "../../providers/streamClientProvider";
 
 const Tab = createBottomTabNavigator();
 
