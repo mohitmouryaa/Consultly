@@ -110,3 +110,9 @@ interface SocketContextProps {
   socket: Socket | null;
   onlineUsers: Set<string>;
 }
+
+interface StartCallPayload {
+  roomId: string;
+  counsellorId: string;
+  userId: string;
+}

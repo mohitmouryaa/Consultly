@@ -6,8 +6,8 @@ import { generateRoomId } from "../lib/utils";
 const DEFAULT_CALL_TYPE = "default";
 const MAX_RETRIES = 5;
 
-export const useSetCall = ({ meetingId }: { meetingId: string }) => {
-  const chatId = useAppSelector(state => state.chat.currentChatInfo._id);
+export const useSetCall = () => {
+  const meetingId = useAppSelector(state => state.chat.caller.chatId);
   const callId = useRef(generateRoomId(12));
   const client = useStreamVideoClient();
   const [call, setCall] = useState<Call | null>();
@@ -22,7 +22,7 @@ export const useSetCall = ({ meetingId }: { meetingId: string }) => {
       try {
         const callToSet = client.call(
           DEFAULT_CALL_TYPE,
-          meetingId || chatId || callId.current,
+          meetingId! || callId.current,
         );
         await callToSet.getOrCreate();
         setCall(callToSet);
@@ -40,7 +40,7 @@ export const useSetCall = ({ meetingId }: { meetingId: string }) => {
     };
 
     fetchCall();
-  }, [chatId, client, meetingId, retryCount]);
+  }, [client, meetingId, retryCount]);
 
   return call;
 };

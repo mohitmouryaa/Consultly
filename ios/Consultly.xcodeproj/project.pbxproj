@@ -11,10 +11,10 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		6441A2C231F06D81697D6A86 /* libPods-Consultly-ConsultlyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8399C5A89C6CD2964C807FAA /* libPods-Consultly-ConsultlyTests.a */; };
-		6CA3FC04F35BA084462E2E4B /* libPods-Consultly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4EFAEBE4261EABDB3295DA3 /* libPods-Consultly.a */; };
+		4DFF42B5B658D6553A371118 /* libPods-Consultly-ConsultlyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B10370B9A0B636FCB7CB39D4 /* libPods-Consultly-ConsultlyTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		D304DC186F9077B18F5D9117 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		DD357391C3A76D2FC0497B90 /* libPods-Consultly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F09D4C8E72C0E0A38675EF /* libPods-Consultly.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,14 +38,14 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Consultly/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Consultly/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = Consultly/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		50DA9337E3EBB832A62EFD18 /* Pods-Consultly-ConsultlyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Consultly-ConsultlyTests.release.xcconfig"; path = "Target Support Files/Pods-Consultly-ConsultlyTests/Pods-Consultly-ConsultlyTests.release.xcconfig"; sourceTree = "<group>"; };
+		765EF828E929831694A3FFE7 /* Pods-Consultly-ConsultlyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Consultly-ConsultlyTests.debug.xcconfig"; path = "Target Support Files/Pods-Consultly-ConsultlyTests/Pods-Consultly-ConsultlyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Consultly/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8399C5A89C6CD2964C807FAA /* libPods-Consultly-ConsultlyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Consultly-ConsultlyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		90EED7BA4831136C4F5118CD /* Pods-Consultly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Consultly.release.xcconfig"; path = "Target Support Files/Pods-Consultly/Pods-Consultly.release.xcconfig"; sourceTree = "<group>"; };
-		915CF4ADCBFE8BDCB18912A2 /* Pods-Consultly-ConsultlyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Consultly-ConsultlyTests.debug.xcconfig"; path = "Target Support Files/Pods-Consultly-ConsultlyTests/Pods-Consultly-ConsultlyTests.debug.xcconfig"; sourceTree = "<group>"; };
-		A4EFAEBE4261EABDB3295DA3 /* libPods-Consultly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Consultly.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CF4F3400CF3F7CBBB2F9CB34 /* Pods-Consultly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Consultly.debug.xcconfig"; path = "Target Support Files/Pods-Consultly/Pods-Consultly.debug.xcconfig"; sourceTree = "<group>"; };
+		B10370B9A0B636FCB7CB39D4 /* libPods-Consultly-ConsultlyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Consultly-ConsultlyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4C8DE1F963611D4BD65810B /* Pods-Consultly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Consultly.release.xcconfig"; path = "Target Support Files/Pods-Consultly/Pods-Consultly.release.xcconfig"; sourceTree = "<group>"; };
+		E2F09D4C8E72C0E0A38675EF /* libPods-Consultly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Consultly.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB74A85375B1205207CF3ABD /* Pods-Consultly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Consultly.debug.xcconfig"; path = "Target Support Files/Pods-Consultly/Pods-Consultly.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		FE8F8FD2CCBB14F7078F0912 /* Pods-Consultly-ConsultlyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Consultly-ConsultlyTests.release.xcconfig"; path = "Target Support Files/Pods-Consultly-ConsultlyTests/Pods-Consultly-ConsultlyTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6441A2C231F06D81697D6A86 /* libPods-Consultly-ConsultlyTests.a in Frameworks */,
+				4DFF42B5B658D6553A371118 /* libPods-Consultly-ConsultlyTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6CA3FC04F35BA084462E2E4B /* libPods-Consultly.a in Frameworks */,
+				DD357391C3A76D2FC0497B90 /* libPods-Consultly.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,8 +103,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				A4EFAEBE4261EABDB3295DA3 /* libPods-Consultly.a */,
-				8399C5A89C6CD2964C807FAA /* libPods-Consultly-ConsultlyTests.a */,
+				E2F09D4C8E72C0E0A38675EF /* libPods-Consultly.a */,
+				B10370B9A0B636FCB7CB39D4 /* libPods-Consultly-ConsultlyTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -143,10 +143,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				CF4F3400CF3F7CBBB2F9CB34 /* Pods-Consultly.debug.xcconfig */,
-				90EED7BA4831136C4F5118CD /* Pods-Consultly.release.xcconfig */,
-				915CF4ADCBFE8BDCB18912A2 /* Pods-Consultly-ConsultlyTests.debug.xcconfig */,
-				50DA9337E3EBB832A62EFD18 /* Pods-Consultly-ConsultlyTests.release.xcconfig */,
+				EB74A85375B1205207CF3ABD /* Pods-Consultly.debug.xcconfig */,
+				B4C8DE1F963611D4BD65810B /* Pods-Consultly.release.xcconfig */,
+				765EF828E929831694A3FFE7 /* Pods-Consultly-ConsultlyTests.debug.xcconfig */,
+				FE8F8FD2CCBB14F7078F0912 /* Pods-Consultly-ConsultlyTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -158,12 +158,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ConsultlyTests" */;
 			buildPhases = (
-				D1DE53014D8F3582E1488E3F /* [CP] Check Pods Manifest.lock */,
+				73AFBFEDFEB6A4B03246B6FD /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				A32919CA9B2C30CBD2CBFBA7 /* [CP] Embed Pods Frameworks */,
-				6C5F2EDA4DDD239EAA5C09C2 /* [CP] Copy Pods Resources */,
+				62BFDEFC0381AB8AAB328979 /* [CP] Embed Pods Frameworks */,
+				62165BC28AD8743ED3E78A50 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -179,13 +179,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Consultly" */;
 			buildPhases = (
-				030A9D20C9D5AEFF30A045D2 /* [CP] Check Pods Manifest.lock */,
+				2D91F8B080B8BE963B73BFCA /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				D2DFB717ADC47F249B50CF8F /* [CP] Embed Pods Frameworks */,
-				A9080255608BC698227F8B29 /* [CP] Copy Pods Resources */,
+				C09F419436DD9AD7500D8766 /* [CP] Embed Pods Frameworks */,
+				DF0890475A805F80E38779E6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -202,7 +202,8 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -269,7 +270,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		030A9D20C9D5AEFF30A045D2 /* [CP] Check Pods Manifest.lock */ = {
+		2D91F8B080B8BE963B73BFCA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -291,7 +292,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6C5F2EDA4DDD239EAA5C09C2 /* [CP] Copy Pods Resources */ = {
+		62165BC28AD8743ED3E78A50 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -308,7 +309,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Consultly-ConsultlyTests/Pods-Consultly-ConsultlyTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A32919CA9B2C30CBD2CBFBA7 /* [CP] Embed Pods Frameworks */ = {
+		62BFDEFC0381AB8AAB328979 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -325,24 +326,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Consultly-ConsultlyTests/Pods-Consultly-ConsultlyTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A9080255608BC698227F8B29 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Consultly/Pods-Consultly-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Consultly/Pods-Consultly-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Consultly/Pods-Consultly-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D1DE53014D8F3582E1488E3F /* [CP] Check Pods Manifest.lock */ = {
+		73AFBFEDFEB6A4B03246B6FD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -364,7 +348,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D2DFB717ADC47F249B50CF8F /* [CP] Embed Pods Frameworks */ = {
+		C09F419436DD9AD7500D8766 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -379,6 +363,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Consultly/Pods-Consultly-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DF0890475A805F80E38779E6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Consultly/Pods-Consultly-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Consultly/Pods-Consultly-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Consultly/Pods-Consultly-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -414,7 +415,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 915CF4ADCBFE8BDCB18912A2 /* Pods-Consultly-ConsultlyTests.debug.xcconfig */;
+			baseConfigurationReference = 765EF828E929831694A3FFE7 /* Pods-Consultly-ConsultlyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -441,7 +442,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 50DA9337E3EBB832A62EFD18 /* Pods-Consultly-ConsultlyTests.release.xcconfig */;
+			baseConfigurationReference = FE8F8FD2CCBB14F7078F0912 /* Pods-Consultly-ConsultlyTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -465,7 +466,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF4F3400CF3F7CBBB2F9CB34 /* Pods-Consultly.debug.xcconfig */;
+			baseConfigurationReference = EB74A85375B1205207CF3ABD /* Pods-Consultly.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -493,7 +494,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 90EED7BA4831136C4F5118CD /* Pods-Consultly.release.xcconfig */;
+			baseConfigurationReference = B4C8DE1F963611D4BD65810B /* Pods-Consultly.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -550,6 +551,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -586,10 +588,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -630,6 +629,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -658,10 +658,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

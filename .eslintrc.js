@@ -4,6 +4,7 @@ module.exports = {
   // write the rules to allow double quotes
   rules: {
     quotes: ["error", "double"],
-    curly: ["allow", "all"],
+    curly: 0,
+    "react/react-in-jsx-scope": 0,
   },
 };

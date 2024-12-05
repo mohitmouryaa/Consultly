@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { checkFirstLaunch, deleteToken, getToken } from "../lib/secureStore";
-import { setIsFirstLaunch, setIsLoggedIn } from "../../store/slices/userSlice";
+import { clearUser, setIsFirstLaunch, setIsLoggedIn } from "../../store/slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { setIsInternetConnected } from "../../store/slices/miscSlice";
 import NetInfo from "@react-native-community/netinfo";
@@ -9,7 +9,11 @@ import SplashScreen from "./shared/SplashScreen";
 import AuthStackScreen from "./auth/AuthStackScreen";
 import HomeStackScreen from "./home/HomeStackScreen";
 import Welcome from "./auth/Welcome";
-import { setCallerDetails, setCallModal } from "../../store/slices/chatSlice";
+import {
+  setCallerDetails,
+  setCallLoading,
+  setCallModal,
+} from "../../store/slices/chatSlice";
 
 const Stack = createStackNavigator();
 
@@ -19,7 +23,6 @@ export default memo(function StackScreens() {
   const isFirstLaunch = useAppSelector(state => state.user.isFirstLaunch);
   const isLoggedIn = useAppSelector(state => state.user.isLoggedIn);
   const [isReady, setIsReady] = useState(true);
-
   const intializeApp = useCallback(async () => {
     const token = await getToken();
     let loginStatus = false;
@@ -36,15 +39,16 @@ export default memo(function StackScreens() {
     } finally {
       setIsReady(true);
       dispatch(setIsLoggedIn(loginStatus));
+      dispatch(setCallLoading(false))
     }
   }, [dispatch, userId]);
 
   useEffect(() => {
     intializeApp();
-
     return () => {
       dispatch(setCallModal(false));
       dispatch(setCallerDetails({}));
+      dispatch(setCallLoading(false));
     };
   }, [intializeApp]);
 

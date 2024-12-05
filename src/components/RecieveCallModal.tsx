@@ -1,13 +1,19 @@
 import React, { memo } from "react";
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { setCallerDetails, setCallModal } from "../../store/slices/chatSlice";
+import {
+  setCallerDetails,
+  setCallModal,
+  startCall,
+} from "../../store/slices/chatSlice";
 import { useSocket } from "../providers/socketProvider";
 import { CALL_PICKED, CALL_REJECTED, UPDATE_CALLER } from "../constants";
-import httpClient from "../lib/httpClient";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-export default memo(function CallModal() {
+export default memo(function ReceiveCallModal() {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation<StackNavigationProp<any>>();
   const { socket } = useSocket();
   const modalVisible = useAppSelector(state => state.chat.openCallModal);
   const caller = useAppSelector(state => state.chat.caller);
@@ -15,44 +21,36 @@ export default memo(function CallModal() {
 
   const handleCallAccept = async () => {
     dispatch(setCallModal(false));
-    const { callerId, chatId } = caller;
-    if (!callerId || !chatId) return;
+    const { callerId, chatId, user_type, sql_id } = caller;
+    if (!callerId || !chatId || !sql_id || !user.sql_id) return;
     socket?.emit(CALL_PICKED, { user: { _id: user._id }, callerId, chatId });
-    let counsellorId = null;
-    let userId = null;
+    let counsellorId = "";
+    let userId = "";
 
-    if (caller.user_type === "user") {
-      userId = caller.sql_id;
-      counsellorId = user.sql_id;
+    if (user_type === "user") {
+      userId = sql_id!;
+      counsellorId = user.sql_id!;
     } else if (user.user_type === "user") {
-      counsellorId = caller.sql_id;
-      userId = user.sql_id;
+      counsellorId = sql_id!;
+      userId = user.sql_id!;
     }
     try {
-      const response = await httpClient.post(
-        `http://89.40.9.101:8080/api/startCall`,
-        {
-          roomId: caller.chatId,
-          counsellorId,
-          userId,
-        },
+      const { payload } = await dispatch(
+        startCall({ roomId: chatId, counsellorId, userId }),
       );
-      dispatch(setCallerDetails({ ...caller, id: response.data.callData.id }));
-
-      socket?.emit(UPDATE_CALLER, { caller, id: response.data.callData.id });
+      if (!payload) return;
+      socket?.emit(UPDATE_CALLER, { caller, id: payload });
+      navigation.navigate("call");
     } catch (err) {
       console.error(err);
     }
   };
 
   const handleCallReject = () => {
-    dispatch(setCallModal(false));
-    dispatch(setCallerDetails({}));
     const { callerId, chatId } = caller;
-    console.log("callerId", callerId);
-    console.log("chatId", chatId);
-    if (!callerId || !chatId) return;
     socket?.emit(CALL_REJECTED, { callerId, chatId });
+    dispatch(setCallerDetails({}));
+    dispatch(setCallModal(false));
   };
 
   if (!caller || Object.values(caller).length === 0) return null;

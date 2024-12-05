@@ -35,6 +35,7 @@ export const userSlice = createSlice({
       state._id = action.payload._id;
       state.isPlanActive = action.payload.isPlanActive;
       state.user_type = action.payload.user_type || "user";
+      state.sql_id = action.payload.sql_id?.toString();
     },
     setIsFirstLaunch: (state, action) => {
       state.isFirstLaunch = action.payload;

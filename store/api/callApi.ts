@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "./axiosBaseQuery";
-import Config from "react-native-config";
+import { SQL_SERVER_URL } from "@env";
 
 export const callApi = createApi({
   reducerPath: "callApi",
@@ -9,7 +9,7 @@ export const callApi = createApi({
   endpoints: builder => ({
     getCallHistory: builder.query({
       query: id => ({
-        url: `${Config.SQL_SERVER_URL}/api/getHistory/${id}`,
+        url: `${SQL_SERVER_URL}/api/getHistory/${id}`,
         method: "GET",
       }),
       providesTags: ["Calls"],

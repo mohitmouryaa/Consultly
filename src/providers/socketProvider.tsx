@@ -1,4 +1,3 @@
-import Config from "react-native-config";
 import io, { Socket } from "socket.io-client";
 import { useAppDispatch, useAppSelector } from "../../store";
 import React, {
@@ -19,6 +18,7 @@ import {
 } from "../constants";
 import { chatApi } from "../../store/api";
 import { setCallerDetails, setCallModal } from "../../store/slices/chatSlice";
+import { SERVER_URL } from "@env";
 
 const SocketContext = createContext<SocketContextProps>({
   socket: null,
@@ -39,13 +39,13 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     }
     const initializeSocket = async () => {
       const token = await getToken();
-
-      const newSocket = io(`http://89.40.9.101:3100`, {
+      if (!token) return;
+      const auth = { token };
+      const newSocket = io(`${SERVER_URL}`, {
         withCredentials: true,
         transports: ["websocket"],
-        auth: {
-          token,
-        },
+        auth,
+        timestampRequests: true,
       });
 
       newSocket.on("connect", () => {
@@ -90,6 +90,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     initializeSocket();
 
     return () => {
+      console.log("SOCKET UNMOUNT DISCONNECTED...");
       if (socketRef.current) {
         socketRef.current.emit(CHAT_LEAVED, { userId });
         socketRef.current.close();
