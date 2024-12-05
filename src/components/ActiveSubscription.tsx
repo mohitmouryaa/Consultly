@@ -1,0 +1,103 @@
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import AntIcon from "react-native-vector-icons/AntDesign"; // Import AntDesign icons
+
+const ActiveSubscription = ({
+  planName,
+  expiryDate,
+  price,
+  minutes,
+  validity,
+}) => {
+  return (
+    <View style={styles.card}>
+      {/* First Row: Left-aligned Plan and Right-aligned Expiry Date */}
+      <View style={styles.row}>
+        <Text style={styles.leftText}>{planName}</Text>
+        <Text style={styles.rightText}>{expiryDate}</Text>
+      </View>
+
+      {/* Second Row: Price in Bold */}
+      <Text style={styles.price}>{price}</Text>
+      <View style={styles.line} />
+      <View style={styles.rowHorizontal}>
+        <AntIcon
+          name={"checkcircleo"}
+          size={24}
+          color="#000"
+          style={styles.icon}
+        />
+        <Text style={styles.value}>{minutes}</Text>
+      </View>
+      <View style={styles.rowHorizontal}>
+        <AntIcon
+          name={"checkcircleo"}
+          size={24}
+          color="#000"
+          style={styles.icon}
+        />
+        <Text style={styles.value}>{validity}</Text>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
+  planTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  card: {
+    backgroundColor: "#fff",
+    padding: 16,
+    borderRadius: 10,
+    elevation: 3, // Shadow for Android
+    shadowColor: "#000", // Shadow for iOS
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    marginVertical: 5,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between", // Aligns Basic Plan to left and Expiry Date to right
+    marginBottom: 10, // Adds space between rows
+  },
+  leftText: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  rightText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "gray",
+  },
+  price: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "left",
+  },
+  line: {
+    height: 1, // Thin line
+    backgroundColor: "#ccc", // Light gray color
+    marginVertical: 10, // Optional: adds space around the line
+  },
+  rowHorizontal: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 5,
+  },
+  value: {
+    fontSize: 16,
+    textAlign: "left",
+  },
+  icon: {
+    marginRight: 10,
+  },
+});
+
+export default ActiveSubscription;

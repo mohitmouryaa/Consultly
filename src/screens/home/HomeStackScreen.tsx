@@ -12,6 +12,8 @@ import {
 } from "../../components/HomeStackScreenIcons";
 import ChatsStackScreen from "./ChatsStackScreen";
 import StreamClientProvider from "../../providers/streamClientProvider";
+import { TouchableOpacity } from "react-native";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 const Tab = createBottomTabNavigator();
 
@@ -56,6 +58,15 @@ export default function HomeTabNavigator() {
             options={{
               title: "Profile",
               tabBarIcon: ProfileTabBarIcon,
+              headerRight: () => (
+                <TouchableOpacity
+                  className="ml-4 mr-4"
+                  onPress={() => {
+                    console.log("Logout icon pressed");
+                  }}>
+                  <AntDesign name="logout" size={25} color="#000000" />
+                </TouchableOpacity>
+              ),
             }}
             component={Profile}
           />
