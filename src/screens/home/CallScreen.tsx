@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const callId = "test1";
 
-export const CallScreen = () => {
+export default function CallScreen() {
   const call = useSetCall({ meetingId: callId });
   const navigation = useNavigation<StackNavigationProp<any>>();
 
@@ -53,7 +53,7 @@ export const CallScreen = () => {
       </View>
     </StreamCall>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

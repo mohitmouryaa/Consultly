@@ -8,6 +8,14 @@ interface ChatState {
   };
   chatMessages: { [key: string]: any };
   chatList: ChatItem[];
+  openCallModal: boolean;
+  caller: {
+    callerId?: string;
+    chatId?: string;
+    name?: string;
+    sql_id?: string;
+    user_type?: string;
+  };
 }
 
 const initialState: ChatState = {
@@ -18,6 +26,8 @@ const initialState: ChatState = {
   },
   chatMessages: {},
   chatList: [],
+  openCallModal: false,
+  caller: {},
 };
 
 export const chatSlice = createSlice({
@@ -48,6 +58,18 @@ export const chatSlice = createSlice({
       chat.messageCount = 0;
       state.chatList[index] = chat;
     },
+    setCallModal: (state, action) => {
+      state.openCallModal = action.payload;
+    },
+    setCallerDetails: (state, action) => {
+      state.caller = {
+        callerId: action.payload._id,
+        chatId: action.payload.chatId,
+        name: action.payload.name,
+        sql_id: action.payload.sql_id,
+        user_type: action.payload.user_type,
+      };
+    },
   },
 });
 
@@ -57,6 +79,8 @@ export const {
   setChatMessage,
   setChatList,
   clearUnreadMsgCount,
+  setCallModal,
+  setCallerDetails,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

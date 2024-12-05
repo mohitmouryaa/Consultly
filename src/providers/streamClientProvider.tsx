@@ -26,7 +26,6 @@ export default function StreamClientProvider({ children }: ProviderProps) {
   useLayoutEffect(() => {
     const initializeStreamClient = async () => {
       const token = await streamTokenProvider();
-      console.log("stream token", token);
       if (!_user._id || !token) return;
       const user = {
         id: _user._id!,
@@ -34,7 +33,7 @@ export default function StreamClientProvider({ children }: ProviderProps) {
         image: _user.avatar?.url!,
       };
 
-      const client = new StreamVideoClient({
+      const client = StreamVideoClient.getOrCreateInstance({
         apiKey: "72hm7n8h6km2",
         user,
         token,

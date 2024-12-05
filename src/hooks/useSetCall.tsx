@@ -27,10 +27,6 @@ export const useSetCall = ({ meetingId }: { meetingId: string }) => {
         await callToSet.getOrCreate();
         setCall(callToSet);
         setRetryCount(0); // Reset retry count on success
-        // setQueryParams(); // Call this after setting the call
-        if (!meetingId) {
-          // SOCKET
-        }
       } catch (error) {
         console.error("Error creating or getting call:", error);
         setRetryCount(prevCount => prevCount + 1);
@@ -44,12 +40,7 @@ export const useSetCall = ({ meetingId }: { meetingId: string }) => {
     };
 
     fetchCall();
-
-    // Cleanup function to handle potential cancellation
-    return () => {
-      // Optionally, clear timers or perform other cleanup
-    };
-  }, [chatId, client, meetingId, retryCount]); // Removed navigate and location.search from dependencies
+  }, [chatId, client, meetingId, retryCount]);
 
   return call;
 };

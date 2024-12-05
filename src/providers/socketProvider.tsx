@@ -10,12 +10,15 @@ import React, {
 } from "react";
 import { getToken } from "../lib/secureStore";
 import {
+  CALL_CANCELLED,
+  CALL_RECIEVED,
   CHAT_JOINED,
   CHAT_LEAVED,
   NEW_MESSAGE_ALERT,
   ONLINE_USERS,
 } from "../constants";
 import { chatApi } from "../../store/api";
+import { setCallerDetails, setCallModal } from "../../store/slices/chatSlice";
 
 const SocketContext = createContext<SocketContextProps>({
   socket: null,
@@ -69,6 +72,16 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
             },
           ) as any,
         );
+      });
+
+      newSocket?.on(CALL_RECIEVED, ({ caller, chatId }) => {
+        dispatch(setCallModal(true));
+        dispatch(setCallerDetails({ ...caller, chatId }));
+      });
+
+      newSocket?.on(CALL_CANCELLED, () => {
+        dispatch(setCallModal(false));
+        dispatch(setCallerDetails({}));
       });
 
       socketRef.current = newSocket;

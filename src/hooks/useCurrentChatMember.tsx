@@ -16,12 +16,12 @@ export default function useCurrentChatMember() {
   }, [onlineUsers, members]);
 
   useEffect(() => {
-    socket?.on(START_TYPING, ({ chatId }) => {
+    socket?.on(START_TYPING, ({ chatId }: { chatId: string }) => {
       if (chatId !== _id) return;
       setOtherUserTyping(true);
     });
 
-    socket?.on(STOP_TYPING, ({ chatId }) => {
+    socket?.on(STOP_TYPING, ({ chatId }: { chatId: string }) => {
       if (chatId !== _id) return;
       setOtherUserTyping(false);
     });
@@ -38,5 +38,6 @@ export default function useCurrentChatMember() {
     name,
     members,
     isOtherUserTyping,
+    socket,
   };
 }

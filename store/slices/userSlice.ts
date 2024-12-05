@@ -12,11 +12,15 @@ interface UserState {
   _id?: string;
   isFirstLaunch: boolean;
   isLoggedIn: boolean;
+  isPlanActive: boolean;
+  sql_id?: string;
+  user_type?: "user" | "admin" | "counsellor";
 }
 
 const initialState: UserState = {
   isFirstLaunch: false,
   isLoggedIn: false,
+  isPlanActive: false,
 };
 
 export const userSlice = createSlice({
@@ -29,6 +33,8 @@ export const userSlice = createSlice({
       state.name = action.payload.name;
       state.email = action.payload.email;
       state._id = action.payload._id;
+      state.isPlanActive = action.payload.isPlanActive;
+      state.user_type = action.payload.user_type || "user";
     },
     setIsFirstLaunch: (state, action) => {
       state.isFirstLaunch = action.payload;
@@ -36,14 +42,7 @@ export const userSlice = createSlice({
     setIsLoggedIn: (state, action) => {
       state.isLoggedIn = action.payload;
     },
-    clearUser: state => {
-      state.avatar = undefined;
-      state.username = undefined;
-      state.name = undefined;
-      state.email = undefined;
-      state._id = undefined;
-      state.isLoggedIn = false;
-    },
+    clearUser: () => initialState,
   },
 });
 

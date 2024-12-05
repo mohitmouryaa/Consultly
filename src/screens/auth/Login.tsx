@@ -49,7 +49,9 @@ export default memo(function LoginScreen({ navigation }: LoginProps) {
       }
       const response = await httpClient.post("/user/login", { ...form });
       if (response.status === 200) {
-        const { token, user } = response.data;
+        const { token, user, plan } = response.data;
+        user.isPlanActive =
+          plan && response?.data?.plan?.remainingMinutes > 0 ? true : false;
         dispatch(setUser({ ...user }));
         await storeToken(token);
         dispatch(setIsLoggedIn(true));

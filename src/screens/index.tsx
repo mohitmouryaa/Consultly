@@ -9,6 +9,7 @@ import SplashScreen from "./shared/SplashScreen";
 import AuthStackScreen from "./auth/AuthStackScreen";
 import HomeStackScreen from "./home/HomeStackScreen";
 import Welcome from "./auth/Welcome";
+import { setCallerDetails, setCallModal } from "../../store/slices/chatSlice";
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,11 @@ export default memo(function StackScreens() {
 
   useEffect(() => {
     intializeApp();
+
+    return () => {
+      dispatch(setCallModal(false));
+      dispatch(setCallerDetails({}));
+    };
   }, [intializeApp]);
 
   useEffect(() => {

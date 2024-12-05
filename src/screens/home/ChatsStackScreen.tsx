@@ -5,7 +5,7 @@ import Chat from "./Chat";
 import ChatsRightHeader from "./ChatsRightHeader";
 import ChatHeaderTitle from "../../components/Chats/ChatHeaderTitle";
 import ChatHeaderRight from "../../components/Chats/ChatHeaderRight";
-import { CallScreen } from "./CallScreen";
+import CallScreen from "./CallScreen";
 
 const ChatsStack = createStackNavigator();
 
