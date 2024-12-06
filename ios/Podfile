@@ -14,17 +14,16 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'Consultly' do
+target 'consultly' do
   config = use_native_modules!
 
   use_react_native!(
     :path => config[:reactNativePath],
-    :hermes_enabled => true, # Enable Hermes
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'ConsultlyTests' do
+  target 'consultlyTests' do
     inherit! :complete
     # Pods for testing
   end

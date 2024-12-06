@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Consultly.app"
-               BlueprintName = "Consultly"
-               ReferencedContainer = "container:Consultly.xcodeproj">
+               BuildableName = "consultly.app"
+               BlueprintName = "consultly"
+               ReferencedContainer = "container:consultly.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "ConsultlyTests.xctest"
-               BlueprintName = "ConsultlyTests"
-               ReferencedContainer = "container:Consultly.xcodeproj">
+               BuildableName = "consultlyTests.xctest"
+               BlueprintName = "consultlyTests"
+               ReferencedContainer = "container:consultly.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Consultly.app"
-            BlueprintName = "Consultly"
-            ReferencedContainer = "container:Consultly.xcodeproj">
+            BuildableName = "consultly.app"
+            BlueprintName = "consultly"
+            ReferencedContainer = "container:consultly.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Consultly.app"
-            BlueprintName = "Consultly"
-            ReferencedContainer = "container:Consultly.xcodeproj">
+            BuildableName = "consultly.app"
+            BlueprintName = "consultly"
+            ReferencedContainer = "container:consultly.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
