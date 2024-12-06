@@ -14,8 +14,24 @@ import ChatsStackScreen from "./ChatsStackScreen";
 import StreamClientProvider from "../../providers/streamClientProvider";
 import { TouchableOpacity } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { useAppDispatch } from "../../../store";
+import { resetState } from "../../../store/actions/resetState";
 
 const Tab = createBottomTabNavigator();
+
+const LogoutButton = () => {
+  const dispatch = useAppDispatch();
+
+  const logoutHandler = () => {
+    dispatch(resetState());
+  };
+
+  return (
+    <TouchableOpacity className="ml-4 mr-4" onPress={logoutHandler}>
+      <AntDesign name="logout" size={25} color="#000000" />
+    </TouchableOpacity>
+  );
+};
 
 export default function HomeTabNavigator() {
   const tabBarOptions = useMemo(
@@ -58,15 +74,7 @@ export default function HomeTabNavigator() {
             options={{
               title: "Profile",
               tabBarIcon: ProfileTabBarIcon,
-              headerRight: () => (
-                <TouchableOpacity
-                  className="ml-4 mr-4"
-                  onPress={() => {
-                    console.log("Logout icon pressed");
-                  }}>
-                  <AntDesign name="logout" size={25} color="#000000" />
-                </TouchableOpacity>
-              ),
+              headerRight: LogoutButton,
             }}
             component={Profile}
           />

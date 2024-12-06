@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { checkFirstLaunch, deleteToken, getToken } from "../lib/secureStore";
-import { clearUser, setIsFirstLaunch, setIsLoggedIn } from "../../store/slices/userSlice";
+import { setIsFirstLaunch, setIsLoggedIn } from "../../store/slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { setIsInternetConnected } from "../../store/slices/miscSlice";
 import NetInfo from "@react-native-community/netinfo";
@@ -39,7 +39,7 @@ export default memo(function StackScreens() {
     } finally {
       setIsReady(true);
       dispatch(setIsLoggedIn(loginStatus));
-      dispatch(setCallLoading(false))
+      dispatch(setCallLoading(false));
     }
   }, [dispatch, userId]);
 

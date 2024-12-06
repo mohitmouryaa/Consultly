@@ -7,6 +7,7 @@ interface ChatState {
     members: string[];
     name: string;
     _id: string;
+    avatar?: any;
   };
   chatMessages: { [key: string]: any };
   chatList: ChatItem[];

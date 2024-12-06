@@ -5,7 +5,7 @@ import { START_TYPING, STOP_TYPING } from "../constants";
 
 export default function useCurrentChatMember() {
   const [isOtherUserTyping, setOtherUserTyping] = useState(false);
-  const { members, _id, name } = useAppSelector(
+  const { members, _id, name, avatar } = useAppSelector(
     ({ chat }) => chat.currentChatInfo,
   );
 
@@ -30,12 +30,13 @@ export default function useCurrentChatMember() {
       socket?.off(START_TYPING);
       socket?.off(STOP_TYPING);
     };
-  }, []);
+  }, [_id, socket]);
 
   return {
     isUserOnline,
     _id,
     name,
+    avatar,
     members,
     isOtherUserTyping,
     socket,

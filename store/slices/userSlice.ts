@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { deleteToken } from "../../src/lib/secureStore";
 
 interface UserState {
   avatar?: {
@@ -43,7 +44,10 @@ export const userSlice = createSlice({
     setIsLoggedIn: (state, action) => {
       state.isLoggedIn = action.payload;
     },
-    clearUser: () => initialState,
+    clearUser: state => {
+      deleteToken();
+      Object.assign(state, initialState);
+    },
   },
 });
 

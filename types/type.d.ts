@@ -51,7 +51,7 @@ declare interface CallBoxProps {
     callType: string;
     callSide: string;
     time: string;
-    user: {
+    counselor: {
       _id: number;
       name: string;
       image: string;

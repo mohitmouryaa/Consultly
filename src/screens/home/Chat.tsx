@@ -31,7 +31,7 @@ export default function Chat() {
       // LEAVE THE CHAT ROOM
       socket?.emit(CHAT_LEAVED, { chatId: chatId });
     };
-  }, [navigation, userId, socket, chatId]);
+  }, [navigation, userId, socket, chatId, dispatch]);
 
   return (
     <SafeAreaView className="flex h-full bg-white">

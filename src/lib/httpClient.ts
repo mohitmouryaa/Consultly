@@ -1,8 +1,8 @@
 import axios from "axios";
-import { deleteToken, getToken } from "./secureStore";
+import { getToken } from "./secureStore";
 import { store } from "../../store";
-import { clearUser } from "../../store/slices/userSlice";
 import { SERVER_URL } from "@env";
+import { resetState } from "../../store/actions/resetState";
 
 const controllers = new Map<string, AbortController>();
 
@@ -45,8 +45,7 @@ httpClient.interceptors.response.use(
   },
   async error => {
     if (error?.response?.status === 401) {
-      await deleteToken();
-      store.dispatch(clearUser());
+      store.dispatch(resetState());
     }
     return Promise.reject(error);
   },

@@ -19,6 +19,8 @@ import { userSlice } from "./slices/userSlice";
 import { chatSlice } from "./slices/chatSlice";
 import { miscSlice } from "./slices/miscSlice";
 import { chatApi, callApi } from "./api";
+import { RESET_STATE_ACTION_TYPE } from "./actions/resetState";
+import { deleteToken } from "../src/lib/secureStore";
 
 export const mmkv = new MMKVLoader().initialize();
 
@@ -36,7 +38,15 @@ const rootReducer = combineReducers({
   [callApi.reducerPath]: callApi.reducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const reducer = (state: any, action: any) => {
+  if (action.type === RESET_STATE_ACTION_TYPE) {
+    deleteToken();
+    return rootReducer(undefined, action);
+  }
+  return rootReducer(state, action);
+};
+
+const persistedReducer = persistReducer(persistConfig, reducer);
 
 const store = configureStore({
   reducer: persistedReducer,
