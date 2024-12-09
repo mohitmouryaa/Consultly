@@ -38,10 +38,10 @@ export default memo(function Plans() {
   const renderItem = ({ item }: { item: any }) => (
     <ActiveSubscription
       planName={item.name}
-      expiryDate={item.expiryDate}
+      expiryDate={item.updatedAt}
       price={item.price}
       minutes={item.minutes}
-      validity={item.validity}
+      validity={item.validity_days}
     />
   );
 
@@ -49,7 +49,7 @@ export default memo(function Plans() {
     <SafeAreaView className="flex-col justify-between flex-1 w-full h-full bg-white">
       <FlatList
         className="mx-5"
-        data={data}
+        data={plans}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         ListHeaderComponent={
@@ -60,9 +60,9 @@ export default memo(function Plans() {
             <ActiveSubscription
               planName={"Trial Plan"}
               expiryDate="Expires on 12-07-2024"
-              price={"$49.99"}
-              minutes={"25/25 minutes"}
-              validity={"10 Days"}
+              price={"49.99"}
+              minutes={"25/25"}
+              validity={"10"}
             />
             <Text className="text-xl font-bold mb-2.5 mt-5">Plans</Text>
           </View>

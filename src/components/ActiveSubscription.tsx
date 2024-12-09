@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import AntIcon from "react-native-vector-icons/AntDesign"; // Import AntDesign icons
+import { convertDate } from "../lib/utils";
 
 const ActiveSubscription = ({
   planName,
@@ -14,11 +15,11 @@ const ActiveSubscription = ({
       {/* First Row: Left-aligned Plan and Right-aligned Expiry Date */}
       <View style={styles.row}>
         <Text style={styles.leftText}>{planName}</Text>
-        <Text style={styles.rightText}>{expiryDate}</Text>
+        <Text style={styles.rightText}>Expiry: {convertDate(expiryDate)}</Text>
       </View>
 
       {/* Second Row: Price in Bold */}
-      <Text style={styles.price}>{price}</Text>
+      <Text style={styles.price}>${price}</Text>
       <View style={styles.line} />
       <View style={styles.rowHorizontal}>
         <AntIcon
@@ -27,7 +28,7 @@ const ActiveSubscription = ({
           color="#000"
           style={styles.icon}
         />
-        <Text style={styles.value}>{minutes}</Text>
+        <Text style={styles.value}>{minutes} minutes</Text>
       </View>
       <View style={styles.rowHorizontal}>
         <AntIcon
@@ -36,7 +37,7 @@ const ActiveSubscription = ({
           color="#000"
           style={styles.icon}
         />
-        <Text style={styles.value}>{validity}</Text>
+        <Text style={styles.value}>{validity} Days</Text>
       </View>
     </View>
   );
