@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "./axiosBaseQuery";
+import { SQL_SERVER_URL } from "@env";
 
 export const chatApi = createApi({
   reducerPath: "chatApi",
@@ -20,7 +21,15 @@ export const chatApi = createApi({
       }),
       providesTags: ["Chat"],
     }),
+    getPlans: builder.query({
+      query: () => ({
+        url: `${SQL_SERVER_URL}/api/plans`,
+        method: "GET",
+      }),
+      providesTags: ["Chat"],
+    }),
   }),
 });
 
-export const { useGetMyChatsQuery, useGetChatByIdQuery } = chatApi;
+export const { useGetMyChatsQuery, useGetChatByIdQuery, useGetPlansQuery } =
+  chatApi;

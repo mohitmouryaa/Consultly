@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ActiveSubscription from "../../components/ActiveSubscription";
 import { FlatList } from "react-native-gesture-handler";
+import { useGetPlansQuery } from "../../../store/api";
 
 const data = [
   {
@@ -32,6 +33,8 @@ const data = [
 ];
 
 export default memo(function Plans() {
+  const { data: plans } = useGetPlansQuery(undefined);
+  console.log("plans", plans);
   const renderItem = ({ item }: { item: any }) => (
     <ActiveSubscription
       planName={item.name}
