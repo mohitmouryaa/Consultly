@@ -2,13 +2,20 @@ import { TouchableOpacity, View, Text, Image } from "react-native";
 import { useMemo } from "react";
 import { images } from "../constants";
 import { convertDate } from "../lib/utils";
+import { useAppSelector } from "../../store";
 
 export default function CallBox({ item }: CallBoxProps) {
+  const userType = useAppSelector(state => state.user.user_type);
+
+  const otherUserType = useMemo(() => {
+    return userType === "user" ? "counselor" : "user";
+  }, [userType]);
+
   const imageSrc = useMemo(() => {
-    return item?.counselor?.image
-      ? { uri: item?.counselor?.image }
+    return item?.[otherUserType]?.image
+      ? { uri: item?.[otherUserType]?.image }
       : images.profilePic;
-  }, [item?.counselor?.image]);
+  }, [item, otherUserType]);
 
   const callDuration = parseInt(
     (item?.durationMinutes * 1 || 1).toString(),
@@ -25,7 +32,7 @@ export default function CallBox({ item }: CallBoxProps) {
           />
           <View className="ml-3">
             <Text className="text-lg font-JakartaBold">
-              {item?.counselor?.name}
+              {item?.[otherUserType]?.name}
             </Text>
             <View className="flex flex-row items-start gap-1">
               <Text className="text-xs font-JakartaMedium">

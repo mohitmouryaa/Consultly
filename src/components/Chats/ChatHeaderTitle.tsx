@@ -9,7 +9,7 @@ export default function ChatHeaderTitle() {
       <Image
         source={{
           uri: "https://plus.unsplash.com/premium_photo-1664476788423-7899ac87bd7f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bWFsZXxlbnwwfHwwfHx8MA%3D%3D",
-        }} // Replace with actual profile image URL
+        }} // TODO: Replace with actual profile image URL
         className="w-10 h-10 rounded-full mr-2.5"
       />
       <View>

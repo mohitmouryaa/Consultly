@@ -3,6 +3,7 @@ import { useAppSelector } from "../../../store";
 import { useGetCallHistoryQuery } from "../../../store/api";
 import { RefreshControl } from "react-native-gesture-handler";
 import CallBox from "../../components/CallBox";
+import { useMemo } from "react";
 
 export default function CallHistory() {
   const user = useAppSelector(state => state.user);
@@ -11,7 +12,8 @@ export default function CallHistory() {
     isLoading: refresing,
     refetch,
   } = useGetCallHistoryQuery(user._id);
-  const calls = data?.data?.history || [];
+
+  const calls = useMemo(() => data?.data?.history, [data?.data?.history]);
   return (
     <View className="w-screen h-full px-1 bg-white">
       {/* CALLS */}

@@ -34,7 +34,6 @@ const data = [
 
 export default memo(function Plans() {
   const { data: plans } = useGetPlansQuery(undefined);
-  console.log("plans", plans);
   const renderItem = ({ item }: { item: any }) => (
     <ActiveSubscription
       planName={item.name}

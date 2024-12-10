@@ -15,7 +15,7 @@ interface UserState {
   isLoggedIn: boolean;
   isPlanActive: boolean;
   sql_id?: string;
-  user_type?: "user" | "admin" | "counsellor";
+  user_type?: "user" | "admin" | "counselor";
 }
 
 const initialState: UserState = {
