@@ -31,15 +31,15 @@ export default memo(function ReceiveCallModal() {
     if (!callerId || !chatId || !sql_id || !user.sql_id) return;
     socket?.emit(CALL_PICKED, { user: { _id: user._id }, callerId, chatId });
     try {
-      const { payload, meta } = await dispatch(
-        startCall({
-          roomId: chatId,
-          counsellorId: user.sql_id,
-          userId: sql_id,
-        }),
-      );
-      if (meta.requestStatus === "rejected") throw new Error();
-      socket?.emit(UPDATE_CALLER, { caller, id: payload.id });
+      // const { payload, meta } = await dispatch(
+      //   startCall({
+      //     roomId: chatId,
+      //     counsellorId: user.sql_id,
+      //     userId: sql_id,
+      //   }),
+      // );
+      // if (meta.requestStatus === "rejected") throw new Error();
+      socket?.emit(UPDATE_CALLER, { caller, id: "test1" });
       navigation.navigate("call");
     } catch {
       Alert.alert("Error", "Failed to start call");

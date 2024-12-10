@@ -1,11 +1,11 @@
 import { Alert, TouchableOpacity, View } from "react-native";
-import AntDesign from "react-native-vector-icons/AntDesign";
 import { CALL_REJECTED, CALLED_USER } from "../../constants";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import useCurrentChatMember from "../../hooks/useCurrentChatMember";
 import { useEffect, useState } from "react";
-import CallModal from "../CallModal";
 import { setCallerDetails } from "../../../store/slices/chatSlice";
+import CallModal from "../CallModal";
+import useCurrentChatMember from "../../hooks/useCurrentChatMember";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 export default function ChatHeaderRight() {
   const dispatch = useAppDispatch();
@@ -26,6 +26,7 @@ export default function ChatHeaderRight() {
     //   return;
     // }
     socket?.emit(CALLED_USER, { caller: user, members, chatId });
+    dispatch(setCallerDetails({ caller: user, members, chatId }));
     setShowModal(true);
   };
 
@@ -36,7 +37,7 @@ export default function ChatHeaderRight() {
         if (callerChatId === chatId) {
           setShowModal(false);
           Alert.alert("", "Call Rejected By User");
-          dispatch;
+          dispatch(setCallerDetails({}));
         }
       },
     );

@@ -43,15 +43,15 @@ export default memo(function CallModal({
       try {
         const userId = user.sql_id!;
         const counsellorId = callerSqlId!;
-        if (!userId || !counsellorId) return;
-        const res = await dispatch(
-          startCall({ roomId: chatId, counsellorId, userId }),
-        );
-        if (res.meta.requestStatus === "rejected") throw new Error();
-        socket?.emit(UPDATE_CALLER, {
-          caller: { ...user },
-          id: res.payload.id,
-        });
+        // if (!userId || !counsellorId) return;
+        // const res = await dispatch(
+        //   startCall({ roomId: chatId, counsellorId, userId }),
+        // );
+        // if (res.meta.requestStatus === "rejected") throw new Error();
+        // socket?.emit(UPDATE_CALLER, {
+        //   caller: { ...user },
+        //   id: "test1",
+        // });
         navigation.navigate("call");
       } catch {
         Alert.alert("Error", "Failed to start call");
