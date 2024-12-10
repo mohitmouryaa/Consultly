@@ -27,12 +27,13 @@ export default function CallHistory() {
         keyboardShouldPersistTaps="handled"
         renderItem={({ item }) => <CallBox item={item} />}
         className="mx-3"
+        inverted={true}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refresing} onRefresh={refetch} />
         }
-        //ListEmptyComponent={EmptyCallList}
+        // ListEmptyComponent={EmptyCallList}
       />
     </View>
   );

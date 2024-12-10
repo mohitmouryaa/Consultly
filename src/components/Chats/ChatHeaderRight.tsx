@@ -1,18 +1,14 @@
 import { Alert, TouchableOpacity, View } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { CALL_PICKED, CALL_REJECTED, CALLED_USER } from "../../constants";
-import { useAppSelector } from "../../../store";
+import { CALL_REJECTED, CALLED_USER } from "../../constants";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import useCurrentChatMember from "../../hooks/useCurrentChatMember";
 import { useEffect, useState } from "react";
 import CallModal from "../CallModal";
-
-type CallPickedProps = {
-  user: { _id: string };
-  chatId: string;
-  callerId: string;
-};
+import { setCallerDetails } from "../../../store/slices/chatSlice";
 
 export default function ChatHeaderRight() {
+  const dispatch = useAppDispatch();
   const [showModal, setShowModal] = useState(false);
   const user = useAppSelector(state => state.user);
   const isInternetConnected = useAppSelector(
@@ -34,19 +30,14 @@ export default function ChatHeaderRight() {
   };
 
   useEffect(() => {
-    socket?.on(CALL_REJECTED, ({ chatId: callerId }: { chatId: string }) => {
-      if (callerId === chatId) {
-        setShowModal(false);
-        Alert.alert("", "Call Rejected By User");
-      }
-    });
     socket?.on(
-      CALL_PICKED,
-      ({ user: _user, chatId: _chatId, callerId }: CallPickedProps) => {
-        if (_user._id !== user._id && _chatId !== chatId) return;
-        setShowModal(false);
-        Alert.alert("", "Call Picked By User");
-        console.log(callerId, "callerId");
+      CALL_REJECTED,
+      ({ chatId: callerChatId }: { chatId: string }) => {
+        if (callerChatId === chatId) {
+          setShowModal(false);
+          Alert.alert("", "Call Rejected By User");
+          dispatch;
+        }
       },
     );
 
@@ -54,7 +45,7 @@ export default function ChatHeaderRight() {
       socket?.off(CALLED_USER);
       socket?.off(CALL_REJECTED);
     };
-  }, [socket, chatId, user._id]);
+  }, [socket, chatId, user._id, dispatch]);
   return (
     <View className="flex flex-row mx-2.5 justify-end">
       {user.user_type === "user" && (
@@ -67,6 +58,8 @@ export default function ChatHeaderRight() {
       )}
       {showModal && (
         <CallModal
+          chatId={chatId}
+          user={user}
           name={name}
           avatar={avatar?.url || ""}
           members={members}

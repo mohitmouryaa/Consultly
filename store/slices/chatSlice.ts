@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import httpClient from "../../src/lib/httpClient";
 import { SQL_SERVER_URL } from "@env";
+import { Platform } from "react-native";
 
 interface ChatState {
   currentChatInfo: {
@@ -11,7 +12,7 @@ interface ChatState {
   };
   chatMessages: { [key: string]: any };
   chatList: ChatItem[];
-  openCallModal: boolean;
+  openCallReceiveModal: boolean;
   caller: {
     callerId?: string;
     chatId?: string;
@@ -19,6 +20,7 @@ interface ChatState {
     sql_id?: string;
     user_type?: string;
     id?: string;
+    avatar?: any;
   };
   callLoading: boolean;
 }
@@ -31,7 +33,7 @@ const initialState: ChatState = {
   },
   chatMessages: {},
   chatList: [],
-  openCallModal: false,
+  openCallReceiveModal: false,
   caller: {},
   callLoading: false,
 };
@@ -40,6 +42,7 @@ const initialState: ChatState = {
 export const startCall = createAsyncThunk(
   "chat/startCall",
   async (payload: StartCallPayload, { rejectWithValue }) => {
+    console.log(`payload ${Platform.OS}`, payload);
     try {
       const response = await httpClient.post(
         `${SQL_SERVER_URL}/api/startCall`,
@@ -84,8 +87,8 @@ export const chatSlice = createSlice({
       chat.messageCount = 0;
       state.chatList[index] = chat;
     },
-    setCallModal: (state, action) => {
-      state.openCallModal = action.payload;
+    setCallReceiveModal: (state, action) => {
+      state.openCallReceiveModal = action.payload;
     },
     setCallerDetails: (state, action) => {
       state.caller = {
@@ -94,6 +97,7 @@ export const chatSlice = createSlice({
         name: action.payload.name,
         sql_id: action.payload.sql_id?.toString(),
         user_type: action.payload.user_type,
+        avatar: action.payload.avatar,
       };
     },
     setCallLoading: (state, action) => {
@@ -108,8 +112,7 @@ export const chatSlice = createSlice({
       .addCase(startCall.fulfilled, (state, action) => {
         state.caller.id = action.payload;
       })
-      .addCase(startCall.rejected, (state, action) => {
-        console.error("Start Call Failed:", action.payload);
+      .addCase(startCall.rejected, state => {
         state.callLoading = false;
       });
   },
@@ -121,7 +124,7 @@ export const {
   setChatMessage,
   setChatList,
   clearUnreadMsgCount,
-  setCallModal,
+  setCallReceiveModal,
   setCallerDetails,
   setCallLoading,
 } = chatSlice.actions;

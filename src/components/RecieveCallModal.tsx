@@ -1,48 +1,48 @@
 import React, { memo } from "react";
-import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import { Modal, Text, Pressable, View, Image, Alert } from "react-native";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
   setCallerDetails,
-  setCallModal,
+  setCallReceiveModal,
   startCall,
 } from "../../store/slices/chatSlice";
 import { useSocket } from "../providers/socketProvider";
-import { CALL_PICKED, CALL_REJECTED, UPDATE_CALLER } from "../constants";
+import {
+  CALL_PICKED,
+  CALL_REJECTED,
+  images,
+  UPDATE_CALLER,
+} from "../constants";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 export default memo(function ReceiveCallModal() {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp<any>>();
   const { socket } = useSocket();
-  const modalVisible = useAppSelector(state => state.chat.openCallModal);
+  const modalVisible = useAppSelector(state => state.chat.openCallReceiveModal);
   const caller = useAppSelector(state => state.chat.caller);
   const user = useAppSelector(state => state.user);
 
   const handleCallAccept = async () => {
-    dispatch(setCallModal(false));
-    const { callerId, chatId, user_type, sql_id } = caller;
+    dispatch(setCallReceiveModal(false));
+    const { callerId, chatId, sql_id } = caller;
     if (!callerId || !chatId || !sql_id || !user.sql_id) return;
     socket?.emit(CALL_PICKED, { user: { _id: user._id }, callerId, chatId });
-    let counsellorId = "";
-    let userId = "";
-
-    if (user_type === "user") {
-      userId = sql_id!;
-      counsellorId = user.sql_id!;
-    } else if (user.user_type === "user") {
-      counsellorId = sql_id!;
-      userId = user.sql_id!;
-    }
     try {
-      const { payload } = await dispatch(
-        startCall({ roomId: chatId, counsellorId, userId }),
+      const { payload, meta } = await dispatch(
+        startCall({
+          roomId: chatId,
+          counsellorId: user.sql_id,
+          userId: sql_id,
+        }),
       );
-      if (!payload) return;
-      socket?.emit(UPDATE_CALLER, { caller, id: payload });
+      if (meta.requestStatus === "rejected") throw new Error();
+      socket?.emit(UPDATE_CALLER, { caller, id: payload.id });
       navigation.navigate("call");
-    } catch (err) {
-      console.error(err);
+    } catch {
+      Alert.alert("Error", "Failed to start call");
     }
   };
 
@@ -50,7 +50,7 @@ export default memo(function ReceiveCallModal() {
     const { callerId, chatId } = caller;
     socket?.emit(CALL_REJECTED, { callerId, chatId });
     dispatch(setCallerDetails({}));
-    dispatch(setCallModal(false));
+    dispatch(setCallReceiveModal(false));
   };
 
   if (!caller || Object.values(caller).length === 0) return null;
@@ -60,70 +60,63 @@ export default memo(function ReceiveCallModal() {
       transparent={true}
       visible={modalVisible}
       onRequestClose={handleCallReject}>
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Text className="text-2xl text-black">{caller.name}</Text>
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={handleCallAccept}>
-            <Text style={styles.textStyle}>Accept</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={handleCallReject}>
-            <Text style={styles.textStyle}>Reject</Text>
-          </Pressable>
+      <View className="absolute inset-0 flex items-center justify-center bg-black/50">
+        <View className="w-[90%] max-w-md mx-4 bg-white rounded-3xl p-6 items-center shadow-xl">
+          {/* Avatar */}
+          <View className="w-24 h-24 mb-4 overflow-hidden border-4 border-gray-100 rounded-full shadow-md">
+            <Image
+              source={
+                caller?.avatar?.url
+                  ? { uri: caller.avatar.url }
+                  : images.profilePic
+              }
+              className="w-full h-full"
+              resizeMode="cover"
+            />
+          </View>
+
+          {/* Caller Info */}
+          <View className="items-center mb-8 space-y-2">
+            <Text className="text-xl font-bold text-gray-800">
+              {caller.name}
+            </Text>
+            <Text className="text-sm text-gray-500">
+              Incoming video call...
+            </Text>
+          </View>
+
+          {/* Action Buttons */}
+          <View className="flex-row justify-center w-full space-x-6">
+            {/* Accept Button */}
+            <Pressable
+              onPress={handleCallAccept}
+              className="flex-row items-center justify-center flex-1 px-6 py-3 bg-green-500 rounded-xl active:bg-green-600">
+              <AntDesign
+                name="videocamera"
+                size={20}
+                color="white"
+                className="mr-2"
+              />
+              <Text className="text-base font-semibold text-white">Accept</Text>
+            </Pressable>
+
+            {/* Reject Button */}
+            <Pressable
+              onPress={handleCallReject}
+              className="flex-row items-center justify-center flex-1 px-6 py-3 bg-red-500 rounded-xl active:bg-red-600">
+              <AntDesign
+                name="close"
+                size={20}
+                color="white"
+                className="mr-2"
+              />
+              <Text className="text-base font-semibold text-white">
+                Decline
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </Modal>
   );
-});
-
-const styles = StyleSheet.create({
-  centeredView: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // semi-transparent background
-    zIndex: 1000,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-  },
 });

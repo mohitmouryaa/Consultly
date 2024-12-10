@@ -12,7 +12,7 @@ import Welcome from "./auth/Welcome";
 import {
   setCallerDetails,
   setCallLoading,
-  setCallModal,
+  setCallReceiveModal,
 } from "../../store/slices/chatSlice";
 
 const Stack = createStackNavigator();
@@ -46,11 +46,11 @@ export default memo(function StackScreens() {
   useEffect(() => {
     intializeApp();
     return () => {
-      dispatch(setCallModal(false));
+      dispatch(setCallReceiveModal(false));
       dispatch(setCallerDetails({}));
       dispatch(setCallLoading(false));
     };
-  }, [intializeApp]);
+  }, [dispatch, intializeApp]);
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
@@ -60,7 +60,7 @@ export default memo(function StackScreens() {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [dispatch]);
 
   if (!isReady) {
     return <SplashScreen />;

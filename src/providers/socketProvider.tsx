@@ -15,9 +15,13 @@ import {
   CHAT_LEAVED,
   NEW_MESSAGE_ALERT,
   ONLINE_USERS,
+  UPDATE_CALLER,
 } from "../constants";
 import { chatApi } from "../../store/api";
-import { setCallerDetails, setCallModal } from "../../store/slices/chatSlice";
+import {
+  setCallerDetails,
+  setCallReceiveModal,
+} from "../../store/slices/chatSlice";
 import { SERVER_URL } from "@env";
 
 const SocketContext = createContext<SocketContextProps>({
@@ -75,13 +79,17 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       });
 
       newSocket?.on(CALL_RECIEVED, ({ caller, chatId }) => {
-        dispatch(setCallModal(true));
+        dispatch(setCallReceiveModal(true));
         dispatch(setCallerDetails({ ...caller, chatId }));
       });
 
       newSocket?.on(CALL_CANCELLED, () => {
-        dispatch(setCallModal(false));
+        dispatch(setCallReceiveModal(false));
         dispatch(setCallerDetails({}));
+      });
+
+      newSocket?.on(UPDATE_CALLER, ({ caller, id }) => {
+        dispatch(setCallerDetails({ ...caller, id }));
       });
 
       socketRef.current = newSocket;

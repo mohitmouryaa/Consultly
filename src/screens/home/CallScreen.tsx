@@ -9,7 +9,10 @@ import { useSetCall } from "../../hooks/useSetCall";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import { useAppDispatch } from "../../../store";
-import { setCallLoading, setCallModal } from "../../../store/slices/chatSlice";
+import {
+  setCallLoading,
+  setCallReceiveModal,
+} from "../../../store/slices/chatSlice";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CallScreen() {
@@ -25,7 +28,7 @@ export default function CallScreen() {
     call
       .join({ create: true })
       .then(() => {
-        dispatch(setCallModal(false));
+        dispatch(setCallReceiveModal(false));
         dispatch(setCallLoading(false));
       })
       .catch(error => {
