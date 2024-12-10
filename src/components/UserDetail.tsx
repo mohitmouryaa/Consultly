@@ -10,7 +10,12 @@ const UserDetail = ({ titleName, iconName, value }) => {
 
       {/* Second row: AntDesign Icon and Value */}
       <View style={styles.row}>
-        <AntIcon name={iconName} size={24} color="#000" style={styles.icon} />
+        <AntIcon
+          name={iconName}
+          size={24}
+          color="#FFA001"
+          style={styles.icon}
+        />
         <Text style={styles.value}>{value}</Text>
       </View>
     </View>
@@ -29,6 +34,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
     marginBottom: 10,
+    borderColor: "#FFA001", // Border tint color (light grey example)
+    borderWidth: 1,
   },
   title: {
     fontSize: 14,

@@ -62,13 +62,13 @@ export default memo(function Welcome() {
           <Fragment>
             <CustomBtn
               title="Skip"
-              className="bg-[#faf2ea] flex-1"
+              className="bg-[#faf2ea] flex-1 mr-2"
               textClassName="text-orange-400"
               onPress={handleSkipBtnPress}
             />
             <CustomBtn
               title="Continue"
-              className="flex-1 bg-orange-400"
+              className="flex-1 ml-2 bg-orange-400"
               onPress={handleContinueBtnPress}
             />
           </Fragment>

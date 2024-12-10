@@ -25,7 +25,8 @@ const ActiveSubscription = ({
         <AntIcon
           name={"checkcircleo"}
           size={24}
-          color="#000"
+          //color="#000"
+          color="#FFA001"
           style={styles.icon}
         />
         <Text style={styles.value}>{minutes} minutes</Text>
@@ -34,7 +35,8 @@ const ActiveSubscription = ({
         <AntIcon
           name={"checkcircleo"}
           size={24}
-          color="#000"
+          //color="#000"
+          color="#FFA001"
           style={styles.icon}
         />
         <Text style={styles.value}>{validity} Days</Text>
@@ -62,6 +64,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     marginVertical: 5,
     shadowOffset: { width: 0, height: 2 },
+    borderColor: "#FFA001", // Border tint color (light grey example)
+    borderWidth: 1,
   },
   row: {
     flexDirection: "row",
@@ -84,7 +88,8 @@ const styles = StyleSheet.create({
   },
   line: {
     height: 1, // Thin line
-    backgroundColor: "#ccc", // Light gray color
+    //backgroundColor: "#ccc", // Light gray color
+    backgroundColor: "#FFA001",
     marginVertical: 10, // Optional: adds space around the line
   },
   rowHorizontal: {

@@ -28,8 +28,15 @@ export const chatApi = createApi({
       }),
       providesTags: ["Chat"],
     }),
+    getUserPlan: builder.query({
+      query: ({ userId }) => ({
+        url: `${SQL_SERVER_URL}/api/userPlan/${userId}`,
+        method: "GET",
+      }),
+      providesTags: ["Chat"],
+    }),
   }),
 });
 
-export const { useGetMyChatsQuery, useGetChatByIdQuery, useGetPlansQuery } =
+export const { useGetMyChatsQuery, useGetChatByIdQuery, useGetPlansQuery , useGetUserPlanQuery} =
   chatApi;

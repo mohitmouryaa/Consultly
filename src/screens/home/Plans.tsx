@@ -3,37 +3,15 @@ import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ActiveSubscription from "../../components/ActiveSubscription";
 import { FlatList } from "react-native-gesture-handler";
-import { useGetPlansQuery } from "../../../store/api";
-
-const data = [
-  {
-    id: "1",
-    planName: "Trial Plan",
-    expiryDate: "Expires on 12-07-2024",
-    price: "$49.99",
-    minutes: "25 minutes",
-    validity: "10 Days",
-  },
-  {
-    id: "2",
-    planName: "Trial Plan",
-    expiryDate: "Expires on 12-07-2024",
-    price: "$49.99",
-    minutes: "25 minutes",
-    validity: "10 Days",
-  },
-  {
-    id: "3",
-    planName: "Trial Plan",
-    expiryDate: "Expires on 12-07-2024",
-    price: "$49.99",
-    minutes: "25 minutes",
-    validity: "10 Days",
-  },
-];
+import { useGetPlansQuery, useGetUserPlanQuery } from "../../../store/api";
+import { useAppSelector } from "../../../store";
 
 export default memo(function Plans() {
+  const id = useAppSelector(state => state.user._id);
   const { data: plans } = useGetPlansQuery(undefined);
+  const { data: userPlan } = useGetUserPlanQuery({ userId: id });
+  console.log("plans", userPlan);
+
   const renderItem = ({ item }: { item: any }) => (
     <ActiveSubscription
       planName={item.name}
@@ -49,22 +27,25 @@ export default memo(function Plans() {
       <FlatList
         className="mx-5"
         data={plans}
+        showsVerticalScrollIndicator={false}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         ListHeaderComponent={
-          <View>
-            <Text className="text-xl font-bold mb-2.5">
-              Your Active Subscription
-            </Text>
-            <ActiveSubscription
-              planName={"Trial Plan"}
-              expiryDate="Expires on 12-07-2024"
-              price={"49.99"}
-              minutes={"25/25"}
-              validity={"10"}
-            />
-            <Text className="text-xl font-bold mb-2.5 mt-5">Plans</Text>
-          </View>
+          Object.keys(userPlan || {}).length ? (
+            <View>
+              <Text className="text-xl font-bold mb-2.5">
+                Your Active Subscription
+              </Text>
+              <ActiveSubscription
+                planName={"Trial Plan"}
+                expiryDate="Expires on 12-07-2024"
+                price={"49.99"}
+                minutes={"25/25"}
+                validity={"10"}
+              />
+              <Text className="text-xl font-bold mb-2.5 mt-5">Plans</Text>
+            </View>
+          ) : null
         }
       />
     </SafeAreaView>

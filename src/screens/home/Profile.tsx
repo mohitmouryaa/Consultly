@@ -5,7 +5,8 @@ import { icons } from "../../constants";
 import { useAppSelector } from "../../../store";
 
 export default memo(function Profile() {
-  const { name, username, email } = useAppSelector(state => state.user);
+  const { name, username, email, avatar } = useAppSelector(state => state.user);
+  console.log("Avtar", avatar?.url);
   return (
     <SafeAreaView className="flex-col justify-between flex-1 w-full h-full p-5 bg-white ">
       <ScrollView
@@ -15,8 +16,9 @@ export default memo(function Profile() {
         overScrollMode="never"
         onScrollEndDrag={Keyboard.dismiss}>
         <Image
-          source={icons.profile}
-          className="mx-auto my-3 mb-10 border-2 rounded-full w-28 h-28 border-neutral-400 "
+          source={avatar?.url ? { uri: avatar.url } : icons.profile}
+          className="mx-auto my-3 mb-10 border-2 rounded-full w-28 h-28 "
+          style={{ borderColor: "#FFA001", borderWidth: 1 }}
         />
         {/* <ActiveSubscription /> */}
         <UserDetail titleName="Name" iconName="user" value={name} />

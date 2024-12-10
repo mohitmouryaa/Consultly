@@ -13,7 +13,11 @@ export default function CallHistory() {
     refetch,
   } = useGetCallHistoryQuery(user._id);
 
-  const calls = useMemo(() => data?.data?.history, [data?.data?.history]);
+  //const calls = useMemo(() => data?.data?.history, [data?.data?.history]);
+  const calls = useMemo(() => {
+    return data?.data?.history ? [...data.data.history].reverse() : [];
+  }, [data?.data?.history]);
+
   return (
     <View className="w-screen h-full px-1 bg-white">
       {/* CALLS */}
