@@ -35,6 +35,9 @@ export default memo(function MessageList() {
             <Text className="text-gray-500">No messages available</Text>
           </View>
         }
+        onContentSizeChange={() =>
+          messageListRef.current?.scrollToEnd({ animated: true })
+        } // Scroll when content changes
       />
     </Fragment>
   );
