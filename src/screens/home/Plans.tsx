@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { Alert, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ActiveSubscription from "../../components/ActiveSubscription";
@@ -7,38 +7,75 @@ import { useGetPlansQuery, useGetUserPlanQuery } from "../../../store/api";
 import { useAppSelector } from "../../../store";
 import { initiatePayment } from "../../lib/utils";
 import httpClient from "../../lib/httpClient";
+import { SQL_SERVER_URL } from "@env";
 
 export default memo(function Plans() {
-  const id = useAppSelector(state => state.user._id);
-  const { data: plans } = useGetPlansQuery(undefined);
-  const { data: userPlan } = useGetUserPlanQuery({ userId: id });
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const { _id: id, name, email } = useAppSelector(state => state.user);
+  const { data: plans, refetch: refetchPlans } = useGetPlansQuery(undefined);
+  const { data: userPlan, refetch: refetchUserPlan } = useGetUserPlanQuery(
+    {
+      userId: id,
+    },
+    { skip: !id },
+  );
 
   const handlePurchase = async (plan: any) => {
     try {
-      // First create order on your backend
-      const order = httpClient.post('/')
+      // Prevent multiple clicks
+      if (isProcessingPayment) return;
+      setIsProcessingPayment(true);
 
-      // Initiate Razorpay payment
-      const { success, data, error } = await initiatePayment(
-        plan.price,
-        order.id,
+      // Create order on backend
+      const orderResponse = await httpClient.post(
+        `${SQL_SERVER_URL}/api/createPayment`,
+        {
+          amount: plan.price,
+        },
       );
 
-      if (success && data) {
-        const verification = await httpClient.post("/verify-payment", {
-          orderId: order.id,
-          paymentId: data.razorpay_payment_id,
-          signature: data.razorpay_signature,
-        });
+      if (!orderResponse.data) {
+        throw new Error("Failed to create order");
+      }
 
-        if (verification.data.success) {
+      // Initiate payment
+      const { success, data, error } = await initiatePayment({
+        amount: plan.price,
+        orderId: orderResponse.data.id,
+        email: email!,
+        name: name!,
+        description: "Plan Purchase",
+      });
+
+      if (success && data) {
+        // Verify payment on backend
+        const verificationResponse = await httpClient.post(
+          `${SQL_SERVER_URL}/api/userPlan/` + id,
+          {
+            plan_id: plan.id,
+            payment_id: data.razorpay_payment_id,
+            signature: data.razorpay_signature,
+            order_id: orderResponse.data.id,
+          },
+        );
+
+        if (verificationResponse.data.success) {
           Alert.alert("Success", "Payment successful!");
+          // Refresh plans and user plan
+          await Promise.all([refetchPlans(), refetchUserPlan()]);
+        } else {
+          throw new Error("Payment verification failed");
         }
       } else {
-        Alert.alert("Error", (error as any)?.description || "Payment failed");
+        throw new Error((error as any)?.description || "Payment failed");
       }
-    } catch (error) {
-      Alert.alert("Error", "Something went wrong");
+    } catch (error: any) {
+      Alert.alert(
+        "Error",
+        error.message || "Something went wrong. Please try again.",
+      );
+    } finally {
+      setIsProcessingPayment(false);
     }
   };
 
@@ -69,7 +106,7 @@ export default memo(function Plans() {
               </Text>
               <ActiveSubscription
                 planName={"Trial Plan"}
-                expiryDate="Expires on 12-07-2024"
+                expiryDate="12-07-2024"
                 price={"49.99"}
                 minutes={"25/25"}
                 validity={"10"}

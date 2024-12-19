@@ -1,4 +1,4 @@
-import { RAZORPAY_SECRET_KEY } from "@env";
+import { RAZORPAY_KEY_ID } from "@env";
 import RazorpayCheckout from "react-native-razorpay";
 
 export function convertDate(date: Date) {
@@ -62,37 +62,58 @@ export function generateRoomId(length = 10) {
   return result;
 }
 
-export const initiatePayment = async (
-  amount: number,
-  orderId: string,
+interface PaymentProps {
+  amount: number;
+  orderId: string;
+  currency?: string;
+  email: string;
+  name: string;
+  description?: string;
+  prefill?: {
+    name: string;
+    email: string;
+    contact: string;
+  };
+  theme?: {
+    color: string;
+  };
+}
+
+export const initiatePayment = async ({
+  amount,
+  orderId,
   currency = "USD",
-) => {
+  email,
+  name,
+  description = "Consultly Plan Purchase",
+  prefill,
+  theme,
+}: PaymentProps) => {
   const options = {
-    description: "Consultly Plan Purchase",
-    // image: "https://your-app-logo.png",
+    description,
     currency,
-    key: RAZORPAY_SECRET_KEY,
-    amount,
+    key: RAZORPAY_KEY_ID,
+    amount: amount,
     name: "Consultly",
     order_id: orderId,
     prefill: {
-      email: "user@example.com",
-      contact: "9999999999",
-      name: "User Name",
+      email,
+      name,
+      contact: prefill?.contact || "",
     },
-    theme: { color: "#534ECC" },
+    theme: theme || { color: "#534ECC" },
   };
 
   try {
     const data = await RazorpayCheckout.open(options);
     return {
       success: true,
-      data: data,
+      data,
     };
   } catch (error) {
     return {
       success: false,
-      error: error,
+      error,
     };
   }
 };
