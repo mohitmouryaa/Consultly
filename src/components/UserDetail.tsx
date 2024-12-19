@@ -1,8 +1,18 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 import AntIcon from "react-native-vector-icons/AntDesign"; // Import AntDesign icons
 
-const UserDetail = ({ titleName, iconName, value }) => {
+const UserDetail = ({
+  titleName,
+  iconName,
+  value,
+  readOnly,
+  defaultValue,
+  onChangeText,
+}) => {
+  const handleChangeText = onChangeText || (() => {});
+
   return (
     <View style={styles.card}>
       {/* First row: Title left-aligned */}
@@ -16,7 +26,16 @@ const UserDetail = ({ titleName, iconName, value }) => {
           color="#FFA001"
           style={styles.icon}
         />
-        <Text style={styles.value}>{value}</Text>
+        {/* <Text style={styles.value}>{value}</Text> */}
+        <TextInput
+          defaultValue={defaultValue}
+          value={value}
+          style={styles.value}
+          editable={!readOnly} // If readOnly is true, it will be non-editable
+          selectTextOnFocus={false} // Prevent text selection when read-only
+          pointerEvents={readOnly ? "none" : "auto"} // Disable interactions if readOnly is true
+          onChangeText={handleChangeText}
+        />
       </View>
     </View>
   );
