@@ -1,47 +1,61 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import AntIcon from "react-native-vector-icons/AntDesign"; // Import AntDesign icons
 import { convertDate } from "../lib/utils";
 
-const ActiveSubscription = ({
+interface ActiveSubscriptionProps {
+  planName: string;
+  expiryDate: Date;
+  price: number;
+  minutes: number;
+  validity: number;
+  onPress: () => void;
+}
+
+const ActiveSubscription: React.FC<ActiveSubscriptionProps> = ({
   planName,
   expiryDate,
   price,
   minutes,
   validity,
+  onPress,
 }) => {
   return (
-    <View style={styles.card}>
-      {/* First Row: Left-aligned Plan and Right-aligned Expiry Date */}
-      <View style={styles.row}>
-        <Text style={styles.leftText}>{planName}</Text>
-        <Text style={styles.rightText}>Expiry: {convertDate(expiryDate)}</Text>
-      </View>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.card}>
+        {/* First Row: Left-aligned Plan and Right-aligned Expiry Date */}
+        <View style={styles.row}>
+          <Text style={styles.leftText}>{planName}</Text>
+          <Text style={styles.rightText}>
+            Expiry: {convertDate(expiryDate)}
+          </Text>
+        </View>
 
-      {/* Second Row: Price in Bold */}
-      <Text style={styles.price}>${price}</Text>
-      <View style={styles.line} />
-      <View style={styles.rowHorizontal}>
-        <AntIcon
-          name={"checkcircleo"}
-          size={24}
-          //color="#000"
-          color="#FFA001"
-          style={styles.icon}
-        />
-        <Text style={styles.value}>{minutes} minutes</Text>
+        {/* Second Row: Price in Bold */}
+        <Text style={styles.price}>${price}</Text>
+        <View style={styles.line} />
+        <View style={styles.rowHorizontal}>
+          <AntIcon
+            name={"checkcircleo"}
+            size={24}
+            //color="#000"
+            color="#FFA001"
+            style={styles.icon}
+          />
+          <Text style={styles.value}>{minutes} minutes</Text>
+        </View>
+        <View style={styles.rowHorizontal}>
+          <AntIcon
+            name={"checkcircleo"}
+            size={24}
+            //color="#000"
+            color="#FFA001"
+            style={styles.icon}
+          />
+          <Text style={styles.value}>{validity} Days</Text>
+        </View>
       </View>
-      <View style={styles.rowHorizontal}>
-        <AntIcon
-          name={"checkcircleo"}
-          size={24}
-          //color="#000"
-          color="#FFA001"
-          style={styles.icon}
-        />
-        <Text style={styles.value}>{validity} Days</Text>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

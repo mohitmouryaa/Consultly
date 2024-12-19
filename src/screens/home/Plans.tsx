@@ -1,16 +1,46 @@
 import React, { memo } from "react";
-import { Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ActiveSubscription from "../../components/ActiveSubscription";
 import { FlatList } from "react-native-gesture-handler";
 import { useGetPlansQuery, useGetUserPlanQuery } from "../../../store/api";
 import { useAppSelector } from "../../../store";
+import { initiatePayment } from "../../lib/utils";
+import httpClient from "../../lib/httpClient";
 
 export default memo(function Plans() {
   const id = useAppSelector(state => state.user._id);
   const { data: plans } = useGetPlansQuery(undefined);
   const { data: userPlan } = useGetUserPlanQuery({ userId: id });
-  console.log("plans", userPlan);
+
+  const handlePurchase = async (plan: any) => {
+    try {
+      // First create order on your backend
+      const order = httpClient.post('/')
+
+      // Initiate Razorpay payment
+      const { success, data, error } = await initiatePayment(
+        plan.price,
+        order.id,
+      );
+
+      if (success && data) {
+        const verification = await httpClient.post("/verify-payment", {
+          orderId: order.id,
+          paymentId: data.razorpay_payment_id,
+          signature: data.razorpay_signature,
+        });
+
+        if (verification.data.success) {
+          Alert.alert("Success", "Payment successful!");
+        }
+      } else {
+        Alert.alert("Error", (error as any)?.description || "Payment failed");
+      }
+    } catch (error) {
+      Alert.alert("Error", "Something went wrong");
+    }
+  };
 
   const renderItem = ({ item }: { item: any }) => (
     <ActiveSubscription
@@ -19,6 +49,7 @@ export default memo(function Plans() {
       price={item.price}
       minutes={item.minutes}
       validity={item.validity_days}
+      onPress={() => handlePurchase(item)}
     />
   );
 
