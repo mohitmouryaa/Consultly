@@ -20,6 +20,8 @@ export default memo(function Plans() {
     { skip: !id },
   );
 
+  console.log("User Plan -- ", userPlan);
+
   const handlePurchase = async (plan: any) => {
     try {
       // Prevent multiple clicks
@@ -86,6 +88,7 @@ export default memo(function Plans() {
       price={item.price}
       minutes={item.minutes}
       validity={item.validity_days}
+      buy={true}
       onPress={() => handlePurchase(item)}
     />
   );
@@ -105,15 +108,22 @@ export default memo(function Plans() {
                 Your Active Subscription
               </Text>
               <ActiveSubscription
-                planName={"Trial Plan"}
-                expiryDate="12-07-2024"
-                price={"49.99"}
-                minutes={"25/25"}
-                validity={"10"}
+                planName={userPlan.plan.currentPlan.name}
+                expiryDate={userPlan.plan.currentPlanExpiration}
+                price={userPlan.plan.currentPlan.price}
+                minutes={userPlan.plan.currentPlan.minutes}
+                validity={userPlan.plan.currentPlan.validity_days}
+                buy={false}
               />
               <Text className="text-xl font-bold mb-2.5 mt-5">Plans</Text>
             </View>
-          ) : null
+          ) : (
+            <View className="items-center mt-5">
+              <Text className="text-xl font-bold mb-2.5 mt-5">
+                No Active Subscription
+              </Text>
+            </View>
+          )
         }
       />
     </SafeAreaView>

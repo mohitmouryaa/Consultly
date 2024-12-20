@@ -9,6 +9,7 @@ interface ActiveSubscriptionProps {
   price: number;
   minutes: number;
   validity: number;
+  buy: boolean;
   onPress: () => void;
 }
 
@@ -18,23 +19,54 @@ const ActiveSubscription: React.FC<ActiveSubscriptionProps> = ({
   price,
   minutes,
   validity,
+  buy,
   onPress,
 }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.card}>
-        {/* First Row: Left-aligned Plan and Right-aligned Expiry Date */}
-        <View style={styles.row}>
-          <Text style={styles.leftText}>{planName}</Text>
-          <Text style={styles.rightText}>
-            Expiry: {convertDate(expiryDate)}
-          </Text>
+    // <TouchableOpacity onPress={onPress}>
+    <View style={styles.card}>
+      {/* First Row: Left-aligned Plan and Right-aligned Expiry Date */}
+      <View style={styles.row}>
+        <Text style={styles.leftText}>{planName}</Text>
+        <Text style={styles.rightText}>Expiry: {convertDate(expiryDate)}</Text>
+      </View>
+
+      {/* Second Row: Price in Bold */}
+      <Text style={styles.price}>${price}</Text>
+      <View style={styles.line} />
+      {/* Row with Minutes, Validity, and Buy Button */}
+      <View style={styles.rowHorizontal}>
+        <View style={{ flex: 1 }}>
+          <View
+            style={{ flexDirection: "row", alignItems: "center", padding: 5 }}>
+            <AntIcon
+              name={"checkcircleo"}
+              size={24}
+              color="#FFA001"
+              style={styles.icon}
+            />
+            <Text style={styles.value}>{minutes} minutes</Text>
+          </View>
+          <View
+            style={{ flexDirection: "row", alignItems: "center", padding: 5 }}>
+            <AntIcon
+              name={"checkcircleo"}
+              size={24}
+              color="#FFA001"
+              style={styles.icon}
+            />
+            <Text style={styles.value}>{validity} Days</Text>
+          </View>
         </View>
 
-        {/* Second Row: Price in Bold */}
-        <Text style={styles.price}>${price}</Text>
-        <View style={styles.line} />
-        <View style={styles.rowHorizontal}>
+        {/* Buy Button */}
+        {buy && (
+          <TouchableOpacity style={styles.buyButton} onPress={onPress}>
+            <Text style={styles.buyButtonText}>Buy</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+      {/* <View style={styles.rowHorizontal}>
           <AntIcon
             name={"checkcircleo"}
             size={24}
@@ -53,9 +85,9 @@ const ActiveSubscription: React.FC<ActiveSubscriptionProps> = ({
             style={styles.icon}
           />
           <Text style={styles.value}>{validity} Days</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
+        </View> */}
+    </View>
+    /* </TouchableOpacity> */
   );
 };
 
@@ -117,6 +149,18 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+  },
+  buyButton: {
+    backgroundColor: "#FFA001",
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buyButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
 
