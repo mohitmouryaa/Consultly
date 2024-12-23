@@ -14,6 +14,7 @@ export default function CallHistory() {
   } = useGetCallHistoryQuery(user._id);
 
   const calls = useMemo(() => data?.data?.history, [data?.data?.history]);
+  console.log("Data -- ", data?.data);
   // const calls = useMemo(() => {
   //   return data?.data?.history ? [...data.data.history].reverse() : [];
   // }, [data?.data?.history]);
@@ -27,7 +28,7 @@ export default function CallHistory() {
         keyboardShouldPersistTaps="handled"
         renderItem={({ item }) => <CallBox item={item} />}
         className="mx-3"
-        inverted={true}
+        //inverted={true}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         refreshControl={

@@ -168,7 +168,9 @@ export default memo(function Profile() {
         overScrollMode="never"
         onScrollEndDrag={Keyboard.dismiss}>
         {isEditing ? (
-          <TouchableOpacity onPress={pickImage}>
+          <TouchableOpacity
+            onPress={pickImage}
+            className="relative mx-auto my-3 mb-10">
             <Image
               source={
                 file
@@ -177,11 +179,14 @@ export default memo(function Profile() {
                   ? { uri: avatar.url }
                   : icons.profile
               }
-              className="mx-auto my-3 mb-10 border-2 rounded-full w-28 h-28"
+              className="border-2 rounded-full w-28 h-28"
               style={{ borderColor: "#FFA001", borderWidth: 1 }}
             />
-            <View className="absolute bottom-5 right-32 bg-white rounded-3xl p-[0.5]">
-              {/* TODO: PUT PENCIL ICON HERE */}
+            <View
+              className="absolute bottom-0 right-0 p-1 bg-white rounded-full"
+              style={{ transform: [{ translateX: 0 }, { translateY: 0 }] }} // Adjust overlap position
+            >
+              <AntIcon name="camerao" size={25} color="#FFA001" />
             </View>
           </TouchableOpacity>
         ) : (
