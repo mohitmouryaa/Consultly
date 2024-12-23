@@ -1,16 +1,85 @@
-import React, { memo } from "react";
-import { Text, View } from "react-native";
+import React, { memo, useState } from "react";
+import { Alert, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ActiveSubscription from "../../components/ActiveSubscription";
 import { FlatList } from "react-native-gesture-handler";
 import { useGetPlansQuery, useGetUserPlanQuery } from "../../../store/api";
 import { useAppSelector } from "../../../store";
+import { initiatePayment } from "../../lib/utils";
+import httpClient from "../../lib/httpClient";
+import { SQL_SERVER_URL } from "@env";
 
 export default memo(function Plans() {
-  const id = useAppSelector(state => state.user._id);
-  const { data: plans } = useGetPlansQuery(undefined);
-  const { data: userPlan } = useGetUserPlanQuery({ userId: id });
-  console.log("plans", userPlan);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const { _id: id, name, email } = useAppSelector(state => state.user);
+  const { data: plans, refetch: refetchPlans } = useGetPlansQuery(undefined);
+  const { data: userPlan, refetch: refetchUserPlan } = useGetUserPlanQuery(
+    {
+      userId: id,
+    },
+    { skip: !id },
+  );
+
+  console.log("User Plan -- ", userPlan);
+
+  const handlePurchase = async (plan: any) => {
+    try {
+      // Prevent multiple clicks
+      if (isProcessingPayment) return;
+      setIsProcessingPayment(true);
+
+      // Create order on backend
+      const orderResponse = await httpClient.post(
+        `${SQL_SERVER_URL}/api/createPayment`,
+        {
+          amount: plan.price,
+        },
+      );
+
+      if (!orderResponse.data) {
+        throw new Error("Failed to create order");
+      }
+
+      // Initiate payment
+      const { success, data, error } = await initiatePayment({
+        amount: plan.price,
+        orderId: orderResponse.data.id,
+        email: email!,
+        name: name!,
+        description: "Plan Purchase",
+      });
+
+      if (success && data) {
+        // Verify payment on backend
+        const verificationResponse = await httpClient.post(
+          `${SQL_SERVER_URL}/api/userPlan/` + id,
+          {
+            plan_id: plan.id,
+            payment_id: data.razorpay_payment_id,
+            signature: data.razorpay_signature,
+            order_id: orderResponse.data.id,
+          },
+        );
+
+        if (verificationResponse.data.success) {
+          Alert.alert("Success", "Payment successful!");
+          // Refresh plans and user plan
+          await Promise.all([refetchPlans(), refetchUserPlan()]);
+        } else {
+          throw new Error("Payment verification failed");
+        }
+      } else {
+        throw new Error((error as any)?.description || "Payment failed");
+      }
+    } catch (error: any) {
+      Alert.alert(
+        "Error",
+        error.message || "Something went wrong. Please try again.",
+      );
+    } finally {
+      setIsProcessingPayment(false);
+    }
+  };
 
   const renderItem = ({ item }: { item: any }) => (
     <ActiveSubscription
@@ -19,6 +88,8 @@ export default memo(function Plans() {
       price={item.price}
       minutes={item.minutes}
       validity={item.validity_days}
+      buy={true}
+      onPress={() => handlePurchase(item)}
     />
   );
 
@@ -37,15 +108,22 @@ export default memo(function Plans() {
                 Your Active Subscription
               </Text>
               <ActiveSubscription
-                planName={"Trial Plan"}
-                expiryDate="Expires on 12-07-2024"
-                price={"49.99"}
-                minutes={"25/25"}
-                validity={"10"}
+                planName={userPlan.plan.currentPlan.name}
+                expiryDate={userPlan.plan.currentPlanExpiration}
+                price={userPlan.plan.currentPlan.price}
+                minutes={userPlan.plan.currentPlan.minutes}
+                validity={userPlan.plan.currentPlan.validity_days}
+                buy={false}
               />
               <Text className="text-xl font-bold mb-2.5 mt-5">Plans</Text>
             </View>
-          ) : null
+          ) : (
+            <View className="items-center mt-5">
+              <Text className="text-xl font-bold mb-2.5 mt-5">
+                No Active Subscription
+              </Text>
+            </View>
+          )
         }
       />
     </SafeAreaView>

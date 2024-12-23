@@ -1,16 +1,29 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import AntIcon from "react-native-vector-icons/AntDesign"; // Import AntDesign icons
 import { convertDate } from "../lib/utils";
 
-const ActiveSubscription = ({
+interface ActiveSubscriptionProps {
+  planName: string;
+  expiryDate: Date;
+  price: number;
+  minutes: number;
+  validity: number;
+  buy: boolean;
+  onPress: () => void;
+}
+
+const ActiveSubscription: React.FC<ActiveSubscriptionProps> = ({
   planName,
   expiryDate,
   price,
   minutes,
   validity,
+  buy,
+  onPress,
 }) => {
   return (
+    // <TouchableOpacity onPress={onPress}>
     <View style={styles.card}>
       {/* First Row: Left-aligned Plan and Right-aligned Expiry Date */}
       <View style={styles.row}>
@@ -21,27 +34,60 @@ const ActiveSubscription = ({
       {/* Second Row: Price in Bold */}
       <Text style={styles.price}>${price}</Text>
       <View style={styles.line} />
+      {/* Row with Minutes, Validity, and Buy Button */}
       <View style={styles.rowHorizontal}>
-        <AntIcon
-          name={"checkcircleo"}
-          size={24}
-          //color="#000"
-          color="#FFA001"
-          style={styles.icon}
-        />
-        <Text style={styles.value}>{minutes} minutes</Text>
+        <View style={{ flex: 1 }}>
+          <View
+            style={{ flexDirection: "row", alignItems: "center", padding: 5 }}>
+            <AntIcon
+              name={"checkcircleo"}
+              size={24}
+              color="#FFA001"
+              style={styles.icon}
+            />
+            <Text style={styles.value}>{minutes} minutes</Text>
+          </View>
+          <View
+            style={{ flexDirection: "row", alignItems: "center", padding: 5 }}>
+            <AntIcon
+              name={"checkcircleo"}
+              size={24}
+              color="#FFA001"
+              style={styles.icon}
+            />
+            <Text style={styles.value}>{validity} Days</Text>
+          </View>
+        </View>
+
+        {/* Buy Button */}
+        {buy && (
+          <TouchableOpacity style={styles.buyButton} onPress={onPress}>
+            <Text style={styles.buyButtonText}>Buy</Text>
+          </TouchableOpacity>
+        )}
       </View>
-      <View style={styles.rowHorizontal}>
-        <AntIcon
-          name={"checkcircleo"}
-          size={24}
-          //color="#000"
-          color="#FFA001"
-          style={styles.icon}
-        />
-        <Text style={styles.value}>{validity} Days</Text>
-      </View>
+      {/* <View style={styles.rowHorizontal}>
+          <AntIcon
+            name={"checkcircleo"}
+            size={24}
+            //color="#000"
+            color="#FFA001"
+            style={styles.icon}
+          />
+          <Text style={styles.value}>{minutes} minutes</Text>
+        </View>
+        <View style={styles.rowHorizontal}>
+          <AntIcon
+            name={"checkcircleo"}
+            size={24}
+            //color="#000"
+            color="#FFA001"
+            style={styles.icon}
+          />
+          <Text style={styles.value}>{validity} Days</Text>
+        </View> */}
     </View>
+    /* </TouchableOpacity> */
   );
 };
 
@@ -103,6 +149,18 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+  },
+  buyButton: {
+    backgroundColor: "#FFA001",
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buyButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
 
