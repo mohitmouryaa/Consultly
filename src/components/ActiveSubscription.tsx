@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import AntIcon from "react-native-vector-icons/AntDesign"; // Import AntDesign icons
 import { convertDate } from "../lib/utils";
 
@@ -23,145 +23,51 @@ const ActiveSubscription: React.FC<ActiveSubscriptionProps> = ({
   onPress,
 }) => {
   return (
-    // <TouchableOpacity onPress={onPress}>
-    <View style={styles.card}>
+    <View className="bg-[#fff] p-4 rounded-lg elevation-md shadow-black shadow-opacity-20 shadow-radius-4 my-2 border border-[#FFA001] border-opacity-100">
       {/* First Row: Left-aligned Plan and Right-aligned Expiry Date */}
-      <View style={styles.row}>
-        <Text style={styles.leftText}>{planName}</Text>
-        <Text style={styles.rightText}>Expiry: {convertDate(expiryDate)}</Text>
+      <View className="flex flex-row justify-between mb-2.5">
+        <Text className="text-base font-semibold">{planName}</Text>
+        <Text className="text-base font-semibold">
+          Expiry: {convertDate(expiryDate)}
+        </Text>
       </View>
 
       {/* Second Row: Price in Bold */}
-      <Text style={styles.price}>${price}</Text>
-      <View style={styles.line} />
+      <Text className="text-lg font-bold text-left">${price}</Text>
+      <View className="bg-[#FFA001] my-2.5 h-px" />
       {/* Row with Minutes, Validity, and Buy Button */}
-      <View style={styles.rowHorizontal}>
-        <View style={{ flex: 1 }}>
-          <View
-            style={{ flexDirection: "row", alignItems: "center", padding: 5 }}>
+      <View className="flex flex-row items-center px-1.5">
+        <View className="flex flex-1">
+          <View className="flex flex-row items-center p-1">
             <AntIcon
               name={"checkcircleo"}
               size={24}
               color="#FFA001"
-              style={styles.icon}
+              className="mr-2.5"
             />
-            <Text style={styles.value}>{minutes} minutes</Text>
+            <Text className="text-base text-left">{minutes} minutes</Text>
           </View>
-          <View
-            style={{ flexDirection: "row", alignItems: "center", padding: 5 }}>
+          <View className="flex flex-row items-center p-1">
             <AntIcon
               name={"checkcircleo"}
               size={24}
               color="#FFA001"
-              style={styles.icon}
+              className="mr-2.5"
             />
-            <Text style={styles.value}>{validity} Days</Text>
+            <Text className="text-base text-left">{validity} Days</Text>
           </View>
         </View>
-
         {/* Buy Button */}
         {buy && (
-          <TouchableOpacity style={styles.buyButton} onPress={onPress}>
-            <Text style={styles.buyButtonText}>Buy</Text>
+          <TouchableOpacity
+            className="bg-[#FFA001] py-2 px-3 rounded-lg flex justify-center items-center"
+            onPress={onPress}>
+            <Text className="text-[#fff] font-bold">Buy</Text>
           </TouchableOpacity>
         )}
       </View>
-      {/* <View style={styles.rowHorizontal}>
-          <AntIcon
-            name={"checkcircleo"}
-            size={24}
-            //color="#000"
-            color="#FFA001"
-            style={styles.icon}
-          />
-          <Text style={styles.value}>{minutes} minutes</Text>
-        </View>
-        <View style={styles.rowHorizontal}>
-          <AntIcon
-            name={"checkcircleo"}
-            size={24}
-            //color="#000"
-            color="#FFA001"
-            style={styles.icon}
-          />
-          <Text style={styles.value}>{validity} Days</Text>
-        </View> */}
     </View>
-    /* </TouchableOpacity> */
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  planTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  card: {
-    backgroundColor: "#fff",
-    padding: 16,
-    borderRadius: 10,
-    elevation: 3, // Shadow for Android
-    shadowColor: "#000", // Shadow for iOS
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    marginVertical: 5,
-    shadowOffset: { width: 0, height: 2 },
-    borderColor: "#FFA001", // Border tint color (light grey example)
-    borderWidth: 1,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between", // Aligns Basic Plan to left and Expiry Date to right
-    marginBottom: 10, // Adds space between rows
-  },
-  leftText: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  rightText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "gray",
-  },
-  price: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "left",
-  },
-  line: {
-    height: 1, // Thin line
-    //backgroundColor: "#ccc", // Light gray color
-    backgroundColor: "#FFA001",
-    marginVertical: 10, // Optional: adds space around the line
-  },
-  rowHorizontal: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 5,
-  },
-  value: {
-    fontSize: 16,
-    textAlign: "left",
-  },
-  icon: {
-    marginRight: 10,
-  },
-  buyButton: {
-    backgroundColor: "#FFA001",
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buyButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-});
-
-export default ActiveSubscription;
+export default React.memo(ActiveSubscription);
