@@ -20,8 +20,6 @@ export default memo(function Plans() {
     { skip: !id },
   );
 
-  console.log("User Plan -- ", userPlan);
-
   const handlePurchase = async (plan: any) => {
     try {
       // Prevent multiple clicks
@@ -56,12 +54,10 @@ export default memo(function Plans() {
           {
             plan_id: plan.id,
             payment_id: data.razorpay_payment_id,
-            signature: data.razorpay_signature,
-            order_id: orderResponse.data.id,
           },
         );
 
-        if (verificationResponse.data.success) {
+        if (verificationResponse.status === 201) {
           Alert.alert("Success", "Payment successful!");
           // Refresh plans and user plan
           await Promise.all([refetchPlans(), refetchUserPlan()]);
@@ -69,13 +65,10 @@ export default memo(function Plans() {
           throw new Error("Payment verification failed");
         }
       } else {
-        throw new Error((error as any)?.description || "Payment failed");
+        throw new Error((error as any)?.message || "Payment failed");
       }
     } catch (error: any) {
-      Alert.alert(
-        "Error",
-        error.message || "Something went wrong. Please try again.",
-      );
+      Alert.alert("Error", "Payment Cancelled!");
     } finally {
       setIsProcessingPayment(false);
     }
@@ -114,6 +107,7 @@ export default memo(function Plans() {
                 minutes={userPlan.plan.currentPlan.minutes}
                 validity={userPlan.plan.currentPlan.validity_days}
                 buy={false}
+                onPress={() => {}}
               />
               <Text className="text-xl font-bold mb-2.5 mt-5">Plans</Text>
             </View>
