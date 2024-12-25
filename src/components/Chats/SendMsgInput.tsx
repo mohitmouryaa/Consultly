@@ -8,6 +8,7 @@ import { chatApi } from "../../../store/api";
 import useCurrentChatMember from "../../hooks/useCurrentChatMember";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import {
+  Asset,
   ImageLibraryOptions,
   launchImageLibrary,
 } from "react-native-image-picker";
@@ -16,13 +17,13 @@ import { AxiosError } from "axios";
 
 export default memo(function SendMsgInput() {
   const dispatch = useDispatch();
+  // @ts-ignore
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const userId = useAppSelector(state => state.user._id);
   const { _id: chatId, members } = useCurrentChatMember();
   const { socket } = useSocket();
   const textMsgRef = useRef<string>("");
   const [refresh, setRefresh] = useState(1); // USED TO REFRESH THE INPUT FIELD
-  const [file, setFile] = useState<any | null>(null);
 
   const pickImage = () => {
     const options: ImageLibraryOptions = {
@@ -35,19 +36,16 @@ export default memo(function SendMsgInput() {
       } else if (response.errorCode) {
         console.log("ImagePicker Error: ", response.errorCode);
       } else if (response.assets && response.assets.length > 0) {
-        //setFile(response.assets[0]);
         const selectedImage = response.assets[0]; // Get the first image
-        console.log("Selected Image:", selectedImage); // Log the selected image
-        setFile(selectedImage); // Set the file
-        sentImage(selectedImage);
+        sendImage(selectedImage);
       }
     });
   };
 
-  const sentImage = async selectedImage => {
+  const sendImage = async (selectedImage: Asset | null) => {
     try {
       const formData = new FormData();
-      if (selectedImage != null) {
+      if (selectedImage) {
         formData.append("chatId", chatId);
         const image = {
           uri: selectedImage.uri,
@@ -112,7 +110,7 @@ export default memo(function SendMsgInput() {
       ) as any,
     );
     setRefresh(prev => prev + 1);
-  }, [chatId, members, socket]);
+  }, [chatId, dispatch, members, socket, userId]);
 
   return (
     <View className="flex flex-row items-center p-2.5 border-t-[1px] bg-[#fff] border-[##ddd]">

@@ -1,12 +1,5 @@
 import React, { memo, useMemo, useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import { Text, View, Image, TouchableOpacity, Dimensions } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useAppSelector } from "../../../store";
 import { convertChatDate } from "../../lib/utils";
@@ -25,16 +18,16 @@ const RenderMessage = ({ item }: { item: any }) => {
   const screenHeight = Dimensions.get("window").height;
   const imageUri = useMemo(
     () =>
-      item.attachments && item.attachments.length > 0
+      item?.attachments && item?.attachments?.length > 0
         ? item.attachments[0].url
         : null,
-    [item.attachments],
+    [item?.attachments],
   );
 
   useEffect(() => {
     if (item?.attachments && item.attachments[0]?.url) {
-      const imageUri = item.attachments[0].url;
-      Image.getSize(imageUri, (width, height) => {
+      const imageUrl = item.attachments[0].url;
+      Image.getSize(imageUrl, (width, height) => {
         const aspectRatio = width / height;
 
         if (aspectRatio > 1) {
@@ -52,7 +45,7 @@ const RenderMessage = ({ item }: { item: any }) => {
         }
       });
     }
-  }, [item]);
+  }, [item, screenHeight, screenWidth]);
 
   const messageTime = useMemo(() => {
     return convertChatDate(item?.createdAt || item?.timestamp);
@@ -93,7 +86,7 @@ const RenderMessage = ({ item }: { item: any }) => {
           />
         </View>
       ) : (
-        <Text className="text-base">{item.content}</Text>
+        <Text className="text-base">{item?.content}</Text>
       )}
 
       <View className="flex flex-row items-center justify-between mt-2">
