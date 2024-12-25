@@ -1,11 +1,18 @@
 import { memo, useCallback, useRef, useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { NEW_MESSAGE, START_TYPING, STOP_TYPING } from "../../constants";
 import { useSocket } from "../../providers/socketProvider";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../store";
 import { chatApi } from "../../../store/api";
 import useCurrentChatMember from "../../hooks/useCurrentChatMember";
+import AntIcon from "react-native-vector-icons/AntDesign";
+import {
+  ImageLibraryOptions,
+  launchImageLibrary,
+} from "react-native-image-picker";
+import httpClient from "../../lib/httpClient";
+import { AxiosError } from "axios";
 
 export default memo(function SendMsgInput() {
   const dispatch = useDispatch();
@@ -15,6 +22,59 @@ export default memo(function SendMsgInput() {
   const { socket } = useSocket();
   const textMsgRef = useRef<string>("");
   const [refresh, setRefresh] = useState(1); // USED TO REFRESH THE INPUT FIELD
+  const [file, setFile] = useState<any | null>(null);
+
+  const pickImage = () => {
+    const options: ImageLibraryOptions = {
+      mediaType: "photo",
+      quality: 1,
+    };
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log("User cancelled image picker");
+      } else if (response.errorCode) {
+        console.log("ImagePicker Error: ", response.errorCode);
+      } else if (response.assets && response.assets.length > 0) {
+        //setFile(response.assets[0]);
+        const selectedImage = response.assets[0]; // Get the first image
+        console.log("Selected Image:", selectedImage); // Log the selected image
+        setFile(selectedImage); // Set the file
+        sentImage(selectedImage);
+      }
+    });
+  };
+
+  const sentImage = async selectedImage => {
+    try {
+      const formData = new FormData();
+      if (selectedImage != null) {
+        formData.append("chatId", chatId);
+        const image = {
+          uri: selectedImage.uri,
+          name: selectedImage.fileName,
+          type: selectedImage.type,
+        };
+
+        formData.append("files", image);
+      }
+      const response = await httpClient.post("/chat/message", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.status === 200) {
+        console.log("Response -- ", response.data);
+      }
+    } catch (error) {
+      const errMessage = (error as AxiosError<{ message: string }>)?.response
+        ?.data?.message;
+      Alert.alert(
+        "",
+        errMessage || "An error occurred. Please try again later.",
+      );
+    } finally {
+    }
+  };
 
   const handleTyping = useCallback(
     (text: string) => {
@@ -62,6 +122,12 @@ export default memo(function SendMsgInput() {
         onChangeText={handleTyping}
         key={refresh?.toString()}
       />
+      <TouchableOpacity
+        className="ml-2.5 bg-[#FFA001] px-2 py-3.5 rounded-2xl"
+        onPress={pickImage}>
+        {/* Replace Text with an image icon */}
+        <AntIcon name="picture" size={24} color="#fff" />
+      </TouchableOpacity>
       <TouchableOpacity
         className="ml-2.5 bg-[#FFA001] px-2 py-3.5 rounded-2xl"
         onPress={handleSendBtn}>

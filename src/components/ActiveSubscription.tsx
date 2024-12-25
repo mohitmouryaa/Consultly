@@ -27,9 +27,20 @@ const ActiveSubscription: React.FC<ActiveSubscriptionProps> = ({
       {/* First Row: Left-aligned Plan and Right-aligned Expiry Date */}
       <View className="flex flex-row justify-between mb-2.5">
         <Text className="text-base font-semibold">{planName}</Text>
-        <Text className="text-base font-semibold">
+        {buy ? (
+          <TouchableOpacity
+            className="bg-[#FFA001] py-2 px-3 rounded-md flex justify-center items-center"
+            onPress={onPress}>
+            <Text className="text-[#000] font-bold">Buy</Text>
+          </TouchableOpacity>
+        ) : (
+          <Text className="text-base font-semibold text-left">
+            Expiry: {convertDate(expiryDate)}
+          </Text>
+        )}
+        {/* <Text className="text-base font-semibold">
           Expiry: {convertDate(expiryDate)}
-        </Text>
+        </Text> */}
       </View>
 
       {/* Second Row: Price in Bold */}
@@ -58,7 +69,7 @@ const ActiveSubscription: React.FC<ActiveSubscriptionProps> = ({
           </View>
         </View>
         {/* Buy Button */}
-        {buy ? (
+        {/* {buy ? (
           <TouchableOpacity
             className="bg-[#FFA001] py-2 px-3 rounded-md flex justify-center items-center"
             onPress={onPress}>
@@ -68,7 +79,7 @@ const ActiveSubscription: React.FC<ActiveSubscriptionProps> = ({
           <Text className="text-base font-semibold text-left">
             Expiry: {convertDate(expiryDate)}
           </Text>
-        )}
+        )} */}
       </View>
     </View>
   );
