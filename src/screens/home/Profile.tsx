@@ -9,7 +9,6 @@ import {
   View,
   Text,
   Alert,
-  ActivityIndicator,
 } from "react-native";
 import UserDetail from "../../components/UserDetail";
 import { icons } from "../../constants";
@@ -23,6 +22,8 @@ import { AxiosError } from "axios";
 import httpClient from "../../lib/httpClient";
 import { storeToken } from "../../lib/secureStore";
 import { setUser } from "../../../store/slices/userSlice";
+//import { useDispatch } from "react-redux"; // Import useDispatch hook
+import { setIsLoading } from "../../../store/slices/miscSlice"; // Import the action
 
 export default memo(function Profile() {
   const { name, username, email, avatar, _id } = useAppSelector(
@@ -34,7 +35,7 @@ export default memo(function Profile() {
   const [newName, setNewName] = useState(name);
   const [newUsername, setNewUsername] = useState(username);
   const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(false); // Loading state
+  //const [loading, setLoading] = useState(false); // Loading state
 
   const pickImage = () => {
     const options: ImageLibraryOptions = {
@@ -72,7 +73,10 @@ export default memo(function Profile() {
       //return false; // No changes made, so return false
     } else {
       console.log("Changes detected, submitting");
-      setLoading(true); // Show the loader
+      //setLoading(true); // Show the loader
+      dispatch(
+        setIsLoading({ isLoading: true, message: "Updating Profile..." }),
+      );
       try {
         if (!newName || !newUsername) {
           Alert.alert("", "Please fill in all fields");
@@ -115,7 +119,8 @@ export default memo(function Profile() {
           errMessage || "An error occurred. Please try again later.",
         );
       } finally {
-        setLoading(false); // Hide the loader when done
+        //setLoading(false); // Hide the loader when done
+        dispatch(setIsLoading({ isLoading: false, message: "" }));
       }
     }
 
@@ -142,7 +147,7 @@ export default memo(function Profile() {
 
   return (
     <SafeAreaView className="flex-col justify-between flex-1 w-full h-full p-5 bg-white ">
-      {loading && (
+      {/* {loading && (
         <View
           style={{
             position: "absolute",
@@ -160,7 +165,7 @@ export default memo(function Profile() {
             Updating Profile...
           </Text>
         </View>
-      )}
+      )} */}
       <ScrollView
         className="max-h-fit"
         showsHorizontalScrollIndicator={false}

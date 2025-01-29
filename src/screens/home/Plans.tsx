@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Alert, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ActiveSubscription from "../../components/ActiveSubscription";
@@ -8,17 +8,42 @@ import { useAppSelector } from "../../../store";
 import { initiatePayment } from "../../lib/utils";
 import httpClient from "../../lib/httpClient";
 import { SQL_SERVER_URL } from "@env";
+import { useDispatch } from "react-redux";
+import { setIsLoading } from "../../../store/slices/miscSlice";
 
 export default memo(function Plans() {
+  const dispatch = useDispatch();
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const { _id: id, name, email } = useAppSelector(state => state.user);
-  const { data: plans, refetch: refetchPlans } = useGetPlansQuery(undefined);
-  const { data: userPlan, refetch: refetchUserPlan } = useGetUserPlanQuery(
+  const {
+    data: plans,
+    refetch: refetchPlans,
+    isLoading: getPlansLoading,
+  } = useGetPlansQuery(undefined);
+  console.log("plans", plans);
+
+  const {
+    data: userPlan,
+    refetch: refetchUserPlan,
+    isLoading: getUserLoading,
+  } = useGetUserPlanQuery(
     {
       userId: id,
     },
     { skip: !id },
   );
+  // Monitor loading states and set global isLoading
+  useEffect(() => {
+    if (getPlansLoading || getUserLoading) {
+      // If any of the queries are loading, set isLoading to true with a message
+      dispatch(setIsLoading({ isLoading: true, message: "Loading data..." }));
+    } else {
+      // If both queries are done, set isLoading to false
+      dispatch(setIsLoading({ isLoading: false, message: "" }));
+    }
+  }, [getPlansLoading, getUserLoading, dispatch]);
+
+  console.log("user plan", userPlan);
 
   const handlePurchase = async (plan: any) => {
     try {

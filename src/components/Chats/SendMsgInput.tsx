@@ -28,7 +28,7 @@ export default memo(function SendMsgInput() {
   const pickImage = () => {
     const options: ImageLibraryOptions = {
       mediaType: "photo",
-      quality: 1,
+      quality: 0.6,
     };
     launchImageLibrary(options, response => {
       if (response.didCancel) {
